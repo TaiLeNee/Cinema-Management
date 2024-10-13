@@ -6,6 +6,7 @@ using namespace std;
 class Movie {
 public:
     Movie(const wstring& name, const wstring& genre, int duration, const wstring& description);
+    Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description);
     void displayInfo() const;  // hiển thị thông tin phim
     void setId(int id);
     int getId() const;

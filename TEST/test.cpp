@@ -1,15 +1,35 @@
 #include <iostream>
-#include <iomanip>
+#include <fstream>
+#include <locale>
+#include <codecvt>
 #include <string>
+#include <fcntl.h> // for O_RDONLY , _O_U16TEXT
+#include <io.h> // for _setmode
+
+using namespace std;
 
 int main() {
-    std::string text = "Hello";
+    locale  loc(locale(), new codecvt_utf8<wchar_t>);   //UTF-8
 
-    int width = 20; // Độ rộng của cột
-    int padding = (width - text.size()) / 2; // Tính toán khoảng trống hai bên
+    _setmode(_fileno(stdout), _O_U8TEXT);
+    _setmode(_fileno(stdin), _O_U8TEXT);
 
-    // Căn giữa text trong cột rộng 20
-    std::cout << std::setw(padding + text.size()) << text << std::setw(padding) << std::endl;
+    wcout<<L"Xin chào mọi người nhé"<<endl;
+    wstring text;
+
+    //read file
+
+    wifstream file(L"output.txt");
+    file.imbue(loc);
+    getline(file, text);
+    wcout<<text<<endl;
+    file.close();
+
+    //write file
+    wofstream fileout(L"output.txt", ios_base::app);
+    fileout.imbue(loc);
+    fileout<<L"Đây là dòng thứ 2 nè nha"<<endl;
+    fileout.close();
 
     return 0;
 }

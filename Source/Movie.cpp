@@ -13,6 +13,9 @@ using namespace std;
 Movie::Movie( const wstring& name, const wstring& genre, int duration, const wstring& description)
     : name(name), genre(genre), duration(duration), description(description) {}
 
+Movie::Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description)
+    : id(id), name(name), genre(genre), duration(duration), description(description) {}
+
 
 void Movie::displayInfo() const {
 

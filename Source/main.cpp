@@ -1,5 +1,8 @@
 #include "MovieList.cpp"
+#include "Room.cpp"
 using namespace std;
+
+string filename = "../DATA/movies.csv";
 
 
 int main() {
@@ -7,15 +10,23 @@ int main() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
 
-    Movie movie1(L"Inception", L"Sci-Fi", 148, L"A mind-bending thriller");
-    movie1.setId(1);    
-    addMovie(movie1);
+    MovieList movieList;
 
-    Movie movie2(L"Lật mặt", L"Sci-Fi", 136, L"A computer hacker learns about the true nature of reality");
-    movie2.setId(2);
-    addMovie(movie2);
+    movieList.loadFromCSV(filename);
 
-    displayMovies();
+    movieList.displayMovies();
+
+    const int numRows = 4;           // Số hàng ghế
+    const int numChairsPerRow = 10;  // Số ghế trong mỗi hàng
+    
+
+    Room room;
+    room.addChairs(numRows, numChairsPerRow);
+    room.changeStatusChair(105, true);
+    room.changeStatusChair(110, true);
+    room.changeStatusChair(403, true);
+
+    printChairs(room.getChairs(), numRows, numChairsPerRow);
 
     return 0;
 }
