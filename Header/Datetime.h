@@ -5,8 +5,9 @@
 using namespace std;    
 class Datetime {
 public:
-    Datetime(const wstring& hour, const wstring& minute, int day, const wstring& month, const wstring& year);
-    void displayInfo() const;  // hiển thị thông tin thời gian
+    Datetime();
+    Datetime(const wstring& hour, const wstring& minute, const wstring& day, const wstring& month, const wstring& year);
+   
     void setHour(wstring hour);
     int getHour() const;
 
