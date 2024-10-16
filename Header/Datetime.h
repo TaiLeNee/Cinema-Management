@@ -9,7 +9,7 @@ public:
     Datetime(const wstring& hour, const wstring& minute, const wstring& day, const wstring& month, const wstring& year);
    
     void setHour(wstring hour);
-    int getHour() const;
+    wstring getHour() const;
 
     void setMinute(wstring minute);
     wstring getMinute() const;
@@ -23,6 +23,7 @@ public:
     void setYear(wstring year);
     wstring getYear() const;
 
+    void displayInfo();
     void deleteDatetime();
     void editDatetime();
 

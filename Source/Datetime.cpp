@@ -5,46 +5,56 @@
 #include <iomanip> // for setw
 #include <string>
 #include <conio.h>
+#include <windows.h>
 
 using namespace std;
 
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x - 1; // Tọa độ bắt đầu từ 0
+    coord.Y = y - 1;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 Datetime::Datetime()
     : hour(0), minute(0), day(0), month(0), year(0) {
-        wcout << L"+----------------------------------------+" << endl;
-        wcout << L"|             Giờ chiếu phim             |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
-        wcout << L"| Ngày       |"; wcin >> day; wcout << L"            |" << endl;
-        wcout << L"| 2. Thể loại                            |" << endl;
-        wcout << L"| 3. Thời lượng                          |" << endl;
-        wcout << L"| 4. Mô tả                               |" << endl;
-        wcout << L"| 5. Thoát                               |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
+        wcout << L"+-----------------------------------------------+" << endl;
+        wcout << L"|                 Giờ chiếu phim                |" << endl;
+        wcout << L"+-----------------+-----------------------------+" << endl;
+        wcout << L"| 1. Giờ (giờ : phút)         :                 |" << endl;
+        wcout << L"| 2. Ngày (ngày / tháng / năm):                 |" << endl;
+        wcout << L"+-----------------+-----------------------------+" << endl;
+        gotoxy(20,6);   wcin >> hour; wcout << " : ";  wcin >> minute;
+        gotoxy(20,6);   wcin >> day; wcout << " / ";  wcin >> month; wcout << " / ";  wcin >> year;
+        displayInfo();
     }
 
 Datetime::Datetime(const wstring& hour, const wstring& minute, const wstring& day, const wstring& month, const wstring& year)
     : hour(hour), minute(minute), day(day), month(month), year(year) {}
 
+void Datetime::displayInfo() {
+        wcout << L"+-----------------------------------------------+" << endl;
+        wcout << L"|                 Giờ chiếu phim                |" << endl;
+        wcout << L"+------------------------+----------------------+" << endl;
+        wcout << L"| 1. Giờ (giờ : phút)         : " << hour <<" : "<< minute  <<   L"|" << endl;
+        wcout << L"| 2. Ngày (ngày / tháng / năm): " << day <<" / " << month  << " / " << year  <<   L"|" << endl;
+        wcout << L"+------------------------+----------------------+" << endl;
+}
 
 void Datetime::editDatetime() {
     int choice;
-    wstring newName, newGenre, newDescription, newlanguage, newAge;
-    Datetime newDuration;
-    Datetime newTimeline;
+    wstring newHour, newMinute, newDay, newMonth, newYear;
 
-    do {
-        // Hiển thị thông tin phim trước khi chỉnh sửa
-        displayInfo();
-
+    do { 
         // Hiển thị menu chỉnh sửa
-        wcout << L"+----------------------------------------+" << endl;
-        wcout << L"|           Chọn thông tin chỉnh sửa     |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
-        wcout << L"| 1. Tên                                 |" << endl;
-        wcout << L"| 2. Thể loại                            |" << endl;
-        wcout << L"| 3. Thời lượng                          |" << endl;
-        wcout << L"| 4. Mô tả                               |" << endl;
-        wcout << L"| 5. Thoát                               |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
+        wcout << L"+-----------------------------------------------+" << endl;
+        wcout << L"|            Thay đổi giờ chiếu phim            |" << endl;
+        wcout << L"+-----------------------+-----------------------+" << endl;
+        wcout << L"| 1. Giờ (giờ : phút)                           |" << endl;
+        wcout << L"| 2. Ngày (ngày / tháng / năm)                  |" << endl;
+        wcout << L"| 3. Cả hai                                     |" << endl;
+        wcout << L"| 4. Thoát                                      |" << endl;
+        wcout << L"+-----------------------+-----------------------+" << endl;
         wcout << L"Lựa chọn của bạn: ";
         // Kiểm tra đầu vào của người dùng
         bool validInput = false;
@@ -64,57 +74,78 @@ void Datetime::editDatetime() {
 
         switch (choice) {
             case 1:
-                wcout << L"Nhập tên mới: ";
-                wcin.ignore();
-                getline(wcin, newName);
-                name = newName;
+                wcout << L"Nhập giờ mới (giờ : phút): ";
+                wcin >> newHour ;
+                wcout << L" : ";
+                wcin >> newMinute;
+                this->hour = newHour;
+                this->minute = newMinute;
+                displayInfo();
                 break;
             case 2:
-                wcout << L"Nhập thể loại mới: ";
-                wcin.ignore();
-                getline(wcin, newGenre);
-                genre = newGenre;
+                wcout << L"Nhập ngày mới (ngày / tháng / năm): ";
+                wcin >> newDay ;
+                wcout << L" / ";
+                wcin >> newMonth;
+                wcout << L" / ";
+                wcin >> newYear;
+                this->day = newDay;
+                this->month = newMonth;
+                this->year = newYear;
+                displayInfo();
                 break;
             case 3:
-                wcout << L"Nhập thời lượng mới: ";
-                wcin >> newDuration;
-                duration = newDuration;
+                Datetime();
                 break;
             case 4:
-                wcout << L"Nhập mô tả mới: ";
-                wcin.ignore();
-                getline(wcin, newDescription);
-                description = newDescription;
-                break;
-            case 5:
                 wcout << L"Thoát chỉnh sửa." << endl;
                 break;
             default:
                 wcout << L"Lựa chọn không hợp lệ. Vui lòng chọn lại." << endl;
         }
-    } while (choice != 5);
+    } while (choice != 4);
 }
 
-void Movie::setId(int id) {
-    this->id = id;
+void deleteDatetime(){
+    Datetime(0,0,0,0,0);
+}
+
+void Datetime::setHour(wstring hour) {
+    this->hour = hour;
 }   
 
-int Movie::getId() const {
-    return id;
+wstring Datetime::getHour() const {
+    return hour;
 }
 
-wstring Movie::getName() const {
-    return name;
+void Datetime::setMinute(wstring minute) {
+    this->minute = minute;
+}   
+
+wstring Datetime::getMinute() const {
+    return minute;
 }
 
-wstring Movie::getGenre() const {
-    return genre;
+void Datetime::setDay(wstring day) {
+    this->day = day;
+}   
+
+wstring Datetime::getDay() const {
+    return day;
 }
 
-Datetime Movie::getDuration() const {
-    return duration;
+void Datetime::setMonth(wstring month) {
+    this->month = month;
+}   
+
+wstring Datetime::getMonth() const {
+    return month;
 }
 
-wstring Movie::getDescription() const {
-    return description;
+void Datetime::setYear(wstring year) {
+    this->year = year;
+}   
+
+wstring Datetime::getYear() const {
+    return year;
 }
