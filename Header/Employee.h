@@ -22,7 +22,6 @@ class Employee{
         wstring getPhoneNumber() const;
         wstring getUserName() const;
         wstring getPassWord() const;
-
         bool isSignIn(const wstring &inputUserName, const wstring &inputPassword) const;
         void setId(int newID);
 };
