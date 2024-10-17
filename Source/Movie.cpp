@@ -2,6 +2,7 @@
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
+#include "../Header/Datetime.h"
 #include <iomanip> // for setw
 #include <string>
 
@@ -10,16 +11,14 @@ using namespace std;
 // Thiết lập chế độ Unicode cho console
 
 
-Movie::Movie( const wstring& name, const wstring& genre, int duration, const wstring& description)
-    : name(name), genre(genre), duration(duration), description(description) {}
+Movie::Movie( const wstring& name, const wstring& genre, Datetime duration, Datetime timeline, const wstring& description, const wstring& language, int age)
+    : name(name), genre(genre), duration(duration), timeline(timeline), description(description), language(language), age(age) {}
 
-Movie::Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description)
-    : id(id), name(name), genre(genre), duration(duration), description(description) {}
+Movie::Movie(int id, const wstring& name, const wstring& genre, Datetime duration, Datetime timeline, const wstring& description, const wstring& language, int age)
+    : id(id), name(name), genre(genre), duration(duration), timeline(timeline), description(description), language(language), age(age) {}
 
 
 void Movie::displayInfo() const {
-
-
     wcout << L"+--------------------------------------------------+" << endl;
     wcout << L"|                    Thông Tin Phim                |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
@@ -27,25 +26,21 @@ void Movie::displayInfo() const {
     wcout << L"+-----------------+--------------------------------+" << endl;
     wcout << L"| Thể loại        | " << setw(30) << genre.c_str() << L" |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
-    wcout << L"| Thời lượng      | " << setw(25) << duration << L" phút |" << endl;
+    wcout << L"| Thời lượng      | " << setw(25) << duration.getMinute() << L" phút |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
-    wcout << L"| Mô tả           | " << setw(30) << description.c_str() << L" |" << endl;
+    // wcout << L"| Mô tả           | " << setw(30) << description.c_str() << L" |" << endl;
+    // wcout << L"+--------------------------------------------------+" << endl;
+    wcout << L"| Ngôn ngữ        | " << setw(30) << language.c_str() << L" |" << endl;
+    wcout << L"+--------------------------------------------------+" << endl;
+    wcout << L"| Độ tuổi         | " << setw(30) << age << L" |" << endl;
     wcout << L"+--------------------------------------------------+" << endl;
 }
 
-void Movie::deleteInfo() {
-    name = L"";
-    genre = L"";
-    duration = 0;
-    description = L"";
-}
-
-
-
 void Movie::editInfo() {
     int choice;
-    wstring newName, newGenre, newDescription;
-    int newDuration;
+    wstring newName, newGenre, newDescription, newlanguage, newAge;
+    Datetime newDuration;
+    Datetime newTimeline;
 
     do {
         // Hiển thị thông tin phim trước khi chỉnh sửa
@@ -127,7 +122,7 @@ wstring Movie::getGenre() const {
     return genre;
 }
 
-int Movie::getDuration() const {
+Datetime Movie::getDuration() const {
     return duration;
 }
 
