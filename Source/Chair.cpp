@@ -35,3 +35,8 @@ void Chair::setIsBooked(bool isBooked)
 {
     this->isBooked = isBooked;
 }
+
+void Chair::setName(wstring name)
+{
+    this->name = name;
+}

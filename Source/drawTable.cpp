@@ -4,33 +4,11 @@
 #include <sstream>
 #include <fcntl.h>
 #include <io.h>
-#include "../Source/Color.cpp"
-#include "../Source/Room.cpp"
+#include "splitStringByWords.cpp"
+
 
 using namespace std;
-vector<wstring> splitStringByWords(const wstring& str, size_t width) {
-    vector<wstring> result;
-    wistringstream words(str);
-    wstring word;
-    wstring line;
 
-    while (words >> word) {
-        if (line.length() + word.length() + 1 > width) {
-            result.push_back(line);
-            line = word;
-        } else {
-            if (!line.empty()) {
-                line += L" ";
-            }
-            line += word;
-        }
-    }
-    if (!line.empty()) {
-        result.push_back(line);
-    }
-
-    return result;
-}
 
 void drawTable(const vector<vector<wstring>>& table, size_t descriptionLimit = 35) {
     int numRows = table.size();
@@ -120,35 +98,4 @@ void drawTable(const vector<vector<wstring>>& table, size_t descriptionLimit = 3
     
     // Vẽ phần cuối của bảng
     drawSeparator(L'╚', L'╩', L'╝', L'═');
-}
-
-int main() {
-    // Dữ liệu mẫu
-    _setmode(_fileno(stdout), _O_U16TEXT);
-    _setmode(_fileno(stdin), _O_U16TEXT);
- 
-
-    const int numRows = 4;           // Số hàng ghế
-    const int numChairsPerRow = 10;  // Số ghế trong mỗi hàng
-    
-
-    Room room;
-    room.addChairs(numRows, numChairsPerRow);
-    room.changeStatusChair(105, true);
-    room.changeStatusChair(110, true);
-    room.changeStatusChair(403, true);
-
-     // Extract chair names
-    vector<vector<wstring>> chairNames;
-    for (const auto& row : room.getChairs()) {
-        vector<wstring> nameRow;
-        for (const auto& chair : row) {
-            nameRow.push_back(chair.getName());
-        }
-        chairNames.push_back(nameRow);
-    }
-
-    drawTable(chairNames);
-
-    return 0;
 }

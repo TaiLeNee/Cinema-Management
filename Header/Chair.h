@@ -17,6 +17,7 @@ class Chair {
         wstring getName() const;
         bool getIsBooked() const;
         void setIsBooked(bool isBooked);
+        void setName(wstring name);
 };
 
 #endif // CHAIR_H
