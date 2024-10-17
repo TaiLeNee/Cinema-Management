@@ -10,9 +10,6 @@ private:
     std::vector<Movie> movies;
 
 public:
-    // Constructer
-    MovieList(Movie movies);
-
     // Thêm một bộ phim vào danh sách
     void addMovie(const Movie& movie);
 

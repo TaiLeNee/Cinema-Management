@@ -23,7 +23,7 @@ Datetime::Datetime()
         wcout << L"+-----------------+-----------------------------+" << endl;
         wcout << L"| 1. Giờ (giờ : phút)         :                 |" << endl;
         wcout << L"| 2. Ngày (ngày / tháng / năm):                 |" << endl;
-        wcout << L"+-----------------+-----------------------------+" << endl;
+        wcout << L"+-----------------+--------------    ---------------+" << endl;
         gotoxy(20,6);   wcin >> hour; wcout << " : ";  wcin >> minute;
         gotoxy(20,6);   wcin >> day; wcout << " / ";  wcin >> month; wcout << " / ";  wcin >> year;
         displayInfo();

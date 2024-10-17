@@ -1,5 +1,4 @@
 #include "Movie.cpp"
-#include "Color.cpp"
 #include "../Header/MovieList.h"
 #include <vector>
 #include <algorithm> // std::remove_if
@@ -7,38 +6,12 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
+#include "drawTable.cpp"
 
 
 using namespace std;
 
 vector<Movie> movies;
-
-
-vector<wstring> splitStringByWords(const wstring& str, size_t width) {
-    vector<wstring> result;
-    wistringstream words(str);
-    wstring word;
-    wstring line;
-
-    while (words >> word) {
-        if (line.length() + word.length() + 1 > width) {
-            result.push_back(line);
-            line = word;
-        } else {
-            if (!line.empty()) {
-                line += L" ";
-            }
-            line += word;
-        }
-    }
-    if (!line.empty()) {
-        result.push_back(line);
-    }
-
-    return result;
-}
-
-
 
 void MovieList::addMovie(const Movie& movie) {
     movies.push_back(movie);
@@ -51,43 +24,26 @@ void MovieList::deleteMovie(int id) {
 }
 
 void MovieList::displayMovies() const {
-    wstringstream output;
 
-
-    wcout << L"+----+--------------------------------+--------------------+-------------+--------------------------------------+" << endl;
-       green(L"| ID |           Name                 |       Genre        |   Duration  |              Description             |\n");
-    wcout << L"+----+--------------------------------+--------------------+-------------+--------------------------------------+" << endl;
-
+    vector<vector<wstring>> table;
+    table.push_back({L"ID", L"Tên phim", L"Thể loại", L"Thời lượng", L"Mô tả"});
     for (const auto& movie : movies) {
-        std::vector<std::wstring> descriptionLines = splitStringByWords(movie.getDescription(), 35);
-        output << L"| " << setw(2) << movie.getId() << L" | "
-            << setw(30) << movie.getName().c_str() << L" | "
-            << setw(18) << movie.getGenre().c_str() << L" | "
-            << setw(6) << movie.getDuration() << L" phút | "
-            << setw(36) << descriptionLines[0].c_str() << L" |" << endl;
-        yellow(output.str());
-        output.str(L""); // Clear the output
-        
-
-        for (size_t i = 1; i < descriptionLines.size(); ++i) {
-            output << L"| " <<setw(5) << L" | "
-            << setw(33) << L" | "
-            << setw(21)  << L" | "
-            << setw(14) << L" | "
-            << setw(36)  << descriptionLines[i].c_str() << L" |" << endl;
-            yellow(output.str());
-            output.str(L""); // Clear the output
-        }
-        wcout << L"+----+--------------------------------+--------------------+-------------+--------------------------------------+" << endl;
-
+        vector<wstring> row;
+        row.push_back(to_wstring(movie.getId()));
+        row.push_back(movie.getName());
+        row.push_back(movie.getGenre());
+        row.push_back(to_wstring(movie.getDuration()));
+        row.push_back(movie.getDescription());
+        table.push_back(row);
     }
-        wcout << L"+----+--------------------------------+--------------------+-------------+--------------------------------------+" << endl;
+    wcout<<L"\n\n";
+    drawTable(table);
 
 }
 
 void MovieList::saveToCSV(const std::string &filename) const
 {   
-    locale  loc(locale(), new codecvt_utf8<wchar_t>);   //UTF-8
+    locale  loc(locale(), new codecvt_utf8<wchar_t>);   //UTF═8
 
     wofstream file(filename);
     
@@ -112,7 +68,7 @@ void MovieList::loadFromCSV(const string& filename) {
     
     movies.clear();
     wifstream file(filename);
-    locale  loc(locale(), new codecvt_utf8<wchar_t>);   //UTF-8
+    locale  loc(locale(), new codecvt_utf8<wchar_t>);   //UTF═8
     file.imbue(loc);
 
     wstring line;   
