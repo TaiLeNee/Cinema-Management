@@ -4,6 +4,13 @@
 
 using namespace std;    
 class Movie {
+private:
+    int id;
+    wstring name;
+    wstring genre;   // thể loại
+    int duration; // thời lượng
+    wstring description; 
+    
 public:
     Movie(const wstring& name, const wstring& genre, int duration, const wstring& description);
     Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description);
@@ -18,13 +25,6 @@ public:
     void deleteInfo();
     void editInfo();
 
-
-private:
-    int id;
-    wstring name;
-    wstring genre;   // thể loại
-    int duration; // thời lượng
-    wstring description; 
 };
 
 #endif // MOVIE_H
