@@ -20,6 +20,20 @@ void Movie::addShowtime(const Showtime& showtime) {
     showtimes.push_back(showtime);
 }
 
+void Movie::displayShowtimes() const {
+    vector<vector<wstring>> table;
+    table.push_back({L" Giờ chiếu ", L" Ngày chiếu "});
+    
+    
+    for(auto &showtime: showtimes){
+        Datetime startime = showtime.getStartTime();
+
+        table.push_back({startime.getHour() + L":" + startime.getMinute(), 
+                          startime.getDay() + L"/" + startime.getMonth() + L"/" + startime.getYear()});
+    }
+    drawTable(table);
+}
+
 void Movie::displayInfo() const {
 
 

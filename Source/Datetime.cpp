@@ -6,6 +6,7 @@
 #include <string>
 #include <conio.h>
 #include <windows.h>
+#include "drawTable.cpp"
 
 using namespace std;
 
@@ -16,8 +17,17 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-Datetime::Datetime()
-    : hour(0), minute(0), day(0), month(0), year(0) {
+Datetime::Datetime(): hour(L"0"), minute(L"0"), day(L"0"), month(L"0"), year(L"0") {}
+
+Datetime::Datetime(wstring fullTime){
+    
+}
+
+Datetime::Datetime(wstring hour, wstring minute, wstring day, wstring month, wstring year)
+    : hour(hour), minute(minute), day(day), month(month), year(year) {}
+
+void Datetime::setDatetime() 
+   {
         wcout << L"+-----------------------------------------------+" << endl;
         wcout << L"|                 Giờ chiếu phim                |" << endl;
         wcout << L"+-----------------+-----------------------------+" << endl;
@@ -29,16 +39,14 @@ Datetime::Datetime()
         displayInfo();
     }
 
-Datetime::Datetime(const wstring& hour, const wstring& minute, const wstring& day, const wstring& month, const wstring& year)
-    : hour(hour), minute(minute), day(day), month(month), year(year) {}
 
 void Datetime::displayInfo() {
-        wcout << L"+-----------------------------------------------+" << endl;
-        wcout << L"|                 Giờ chiếu phim                |" << endl;
-        wcout << L"+------------------------+----------------------+" << endl;
-        wcout << L"| 1. Giờ (giờ : phút)         : " << hour <<" : "<< minute  <<   L"|" << endl;
-        wcout << L"| 2. Ngày (ngày / tháng / năm): " << day <<" / " << month  << " / " << year  <<   L"|" << endl;
-        wcout << L"+------------------------+----------------------+" << endl;
+        
+       drawTable({
+        {L"Giờ chiếu", L"Ngày chiếu"},
+        {hour + L":" + minute, day + L"/" + month + L"/" + year}  
+       }
+       );
 }
 
 void Datetime::editDatetime() {

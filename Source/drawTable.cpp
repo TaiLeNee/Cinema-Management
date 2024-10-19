@@ -1,16 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <iomanip>
-#include <sstream>
-#include <fcntl.h>
-#include <io.h>
+
 #include "splitStringByWords.cpp"
+
 
 
 using namespace std;
 
+void drawTable(const vector<vector<wstring>> &table);
 
-void drawTable(const vector<vector<wstring>>& table, size_t descriptionLimit = 35) {
+void drawTable(const vector<vector<wstring>>& table) {
+    size_t descriptionLimit = 35;
+
     int numRows = table.size();
     if (numRows == 0) return; // Trường hợp bảng rỗng
     int numCols = table[0].size();
@@ -99,3 +98,4 @@ void drawTable(const vector<vector<wstring>>& table, size_t descriptionLimit = 3
     // Vẽ phần cuối của bảng
     drawSeparator(L'╚', L'╩', L'╝', L'═');
 }
+

@@ -6,12 +6,31 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
-#include "drawTable.cpp"
+#include "../Header/drawTable.h"
 
 
 using namespace std;
 
-vector<Movie> movies;
+
+MovieList::MovieList() {
+    loadFromCSV("../DATA/movies.csv");
+}
+
+void MovieList::loadShowtimesofMovie(vector<Showtime>& showtimes) {
+    for(auto &movie : movies){
+        vector<Showtime> result;
+        for (auto& showtime : showtimes) {
+            if (showtime.getMovieID() == movie.getId()) {
+                result.push_back(showtime);
+                movie.addShowtime(showtime);
+            }
+        }
+    }
+}
+
+vector<Movie> MovieList::getMovies(){
+    return movies;
+}
 
 void MovieList::addMovie(const Movie& movie) {
     movies.push_back(movie);

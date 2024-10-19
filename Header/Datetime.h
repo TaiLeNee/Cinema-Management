@@ -6,8 +6,9 @@ using namespace std;
 class Datetime {
 public:
     Datetime();
-    Datetime(const wstring& hour, const wstring& minute, const wstring& day, const wstring& month, const wstring& year);
-   
+    Datetime(wstring fullTime);
+    Datetime(wstring hour, wstring minute, wstring day, wstring month, wstring year);
+    void setDatetime();
     void setHour(wstring hour);
     wstring getHour() const;
 

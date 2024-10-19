@@ -13,7 +13,7 @@ const wstring RESET = L"\033[0m";       // Khôi phục mặc định
 
 using namespace std;
 
-void drawTableChair(const vector<vector<Chair>>& chairs, size_t descriptionLimit = 35) {
+void drawTableChair(const vector<vector<Chair>>& chairs) {
 
     wcout << L"\n\n════════════════════════════════════════════════════" << endl; 
     wcout << L"                     MÀN HÌNH       \n";

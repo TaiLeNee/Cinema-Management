@@ -1,11 +1,16 @@
 #include "../Header/Room.h"
-
+#include <locale>
+#include <codecvt>
 #include "Showtime.cpp"
 #include "Chair.cpp"
+#include "loadShowtimeFromCSV.cpp"
+
 
 using namespace std;
 
- // Danh sách khung giờ chiếu
+
+// void Room::loadShowtimes(const string& filename);
+    
 
 // Room class implementation
 Room::Room() : id(0), name(L"") {}
@@ -26,6 +31,13 @@ Room::Room(int id, const wstring& name, int numRows, int numChairsPerRow)
         chairs.push_back(row);
         rowLabel++;
     }
+
+    loadShowtimeFromCSV(showtimes, id);
+
+    for(auto &showtime: showtimes){
+        showtime.chairs = chairs;
+    }
+
 }
 
 int Room::getId() const {
@@ -41,11 +53,11 @@ void Room::addShowtime(const Showtime &showtime)
     showtimes.push_back(showtime);
 }
 
-vector<Showtime>& Room::getShowtimes() { 
+vector<Showtime> Room::getShowtimes() { 
     return showtimes; 
 }
 
-vector<vector<Chair>>& Room::getChairs() {
+vector<vector<Chair>> Room::getChairs() {
     return chairs;  
 }
 

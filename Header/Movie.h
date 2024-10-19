@@ -17,6 +17,8 @@ public:
     wstring getDescription() const;
 
     void addShowtime(const Showtime& showtime);
+    void displayShowtimes() const;
+    
     void deleteInfo();
     void editInfo();
 

@@ -6,8 +6,11 @@ using namespace std;
 
 Showtime::Showtime() {}
 
-Showtime::Showtime(int movieID, int roomID, const Datetime& startTime):
-    movieID(movieID), roomID(roomID), startTime(startTime) {}
+Showtime::Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime):
+    showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime) {}
+
+Showtime::Showtime(int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs):
+    movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {}
 
 Showtime::Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs):
     showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {}
@@ -41,10 +44,13 @@ void Showtime::setShowtimeID(int showtimeID) {
     this->showtimeID = showtimeID;
 }
 
+
 void Showtime::displayChairs() const
 {
     drawTableChair(chairs);
 }
+
+
 
 void Showtime::changeStatusChair(int chairId, bool isBooked) {
     for (auto& row : chairs) {

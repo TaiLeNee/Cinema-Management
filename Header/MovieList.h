@@ -10,6 +10,8 @@ private:
     std::vector<Movie> movies;
 
 public:
+    MovieList();
+    vector<Movie> getMovies();
     // Thêm một bộ phim vào danh sách
     void addMovie(const Movie& movie);
 
@@ -18,7 +20,7 @@ public:
 
     // Xóa một bộ phim khỏi danh sách
     void deleteMovie(int id);
-
+    
     // Hiển thị tất cả các bộ phim trong danh sách
     void displayMovies() const;
 
@@ -27,6 +29,8 @@ public:
 
     // Đọc danh sách phim từ tệp CSV
     void loadFromCSV(const std::string& filename);
+
+    void loadShowtimesofMovie(vector<Showtime>& showtimes);
 };
 
 #endif // MOVIELIST_H
