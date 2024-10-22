@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fcntl.h>
 #include <io.h>
-
+#include "../Header/Chair.h"
 
 // wstring YELLOW = L"\033[93m";
 const wstring WHITE_BG = L"\033[47m";   // Nền trắng

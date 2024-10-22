@@ -1,8 +1,6 @@
 #include "../Header/Room.h"
-#include <locale>
-#include <codecvt>
-#include "Showtime.cpp"
-#include "Chair.cpp"
+#include "../Header/Showtime.h"
+#include "../Header/Chair.h"
 #include "loadShowtimeFromCSV.cpp"
 
 

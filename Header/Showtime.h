@@ -2,8 +2,13 @@
 #define SHOWTIME_H
 #include <vector>
 #include <string>
-#include "../Source/Datetime.cpp"
+#include "Datetime.h"
 #include "Chair.h"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+
 
 using namespace std;
 class Showtime {

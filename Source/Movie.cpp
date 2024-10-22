@@ -1,20 +1,21 @@
 #include "../Header/Movie.h"
-#include <iostream>
-#include <io.h>
-#include <fcntl.h>
-#include <iomanip> // for setw
-#include <string>
+
+
+
 
 using namespace std;
 
 // Thiết lập chế độ Unicode cho console
 
 
-Movie::Movie( const wstring& name, const wstring& genre, int duration, const wstring& description)
-    : name(name), genre(genre), duration(duration), description(description) {}
 
-Movie::Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description)
-    : id(id), name(name), genre(genre), duration(duration), description(description) {}
+Movie::Movie() {}
+
+Movie::Movie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
+    : id(id), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
+
+Movie::Movie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
+    : name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
 
 void Movie::addShowtime(const Showtime& showtime) {
     showtimes.push_back(showtime);
@@ -34,15 +35,39 @@ void Movie::displayShowtimes() const {
     drawTable(table);
 }
 
+
+void Movie::inputMovieInfo() {
+    wcout << L"Nhập tên phim: ";
+    wcin.ignore();
+    getline(wcin, name);
+
+    wcout << L"Nhập thời lượng phim (phút): ";
+    wcin >> duration;
+
+    wcin.ignore();
+    wcout << L"Nhập mô tả phim: ";
+    getline(wcin, description);
+
+    wcout << L"Nhập quốc gia sản xuất: ";
+    getline(wcin, country);
+
+    wcout << L"Nhập phụ đề: ";
+    getline(wcin, subTitle);
+
+    wcout << L"Nhập giới hạn tuổi: ";
+    wcin >> limitAge;
+    wcin.ignore();
+}
+
+
 void Movie::displayInfo() const {
+
 
 
     wcout << L"+--------------------------------------------------+" << endl;
     wcout << L"|                    Thông Tin Phim                |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
     wcout << L"| Tên             | " << setw(30) << name.c_str() << L" |" << endl;
-    wcout << L"+-----------------+--------------------------------+" << endl;
-    wcout << L"| Thể loại        | " << setw(30) << genre.c_str() << L" |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
     wcout << L"| Thời lượng      | " << setw(25) << duration << L" phút |" << endl;
     wcout << L"+-----------------+--------------------------------+" << endl;
@@ -52,9 +77,12 @@ void Movie::displayInfo() const {
 
 void Movie::deleteInfo() {
     name = L"";
-    genre = L"";
     duration = 0;
     description = L"";
+    showtimes.clear();
+    limitAge = 0;
+    country = L"";
+    subTitle = L"";
 }
 
 
@@ -106,7 +134,7 @@ void Movie::editInfo() {
                 wcout << L"Nhập thể loại mới: ";
                 wcin.ignore();
                 getline(wcin, newGenre);
-                genre = newGenre;
+                // genre = newGenre;
                 break;
             case 3:
                 wcout << L"Nhập thời lượng mới: ";
@@ -136,18 +164,60 @@ int Movie::getId() const {
     return id;
 }
 
+void Movie::setName(const wstring& name) {
+    this->name = name;
+}
 wstring Movie::getName() const {
     return name;
 }
 
-wstring Movie::getGenre() const {
-    return genre;
+void Movie::setDuration(int duration)
+{
+    this->duration = duration;
 }
 
 int Movie::getDuration() const {
+
     return duration;
 }
 
-wstring Movie::getDescription() const {
+void Movie::setSubTitle(const wstring &subTitle)
+{
+    this->subTitle = subTitle;
+}
+
+ wstring Movie::getSubTitle() const
+{
+    return subTitle;
+}
+
+void Movie::setCountry(const wstring &country)
+{
+    this->country = country;
+}
+
+wstring Movie::getCountry() const
+{
+    return country;
+}
+
+void Movie::setLimitAge(int limitAge)
+{
+    this->limitAge = limitAge;
+}
+
+int Movie::getLimitAge() const
+{
+    return limitAge;
+}
+
+void Movie::setDescription(const wstring &description)
+{
+    this->description = description;
+}
+
+wstring Movie::getDescription() const
+{
     return description;
 }
+

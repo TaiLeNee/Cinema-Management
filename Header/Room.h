@@ -1,8 +1,12 @@
 #ifndef ROOM_H
 #define ROOM_H
+#include <iostream>
 #include "Showtime.h"
 #include "Chair.h"
 #include <vector>
+#include <locale>
+#include <codecvt>
+
 using namespace std;
 class Room {
     private:

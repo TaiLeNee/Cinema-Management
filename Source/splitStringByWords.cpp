@@ -1,10 +1,7 @@
-#include <iostream>
-#include <vector>
-#include <sstream>
-using namespace std;
+#include "../Header/splitStringByWords.h"
 
-
-vector<wstring> splitStringByWords(const wstring& str, size_t width) {
+vector<wstring> splitStringByWords(const wstring& str) {
+    size_t width = 35;
     vector<wstring> result;
     wistringstream words(str);
     wstring word;

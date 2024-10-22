@@ -2,32 +2,61 @@
 #define MOVIE_H
 #include <string>
 #include "Showtime.h"
-
+#include <iostream>
+#include <io.h>
+#include <fcntl.h>
+#include <iomanip> // for setw
+#include <string>
+#include <vector>
+#include "drawTable.h"
 using namespace std;    
 class Movie {
 public:
-    Movie(const wstring& name, const wstring& genre, int duration, const wstring& description);
-    Movie(int id, const wstring& name, const wstring& genre, int duration, const wstring& description);
-    void displayInfo() const;  // hiển thị thông tin phim
+    Movie();
+    Movie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description);
+
+    Movie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description);
+    
+
+    virtual void inputMovieInfo();
+
+    virtual void displayInfo() const;  // hiển thị thông tin phim
+
     void setId(int id);
     int getId() const;
+
+    void setName(const wstring& name);
     wstring getName() const;
-    wstring getGenre() const;
+   
+    void setDuration(int duration);
     int getDuration() const;
+
+    void setSubTitle(const wstring& subTitle);
+    wstring getSubTitle() const;
+
+    void setCountry(const wstring& country);
+    wstring getCountry() const;
+
+    void setLimitAge(int limitAge);
+    int getLimitAge() const;
+
+    void setDescription(const wstring& description);
     wstring getDescription() const;
 
     void addShowtime(const Showtime& showtime);
     void displayShowtimes() const;
     
-    void deleteInfo();
-    void editInfo();
+    virtual void deleteInfo();
+    virtual void editInfo();
 
 
 private:
     int id;
     wstring name;
-    wstring genre;   // thể loại
     int duration; // thời lượng
+    wstring subTitle; // phụ đề
+    wstring country; // quốc gia    
+    int limitAge; // giới hạn tuổi
     wstring description; 
     vector<Showtime> showtimes; // Danh sách khung giờ chiếu
 };

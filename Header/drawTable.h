@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fcntl.h>
 #include <io.h>
+#include "Color.h"
 using namespace std;
 
 

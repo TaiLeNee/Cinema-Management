@@ -6,7 +6,7 @@
 #include <string>
 #include <conio.h>
 #include <windows.h>
-#include "drawTable.cpp"
+#include "../Header/drawTable.h"
 
 using namespace std;
 

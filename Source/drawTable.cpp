@@ -1,6 +1,11 @@
+#include "../Header/drawTable.h"
+#include "../Header/splitStringByWords.h"
 
-#include "splitStringByWords.cpp"
 
+wstring GREEN = L"\033[92m";
+wstring RED = L"\033[91m";
+wstring END = L"\033[0m";
+wstring YELLOW = L"\033[93m";
 
 
 using namespace std;
@@ -22,7 +27,7 @@ void drawTable(const vector<vector<wstring>>& table) {
         for (int j = 0; j < numRows; ++j) {
             // Nếu cột là cột mô tả (description), kiểm tra với giới hạn
             if (i == numCols - 1 && table[j][i].size() > descriptionLimit) {
-                auto wrappedLines = splitStringByWords(table[j][i], descriptionLimit);
+                auto wrappedLines = splitStringByWords(table[j][i]);
                 for (const auto& line : wrappedLines) {
                     if (line.size() > colWidths[i]) {
                         colWidths[i] = line.size();
@@ -55,7 +60,7 @@ void drawTable(const vector<vector<wstring>>& table) {
         int maxLines = 1;
         for (int col = 0; col < numCols; ++col) {
             if (col == numCols - 1 && table[row][col].size() > descriptionLimit) {
-                auto wrappedLines = splitStringByWords(table[row][col], descriptionLimit);
+                auto wrappedLines = splitStringByWords(table[row][col]);
                 if (wrappedLines.size() > maxLines) {
                     maxLines = wrappedLines.size();
                 }
@@ -70,7 +75,7 @@ void drawTable(const vector<vector<wstring>>& table) {
                 
                 if (col == numCols - 1 && table[row][col].size() > descriptionLimit) {
                     // Xử lý mô tả có nhiều dòng
-                    auto wrappedLines = splitStringByWords(table[row][col], descriptionLimit);
+                    auto wrappedLines = splitStringByWords(table[row][col]);
                     if (line < wrappedLines.size()) {
                         wcout << setw(colWidths[col]) << wrappedLines[line];
                     } else {

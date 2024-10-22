@@ -1,4 +1,4 @@
-#include "Room.cpp"
+#include "../Header/RoomList.h"
 #include <fstream>
 
 using namespace std;
