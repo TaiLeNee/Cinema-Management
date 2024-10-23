@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Color.h"
 
-void displayMenu();
+void manageMenu();
+void mainMenu();
+void sellTicketMenu();
 
-#endif // MENU_H
+#endif // MENU_H    
