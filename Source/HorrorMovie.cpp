@@ -13,24 +13,25 @@ using namespace std;
 
 
 
-HorrorMovie::HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int horrorLevel) 
+HorrorMovie::HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& horrorLevel) 
     : Movie(id, name, duration, subTitle, country, limitAge, description), horrorLevel(horrorLevel) {}
 
-HorrorMovie::HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int horrorLevel) 
+HorrorMovie::HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& horrorLevel) 
     : Movie(name, duration, subTitle, country, limitAge, description), horrorLevel(horrorLevel) {}
 
-int HorrorMovie::getHorrorLevel() {
+wstring HorrorMovie::getHorrorLevel() {
     return this->horrorLevel;
 }
 
-void HorrorMovie::setHorrorLevel(int horrorLevel) {
+void HorrorMovie::setHorrorLevel(const wstring& horrorLevel) {
     this->horrorLevel = horrorLevel;
 }
 
 void HorrorMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
     wcout << L"Nhập mức độ kinh dị (1-4): ";
-    wcin >> horrorLevel;
+    wcin.ignore();
+    getline(wcin, horrorLevel);
 }
 
 void HorrorMovie::displayInfo() {
@@ -39,9 +40,10 @@ void HorrorMovie::displayInfo() {
 }
 
 void HorrorMovie::editHorrorLevel() {
-    int newHorrorLevel;
+    wstring newHorrorLevel;
     wcout << L"Nhập mức độ kinh dị (1-4): ";
-    wcin >> newHorrorLevel;
+    wcin.ignore();
+    getline(wcin, newHorrorLevel);   
     this->horrorLevel = newHorrorLevel;
     wcout << L"Nhập thành công!!";
 }

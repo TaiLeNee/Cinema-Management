@@ -3,6 +3,11 @@
 #include "Movie.h"
 #include <vector>
 #include <string>
+#include <algorithm> // std::remove_if
+#include <sstream>
+#include <fstream>
+#include <locale>
+#include <codecvt>
 
 
 class MovieList {
@@ -15,9 +20,9 @@ public:
     vector<Movie*> getMovies();
 
     // Tạo một bộ phim mới
-    Movie* createMovie(const wstring& id, const wstring& name, const wstring& typeMovie, const wstring& duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
+    Movie* createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
     // Thêm một bộ phim vào danh sách
-    void addMovie(const wstring& id, const wstring& name, const wstring& typeMovie, const wstring& duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
+    void addMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
 
     // Sửa thông tin một bộ phim trong danh sách
     void updateMovie(int id, const Movie& updatedMovie);

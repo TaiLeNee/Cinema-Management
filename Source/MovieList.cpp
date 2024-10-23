@@ -1,16 +1,9 @@
 #include "../Header/Movie.h"
 #include "../Header/MovieList.h"
-// #include "../Header/AnimatedMovie.h"
-// #include "../Header/LoveMovie.h"
 #include "../Header/AnimatedMovie.h"
 #include "../Header/LoveMovie.h"
-#include <vector>
-#include <algorithm> // std::remove_if
-#include <sstream>
-#include <fstream>
-#include <locale>
-#include <codecvt>
-#include "../Header/drawTable.h"
+#include "../Header/ActionMovie.h"
+#include "../Header/HorrorMovie.h"
 
 using namespace std;
 
@@ -35,18 +28,22 @@ vector<Movie*> MovieList::getMovies(){
 }
 
 
-Movie* MovieList::createMovie(const wstring& id, const wstring& name, const wstring& typeMovie, const wstring& duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
+Movie* MovieList::createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
     if (typeMovie == L"Tình cảm") {
-        return new LoveMovie(stoi(id), name, stoi(duration), subtitle, country, limitAge, description, genre);
+        return new LoveMovie(id, name, duration, subtitle, country, limitAge, description, genre);
     } else if (typeMovie == L"Hoạt hình") {
-        return new AnimatedMovie(stoi(id), name, stoi(duration), subtitle, country, limitAge, description, genre);
+        return new AnimatedMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+    } else if (typeMovie == L"Hành động") {
+        return new ActionMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+    } else if (typeMovie == L"Kinh dị") {
+        return new HorrorMovie(id, name, duration, subtitle, country, limitAge, description, genre);
     } else {
-        return new Movie(stoi(id), name, stoi(duration), subtitle, country, limitAge, description);
+        return new Movie(id, name, duration, subtitle, country, limitAge, description);
     }
 }
 
 
-void MovieList::addMovie(const wstring& id, const wstring& name, const wstring& typeMovie, const wstring& duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
+void MovieList::addMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
     movies.push_back( createMovie(id, name, typeMovie, duration, subtitle, country, limitAge, description, genre) );
 }
 
@@ -75,6 +72,10 @@ void MovieList::displayMovies() const {
             row.push_back(dynamic_cast<LoveMovie*>(movie)->getRomantic());
         } else if (dynamic_cast<AnimatedMovie*>(movie)) {
             row.push_back(dynamic_cast<AnimatedMovie*>(movie)->getAnimation());
+        } else if (dynamic_cast<ActionMovie*>(movie)) {
+            row.push_back(dynamic_cast<ActionMovie*>(movie)->getActionLevel());
+        } else if (dynamic_cast<HorrorMovie*>(movie)) {
+            row.push_back(dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel());
         } else {
             row.push_back(L"");
         }
@@ -131,6 +132,12 @@ void MovieList::loadFromCSV(const string& filename) {
             movies.push_back(movie);
         } else if(typeMovie == L"Hoạt hình"){
             Movie* movie = new AnimatedMovie(stoi(id), name, stoi(duration), subtitle, country, stoi(limitAge), description, genre);
+            movies.push_back(movie);
+        } else if(typeMovie == L"Hành động"){
+            Movie* movie = new ActionMovie(stoi(id), name, stoi(duration), subtitle, country, stoi(limitAge), description, genre);
+            movies.push_back(movie);
+        } else if(typeMovie == L"Kinh dị"){
+            Movie* movie = new HorrorMovie(stoi(id), name, stoi(duration), subtitle, country, stoi(limitAge), description, genre);
             movies.push_back(movie);
        
         }

@@ -8,18 +8,18 @@ using namespace std;
 class HorrorMovie : public Movie {
     public:
         HorrorMovie();
-        HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int actionLevel);  // khởi tạo
-        HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int actionLevel);
+        HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);  // khởi tạo
+        HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);
 
-        int getHorrorLevel();   // lấy mức độ hành động
-        void setHorrorLevel(int horrorLevel);
+        wstring getHorrorLevel();   // lấy mức độ hành động
+        void setHorrorLevel(const wstring& horrorLevel);
         void inputMovieInfo();  // in thông tin (hàm ảo)
         void displayInfo();     
         
         void editHorrorLevel();
     
     private:
-        int horrorLevel;    // mức độ hành động
+        wstring horrorLevel;    // mức độ hành động
 };
 
 #endif  // end HORRORMovie_H

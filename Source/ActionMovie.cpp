@@ -13,24 +13,25 @@ using namespace std;
 
 
 
-ActionMovie::ActionMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int actionLevel) 
+ActionMovie::ActionMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel) 
     : Movie(id, name, duration, subTitle, country, limitAge, description), actionLevel(actionLevel) {}
 
-ActionMovie::ActionMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, int actionLevel) 
+ActionMovie::ActionMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel) 
     : Movie(name, duration, subTitle, country, limitAge, description), actionLevel(actionLevel) {}
 
-int ActionMovie::getActionLevel() {
+wstring ActionMovie::getActionLevel() {
     return this->actionLevel;
 }
 
-void ActionMovie::setActionLevel(int actionLevel) {
+void ActionMovie::setActionLevel(const wstring& actionLevel) {
     this->actionLevel = actionLevel;
 }
 
 void ActionMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
     wcout << L"Nhập mức độ hành động (1-4): ";
-    wcin >> actionLevel;
+    wcin.ignore();
+    getline(wcin, actionLevel);
 }
 
 void ActionMovie::displayInfo() {
@@ -39,9 +40,10 @@ void ActionMovie::displayInfo() {
 }
 
 void ActionMovie::editActionLevel() {
-    int newActionLevel;
+    wstring newActionLevel;
     wcout << L"Nhập mức độ hành động (1-4): ";
-    wcin >> newActionLevel;
+    wcin.ignore();
+    getline(wcin, newActionLevel);
     this->actionLevel = newActionLevel;
     wcout << L"Nhập thành công!!";
 }
