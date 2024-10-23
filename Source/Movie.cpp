@@ -1,13 +1,27 @@
 #include "../Header/Movie.h"
-
-
-
-
+#include <algorithm>
 using namespace std;
 
-// Thiết lập chế độ Unicode cho console
+//Khai báo thêm hàm//////////////
+time_t wstringToTime(const wstring& dateTimeStr) {
+    struct tm tm {};
+    wistringstream ss(dateTimeStr);
+    ss >> get_time(&tm, L"%H:%M %d/%m/%Y");
+    return mktime(&tm); // Chuyển sang time_t
+}
 
 
+void sortShowtimes(vector<Showtime>& showtimes) {
+
+    sort(showtimes.begin(), showtimes.end(), [](const Showtime& a, const Showtime& b) {
+        return wstringToTime(a.getStartTime().getFulltime()) < wstringToTime(b.getStartTime().getFulltime());
+    });
+
+
+}
+
+
+////////////////////////// Movie class implementation //////////////////////////
 
 Movie::Movie() {}
 
@@ -22,13 +36,16 @@ void Movie::addShowtime(const Showtime& showtime) {
 }
 
 void Movie::displayShowtimes() const {
+    vector<Showtime> showtimes = this->showtimes;
+    sortShowtimes(showtimes);
+
     vector<vector<wstring>> table;
     table.push_back({L" Giờ chiếu ", L" Ngày chiếu "});
     
     
     for(auto &showtime: showtimes){
         Datetime startime = showtime.getStartTime();
-
+        
         table.push_back({startime.getHour() + L":" + startime.getMinute(), 
                           startime.getDay() + L"/" + startime.getMonth() + L"/" + startime.getYear()});
     }

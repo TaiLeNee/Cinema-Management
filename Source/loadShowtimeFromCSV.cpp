@@ -102,5 +102,5 @@ void loadShowtimeFromCSV(vector<Showtime>& showtimes, int id) {
         }
     }
         file.close();
-       
 }
+

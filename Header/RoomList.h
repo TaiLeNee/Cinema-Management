@@ -4,7 +4,15 @@
 #include <fstream>
 #include <sstream>
 
+class RoomList{
+    private:
+        vector<Room> rooms;
 
-void loadRoom();
+    public:
+        RoomList();
+        void loadRoom();
+        vector<Room> getRooms();
+
+};
 
 #endif // ROOMLIST_H

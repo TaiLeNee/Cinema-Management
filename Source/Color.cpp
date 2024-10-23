@@ -6,18 +6,15 @@
 // wstring L"\033[0m" = END;
 // wstring YELLOW = L"\033[93m";
 
-template <typename T>
-void green(T text) {
+void green(const wstring& text) {
     wcout << L"\033[92m" << text << L"\033[0m";
 }
 
-template <typename T>
-void red(T text) {
+void red(const wstring& text) {
     wcout << L"\033[91m" << text << L"\033[0m";
 }
 
-template <typename T>
-void yellow(T text) {
+void yellow(const wstring& text) {
     wcout << L"\033[93m" << text << L"\033[0m";
 }
 

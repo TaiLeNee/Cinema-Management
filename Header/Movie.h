@@ -9,6 +9,9 @@
 #include <string>
 #include <vector>
 #include "drawTable.h"
+#include <ctime>
+#include <algorithm>
+
 using namespace std;    
 class Movie {
 public:

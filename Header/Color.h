@@ -7,14 +7,8 @@
 using namespace std;
 
 
-
-template <typename T>
-void green(T text);
-
-template <typename T>
-void red(T text);
-
-template <typename T>
-void yellow(T text) ;
+void green(const wstring& text);
+void red(const wstring& text);
+void yellow(const wstring& text) ;
 
 #endif // COLOR_H

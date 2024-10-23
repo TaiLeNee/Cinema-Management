@@ -1,11 +1,9 @@
-// #include "Color.cpp"
-// #include "MovieList.cpp"
-// #include "RoomList.cpp" //Có vector<Room> rooms
+#include "../Header/Menu.h"
 #include "../Header/RoomList.h"
 #include "../Header/MovieList.h"
 #include <fcntl.h>
 #include <io.h>
-#include "menu.cpp"
+
 
 using namespace std;
 
@@ -17,21 +15,23 @@ int main() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
 
-    // displayMenu();
+    displayMenu();
 
-    loadRoom();
+    RoomList roomList;
+    roomList.loadRoom();
 
+    vector<Room> rooms = roomList.getRooms();
     
     MovieList movieList;
 
     movieList.displayMovies();
 
-    // for(auto& room: rooms){
-    //     vector<Showtime> showtimes = room.getShowtimes();
-    //     movieList.loadShowtimesofMovie(showtimes);
+    for(auto& room: rooms){
+        vector<Showtime> showtimes = room.getShowtimes();
+        movieList.loadShowtimesofMovie(showtimes);
 
-    // }
-    // movieList.getMovies()[0].displayShowtimes();
+    }
+    movieList.getMovies()[0]->displayShowtimes();
 
     
  

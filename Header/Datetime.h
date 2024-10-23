@@ -27,6 +27,7 @@ public:
     void displayInfo();
     void deleteDatetime();
     void editDatetime();
+    wstring getFulltime();
 
 
 private:

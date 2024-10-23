@@ -1,11 +1,12 @@
 #include "../Header/RoomList.h"
-#include <fstream>
+
 
 using namespace std;
 
-vector<Room> rooms;
 
-void loadRoom(){
+RoomList::RoomList(){};
+
+void RoomList::loadRoom(){
     wifstream file("../DATA/rooms.csv");
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
     if (!file.is_open()) {
@@ -26,8 +27,9 @@ void loadRoom(){
         getline(ss, numChairsPerRow);
         ss.clear();
         rooms.push_back(Room(stoi(ID), name, stoi(numRows), stoi(numChairsPerRow)));
-    }
-
-    
-    
+    }  
 }
+
+vector<Room> RoomList::getRooms(){
+    return rooms;
+}   

@@ -157,3 +157,7 @@ void Datetime::setYear(wstring year) {
 wstring Datetime::getYear() const {
     return year;
 }
+
+wstring Datetime::getFulltime() {
+    return hour + L":" + minute + L" " + day + L"/" + month + L"/" + year;
+}
