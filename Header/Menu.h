@@ -4,9 +4,11 @@
 #include <cstdlib>
 #include <iostream>
 #include "Color.h"
+#include "MovieList.h"
+#include <string>
 
 void manageMenu();
-void mainMenu();
-void sellTicketMenu();
+void mainMenu(MovieList &movieList);
+void sellTicketMenu(MovieList &movieList);
 
 #endif // MENU_H    

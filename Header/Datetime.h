@@ -28,6 +28,9 @@ public:
     void deleteDatetime();
     void editDatetime();
     wstring getFulltime();
+    wstring getDate();
+    wstring getTime();
+
 
 
 private:

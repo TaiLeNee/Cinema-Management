@@ -15,8 +15,7 @@ int main() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
 
-    mainMenu();
-
+    //Khởi tạo
     RoomList roomList;
     roomList.loadRoom();
 
@@ -24,17 +23,20 @@ int main() {
     
     MovieList movieList;
 
-    movieList.displayMovies();
-
     for(auto& room: rooms){
         vector<Showtime> showtimes = room.getShowtimes();
         movieList.loadShowtimesofMovie(showtimes);
 
     }
-    movieList.getMovies()[0]->displayShowtimes();
+    /*======================================*/
+
+    mainMenu(movieList);
+    // movieList.displayMovies();
+    // movieList.getMovies()[0]->displayShowtimes();
 
     
  
+
 
 
     return 0;

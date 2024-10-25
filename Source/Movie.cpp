@@ -52,6 +52,10 @@ void Movie::displayShowtimes() const {
     drawTable(table);
 }
 
+vector<Showtime> Movie::getShowtimes() const
+{
+    return this->showtimes;
+}
 
 void Movie::inputMovieInfo() {
     wcout << L"Nhập tên phim: ";

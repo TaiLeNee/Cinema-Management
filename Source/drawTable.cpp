@@ -77,16 +77,16 @@ void drawTable(const vector<vector<wstring>>& table) {
                     // Xử lý mô tả có nhiều dòng
                     auto wrappedLines = splitStringByWords(table[row][col]);
                     if (line < wrappedLines.size()) {
-                        wcout << setw(colWidths[col]) << wrappedLines[line];
+                        wcout << left << setw(colWidths[col]) << wrappedLines[line];
                     } else {
-                        wcout << setw(colWidths[col]) << L"";
+                        wcout << left << setw(colWidths[col]) << L"";
                     }
                 } else {
                     // Các ô khác
                     if (line == 0) {
-                        wcout << setw(colWidths[col]) << table[row][col];
+                        wcout << left << setw(colWidths[col]) << table[row][col];
                     } else {
-                        wcout << setw(colWidths[col]) << L"";
+                        wcout << left << setw(colWidths[col]) << L"";
                     }
                 }
                 wcout << END << L" ║";

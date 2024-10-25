@@ -8,6 +8,7 @@
 #include <windows.h>
 #include "../Header/drawTable.h"
 
+
 using namespace std;
 
 void gotoxy(int x, int y) {
@@ -160,4 +161,13 @@ wstring Datetime::getYear() const {
 
 wstring Datetime::getFulltime() {
     return hour + L":" + minute + L" " + day + L"/" + month + L"/" + year;
+}
+wstring Datetime::getDate()
+{
+    return day + L"/" + month + L"/" + year;
+}
+
+wstring Datetime::getTime()
+{
+    return hour + L":" + minute;
 }

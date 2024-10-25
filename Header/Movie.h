@@ -48,7 +48,8 @@ public:
 
     void addShowtime(const Showtime& showtime);
     void displayShowtimes() const;
-    
+    vector<Showtime> getShowtimes() const;
+
     virtual void deleteInfo();
     virtual void editInfo();
 
