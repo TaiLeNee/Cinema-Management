@@ -23,7 +23,7 @@ void MovieList::loadShowtimesofMovie(vector<Showtime>& showtimes) {
     }
 }
 
-vector<Movie*> MovieList::getMovies(){
+vector<Movie*>& MovieList::getMovies(){
     return movies;
 }
 
@@ -87,7 +87,7 @@ void MovieList::displayMovies() const {
     drawTable(table);
 }
 
-void MovieList::saveToCSV(const std::string &filename) const {   
+void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {   
     locale loc(locale(), new codecvt_utf8<wchar_t>);   // UTF-8
 
     wofstream file(filename);
@@ -95,13 +95,35 @@ void MovieList::saveToCSV(const std::string &filename) const {
         file.imbue(loc);
         for (const auto& movie : movies) {
             file << movie->getId() << L","
-                 << movie->getName() << L","
-                 << movie->getDuration() << L","
-                 << movie->getDescription() << L"\n";
+                 << movie->getName() << L",";
+            if (dynamic_cast<LoveMovie*>(movie)) {
+                file << L"Tình cảm,";
+            } else if (dynamic_cast<AnimatedMovie*>(movie)) {
+                file << L"Hoạt hình,";
+            } else if (dynamic_cast<ActionMovie*>(movie)) {
+                file << L"Hành động,";
+            } else if (dynamic_cast<HorrorMovie*>(movie)) {
+                file << L"Kinh dị,";
+            }
+            file << movie->getDuration() << L","
+                 << movie->getSubTitle() << L","
+                 << movie->getCountry() << L","
+                 << movie->getLimitAge() << L",";
+            if (dynamic_cast<LoveMovie*>(movie)) {
+                file << dynamic_cast<LoveMovie*>(movie)->getRomantic() << L",";
+            } else if (dynamic_cast<AnimatedMovie*>(movie)) {
+                file << dynamic_cast<AnimatedMovie*>(movie)->getAnimation() << L",";
+            } else if (dynamic_cast<ActionMovie*>(movie)) {
+                file << dynamic_cast<ActionMovie*>(movie)->getActionLevel() << L",";
+            } else if (dynamic_cast<HorrorMovie*>(movie)) {
+                file << dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel() << L",";
+            }
+            
+            file << movie->getDescription() << L"\n";
         }
         file.close();
     } else {
-        wcerr << L"Không thể mở tập tin để viết\n";
+        wcerr << L"Không thể mở tập tin để lưu\n";
     }
 }
 

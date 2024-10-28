@@ -29,13 +29,9 @@ int main() {
 
     }
     /*======================================*/
-
-    mainMenu(movieList);
-    // movieList.displayMovies();
-    // movieList.getMovies()[0]->displayShowtimes();
-
     
- 
+    mainMenu(movieList);
+   
 
 
 

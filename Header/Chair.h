@@ -8,15 +8,20 @@ class Chair {
     private:
         int id; //Id ghê
         wstring name; //Tên ghế
-        bool isBooked; //Trạng thái đặt ghế
+        float price; //Giá ghế
+        int isBooked; //Trạng thái đặt ghế 0: không đặt, 1: đã đặt,  2: đang chọn
 
     public:
         Chair();
-        Chair(int id, const wstring& name, bool isBooked);
+        Chair(int id, const wstring& name, int isBooked);
         int getId() const;
         wstring getName() const;
-        bool getIsBooked() const;
-        void setIsBooked(bool isBooked);
+
+        void setPrice(float price);
+        float getPrice() const;
+
+        int getIsBooked() const;
+        void setIsBooked(int isBooked);
         void setName(wstring name);
 };
 

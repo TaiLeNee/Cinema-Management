@@ -34,7 +34,7 @@ Room::Room(int id, const wstring& name, int numRows, int numChairsPerRow)
 
 
     for(auto &showtime: showtimes){
-        showtime.chairs = chairs;
+        showtime.setChairs(chairs);
     }
 
 }

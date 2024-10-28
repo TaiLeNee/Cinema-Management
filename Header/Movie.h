@@ -15,6 +15,8 @@
 using namespace std;    
 class Movie {
 public:
+    vector<Showtime> showtimes; // Danh sách khung giờ chiếu
+
     Movie();
     Movie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description);
 
@@ -62,7 +64,6 @@ private:
     wstring country; // quốc gia    
     int limitAge; // giới hạn tuổi
     wstring description; 
-    vector<Showtime> showtimes; // Danh sách khung giờ chiếu
 };
 
 #endif // MOVIE_H

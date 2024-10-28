@@ -9,11 +9,15 @@
 // wstring YELLOW = L"\033[93m";
 const wstring WHITE_BG = L"\033[47m";   // Nền trắng
 const wstring PINK_BG = L"\033[45m";    // Nền hồng
+const wstring RED_BG = L"\033[41m";     // Nền đỏ
+const wstring BLUE_BG = L"\033[44m";    // Nền xanh dương
+const wstring YELLOW_BG = L"\033[43m";  // Nền vàng
 const wstring RESET = L"\033[0m";       // Khôi phục mặc định
 
 using namespace std;
 
-void drawTableChair(const vector<vector<Chair>>& chairs) {
+void drawTableChair(const vector<vector<Chair>>& chairs, int typeTicket) {
+    const wstring GREEN = L"\033[92m"; // Màu xanh lá cây
 
     wcout << L"\n\n════════════════════════════════════════════════════" << endl; 
     wcout << L"                     MÀN HÌNH       \n";
@@ -62,19 +66,29 @@ void drawTableChair(const vector<vector<Chair>>& chairs) {
     // Vẽ các hàng dữ liệu
     for (int row = 0; row < numRows; ++row) {
         // Màu nền cho hàng
-        wstring background = (row < 2) ? WHITE_BG : PINK_BG;
+        wstring background;
+        if(typeTicket == 1){
+            background = (row < 2) ? WHITE_BG : RESET;
+        }
+        else if(typeTicket == 2){
+            background = (row < 2) ? RESET : PINK_BG;
+        }
+        else if (typeTicket == 3){
+            background = YELLOW_BG;
+        }else{
+            background = BLUE_BG;
+        }
 
         // Vẽ từng dòng của hàng
         for (int col = 0; col < numCols; ++col) {
-            
             wcout << L"║" << RESET ;
-
             if(!(chairs[row][col].getIsBooked())){
-        
-                wcout << background << " " << setw(colWidths[col]) << table[row][col];
+                wcout << background << GREEN << " " << setw(colWidths[col]) << table[row][col];
             }
-            else
-                wcout  << " "<< setw(colWidths[col]) << table[row][col];
+            else if (chairs[row][col].getIsBooked() == 1)
+                wcout << GREEN << " " << setw(colWidths[col]) << table[row][col];
+            else 
+                wcout << RED_BG << GREEN << " " << setw(colWidths[col]) << table[row][col];
             
             wcout << L" "  << RESET;
         }

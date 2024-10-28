@@ -9,7 +9,7 @@ Chair::Chair()
 }
 
 
-Chair::Chair(int id, const wstring &name, bool isBooked)
+Chair::Chair(int id, const wstring &name, int isBooked)
 {
     this->id = id;
     this->name = name;
@@ -26,12 +26,23 @@ wstring Chair::getName() const
     return this->name;
 }
 
-bool Chair::getIsBooked() const
+void Chair::setPrice(float price)
+{
+    this->price = price;
+}
+
+float Chair::getPrice() const
+{
+    return this->price;
+}
+
+
+int Chair::getIsBooked() const
 {
     return this->isBooked;
 }
 
-void Chair::setIsBooked(bool isBooked)
+void Chair::setIsBooked(int isBooked)
 {
     this->isBooked = isBooked;
 }

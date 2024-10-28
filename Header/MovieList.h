@@ -17,7 +17,7 @@ private:
 public:
     MovieList();
     ~MovieList();
-    vector<Movie*> getMovies();
+    vector<Movie*>& getMovies();
 
     // Tạo một bộ phim mới
     Movie* createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
@@ -34,7 +34,7 @@ public:
     void displayMovies() const;
 
     // Lưu danh sách phim vào tệp CSV
-    void saveToCSV(const std::string& filename) const;
+    void saveToCSV(string filename) const;
 
     // Đọc danh sách phim từ tệp CSV
     void loadFromCSV(const std::string& filename);

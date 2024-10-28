@@ -35,9 +35,15 @@ class Showtime {
         void setStartTime(const Datetime& startTime);
 
 
-        // void setChairs(vector<vector<Chair>> chairs);
-        void displayChairs() const;
-        void changeStatusChair(int chairId, bool isBooked);
+        void setChairs(vector<vector<Chair>> chairs);
+        void displayChairs(int typeTicket) const;
+        bool checkChairExist(int showtimeID, const wstring& chairName);
+
+        void changeStatusChair(int chairId, int isBooked);
+        void bookTickets(int ticketID, vector<wstring> chairNames, int statusBooking);
+
+        void loadChairbooked();
+        void saveChairbooked(int ticketID, vector<wstring> chairNames);
 
 
 

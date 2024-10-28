@@ -79,22 +79,9 @@ void loadShowtimeFromCSV(vector<Showtime>& showtimes, int id) {
 
         getline(ss, datetime);
         ss.clear();
-        // wcout << L"Showtime ID: " << ID << endl;
-        // wcout << L"Movie ID: " << movieID << endl;
-        // wcout << L"Room ID: " << roomID << endl;
-        // wcout << L"DateTime: " << datetime << endl;
-        
 
         try {
             parseDateTime(datetime, hour, minute, day, month, year);
-
-            // // Hiển thị kết quả
-            // wcout << L"Hour: " << hour << endl;
-            // wcout << L"Minute: " << minute << endl;
-            // wcout << L"Day: " << day << endl;
-            // wcout << L"Month: " << month << endl;
-            // wcout << L"Year: " << year << endl;
-
             showtimes.push_back(Showtime(stoi(ID), stoi(movieID), stoi(roomID), Datetime(hour, minute, day, month, year)));
 
         } catch (const invalid_argument& e) {
