@@ -49,6 +49,36 @@ void Employee::setId(int newID)
     id = newID;
 }
 
+void Employee::setName(const wstring &newName)
+{
+    name = newName;
+}
+
+void Employee::setAge(int newAge)
+{
+    age = newAge;
+}
+
+void Employee::setPhoneNumber(const wstring &newPhoneNumber)
+{
+    phoneNumber = newPhoneNumber;
+}
+
+void Employee::setLevel(int newLevel)
+{
+    level = newLevel;
+}
+
+void Employee::setUserName(const wstring &newUserName)
+{
+    userName = newUserName;
+}
+
+void Employee::setPassWord(const wstring &newPassWord)
+{
+    passWord = newPassWord;
+}
+
 bool Employee::isSignIn(const wstring &inputUserName, const wstring &inputPassword) const
 {
     return (userName == inputUserName && passWord == inputPassword);

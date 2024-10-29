@@ -3,7 +3,6 @@
 #include "../Header/gotoXY.h"
 #include <fcntl.h>
 #include <io.h>
-#include <regex>
 
 void adminMenu(ListOfEmployee &employeeList){
     int choice;
@@ -13,8 +12,8 @@ void adminMenu(ListOfEmployee &employeeList){
     table.push_back({L"1. Hiện danh sách nhân viên"});
     table.push_back({L"2. Thêm nhân viên"});
     table.push_back({L"3. Xóa nhân viên"});
-    table.push_back({L"4. Lưu danh sách vào employee.csv"});
-    table.push_back({L"5. Tải danh sách từ employee.csv"});
+    table.push_back({L"4. Lưu danh sách vào hệ thống"});
+    table.push_back({L"5. Đổi thông tin nhân viên"});
     table.push_back({L"0. Thoát"});
     drawTable(table);
     wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
@@ -31,12 +30,13 @@ void adminMenu(ListOfEmployee &employeeList){
             case 2: {
                 employeeList.addEmployee();
                 system("cls");
-                wcout << L"Đã thêm nhân viên mới." << endl;
+                wcout << L"\033[92m[Đã thêm nhân viên mới.] \033[0m" << endl;
                 break;
             }
             case 3: {
                 int id;
-                wcout << L"Nhập ID của nhân viên cần xóa: ";
+                wcout << L"\033[92m[Nhập ID của nhân viên cần xóa:   ] \033[0m";
+                gotoXY(32, 0);
                 wcin >> id;
                 employeeList.deleteEmployee(id);
                 break;
@@ -45,13 +45,18 @@ void adminMenu(ListOfEmployee &employeeList){
                 employeeList.saveEmployee("../DATA/employee.csv");
                 break;
             case 5:
-                employeeList.loadEmployees("../DATA/employee.csv");
+                int id;
+                wcout << L"\033[92m[Nhập ID của nhân viên cần chỉnh sửa:   ] \033[0m";
+                gotoXY(38, 0);
+                wcin >> id;
+                wcin.ignore();
+                employeeList.editEmployeeInfo(id);
                 break;
             case 0:
-                wcout << L"Đăng xuất..." << endl;
+                wcout << L"\033[92m[HẸN GẶP LẠI]\033[0m" << endl;
                 break;
             default:
-                wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
+                wcout << L"\033[92m[Lựa chọn không hợp lệ, vui lòng thử lại.\033[0m" << endl;
         }
     }while (choice != 0);
 }

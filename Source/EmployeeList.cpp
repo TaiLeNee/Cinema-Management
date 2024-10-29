@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <windows.h>
 #include "../Header/gotoXY.h"
-
 int ListOfEmployee::nextID = 1;
 
 void ListOfEmployee::addEmployee() {
@@ -55,24 +54,77 @@ void ListOfEmployee::deleteEmployee(int id){
         return e.getId() == id;
     });
     if (it->getLevel() == 0) {
-        wcout << L"Không thể xóa tài khoản OWNER" << endl;
+        wcout << L"\033[92m[Không thể xóa tài khoản OWNER]\033[0m" << endl;
         return;
     }
     if(it != employee_list.end()){
         employee_list.erase(it);
-        wcout << L"Đã xóa nhân viên có ID " << id << endl;
+        wcout << L"\033[92m[Đã xóa nhân viên " << it->getName() <<"]\033[0m"<< endl;
     }
 }
 
 void ListOfEmployee::showEmployeeList() const{
-    vector<vector<wstring>> table1,table2;
-    table1.push_back({L"Danh sách nhân viên"});
-    drawTable(table1);
+    vector<vector<wstring>> table2;
+    wcout << L"╔═══════════════════════════════════════════════════════════════════════╗" << endl;
+    wcout << L"║\033[93m                          Danh Sách Nhân Viên                          \033[0m║" << endl;
+    wcout << L"╚═══════════════════════════════════════════════════════════════════════╝" << endl;
     table2.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Level"});
     for(const auto &e : employee_list){
         table2.push_back({to_wstring(e.getId()), e.getName(), to_wstring(e.getAge()), e.getPhoneNumber(), e.getUserName(), e.getPassWord(), to_wstring(e.getLevel())});
     }
     drawTable(table2);
+}
+
+void ListOfEmployee::editEmployeeInfo(int id) {
+    auto it = find_if(employee_list.begin(), employee_list.end(), [id](Employee &e) {
+        return e.getId() == id;
+    });
+
+    if (it == employee_list.end()) {
+        wcout << L"\033[92m[Nhân viên không tồn tại] \033[0m" << endl;
+        return;
+    }
+
+    vector<vector<wstring>> table;
+    wstring name, phoneNumber, userName, passWord;
+    int age, level;
+    table.push_back({L"          Chỉnh Sửa Thông Tin Của Nhân Viên         "});
+    table.push_back({L"Nhập tên của nhân viên:  "});
+    table.push_back({L"Nhập tuổi của nhân viên: "});
+    table.push_back({L"Nhập SĐT của nhân viên: "});
+    table.push_back({L"Nhập quyền của nhân viên (1. Admin, 2. Nhân viên):  "});
+    drawTable(table);
+
+    gotoXY(27, 4);
+    getline(wcin, name);
+
+    gotoXY(27, 6);
+    wcin >> age;
+    wcin.ignore();
+
+    gotoXY(27, 8);
+    getline(wcin, phoneNumber);
+
+    gotoXY(53, 10); 
+    wcin >> level;
+    wcin.ignore();
+
+    if(level == 2){
+        userName = L"Nv_" + to_wstring(createID());
+        passWord = L"123456";
+    }
+    else if (level == 1){
+        userName = L"Admin_" + to_wstring(createID());
+        passWord = L"123456";
+    }
+
+    it->setName(name);
+    it->setAge(age);
+    it->setPhoneNumber(phoneNumber);
+    it->setUserName(userName);
+    it->setPassWord(passWord);
+    it->setLevel(level);
+    wcout << L"\033[92m[Thông tin nhân viên đã được cập nhật] \033[0m" << endl;
 }
 
 void ListOfEmployee::saveEmployee(const string& filename) const {
@@ -94,9 +146,9 @@ void ListOfEmployee::saveEmployee(const string& filename) const {
                  << e.getPassWord() << L","
                  << e.getLevel() << endl;
         }
-        wcout << L"Danh sách nhân viên đã được lưu vào tệp employee.csv" << endl;
+        wcout << L"\033[92m[Danh sách nhân viên đã được lưu vào hệ thống] \033[0m" << endl;
     } else {
-        wcout << L"Không thể mở file để lưu trữ thông tin nhân viên" << endl;
+        wcout << L"\033[92m[Không thể mở file để lưu trữ thông tin nhân viên] \033[0m" << endl;
     }
 }
 
