@@ -1,5 +1,3 @@
 QLRCP:
-	g++ -std=c++11 Employee.cpp EmployeeList.cpp employeemain.cpp drawTable.cpp splitStringByWords.cpp gotoXY.cpp -o employeemain
-	./employeemain
-
-	
+	g++ -std=c++11 $(filter-out loadShowtimeFromCSV.cpp drawTableChair.cpp , $(wildcard *.cpp)) -o main
+	./main

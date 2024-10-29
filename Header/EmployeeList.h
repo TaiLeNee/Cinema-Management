@@ -1,9 +1,15 @@
 #ifndef EMPLOYEELIST_H
 #define EMPLOYEELIST_H
+#include "../Header/Employee.h"
+#include "../Header/drawTable.h"
 #include<string>
 #include<vector>
-#include "../Source/Employee.cpp"
-
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<fstream>
+#include<codecvt>
+#include<sstream>
 using namespace std;
 
 class ListOfEmployee{
@@ -11,11 +17,15 @@ class ListOfEmployee{
         vector<Employee> employee_list;
         static int nextID;
     public: 
-        //Thêm một nhân viên 
+        
+        //Thêm một nhân viên vào danh sách
         void addEmployee();
 
         //Xóa một nhân viên khỏi danh sách
         void deleteEmployee(int id);
+
+        //Hiển thị danh sách nhân viên
+        void showEmployeeList() const;
 
         //Lưu nhân viên vào danh sách 
         void saveEmployee(const string& filename) const;

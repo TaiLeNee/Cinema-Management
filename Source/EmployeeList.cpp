@@ -1,33 +1,52 @@
 #include "../Header/EmployeeList.h"
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<fstream>
+#include <algorithm>
+#include <windows.h>
+#include "../Header/gotoXY.h"
+
 int ListOfEmployee::nextID = 1;
 
-void ListOfEmployee::addEmployee(){
+void ListOfEmployee::addEmployee() {
+    vector<vector<wstring>> table;
     wstring name, phoneNumber, userName, passWord;
-    int age;
+    int age, level;
+    table.push_back({L"          Nhập Thông Tin Của Nhân Viên Mới         "});
+    table.push_back({L"Nhập tên của nhân viên:  "});
+    table.push_back({L"Nhập tuổi của nhân viên: "});
+    table.push_back({L"Nhập SĐT của nhân viên: "});
+    table.push_back({L"Nhập quyền của nhân viên (1. Admin, 2. Nhân viên):  "});
+    drawTable(table);
 
-    wcout<< L"Nhập tên của nhân viên : ";
+    gotoXY(27, 3);
     getline(wcin, name);
-    
-    wcout<< L"Nhập tuổi của nhân viên : ";
+
+    gotoXY(27, 5);
     wcin >> age;
-    wcin.ignore();  
+    wcin.ignore();
 
-    wcout<< L"Nhập số điện thoại của nhân viên : ";
-    getline(wcin,phoneNumber);
+    gotoXY(27, 7);
+    getline(wcin, phoneNumber);
 
-    wcout<< L"Hãy tạo tài khoản vào hệ thống của bạn" <<endl;
-    wcout<< L"Nhập tên đăng nhập : ";
-    getline(wcin,userName);
+    gotoXY(53, 9); 
+    wcin >> level;
+    wcin.ignore();
 
-    wcout<< L"Nhập mật khẩu : ";
-    getline(wcin,passWord);
+    if(level == 2){
+        userName = L"Nv_" + to_wstring(createID());
+        passWord = L"123456";
+    }
+    else if (level == 1){
+        userName = L"Admin_" + to_wstring(createID());
+        passWord = L"123456";
+    }
+    int newID = 1; // Khởi tạo ID mới
+    if (!employee_list.empty()) {
+        newID = max_element(employee_list.begin(), employee_list.end(), [](const Employee &a, const Employee &b) {
+            return a.getId() < b.getId();
+        })->getId() + 1;
+    }
 
-    Employee newE(name, age, phoneNumber, userName, passWord);
-    newE.setId(createID());
+    Employee newE(name, age, phoneNumber, userName, passWord, level);
+    newE.setId(newID); // Sử dụng ID mới
     employee_list.push_back(newE);
 }
 
@@ -35,53 +54,95 @@ void ListOfEmployee::deleteEmployee(int id){
     auto it = find_if(employee_list.begin(), employee_list.end(), [id](Employee &e){
         return e.getId() == id;
     });
-
+    if (it->getLevel() == 0) {
+        wcout << L"Không thể xóa tài khoản OWNER" << endl;
+        return;
+    }
     if(it != employee_list.end()){
         employee_list.erase(it);
+        wcout << L"Đã xóa nhân viên có ID " << id << endl;
     }
 }
 
-void ListOfEmployee::saveEmployee(const string& filename ) const{
+void ListOfEmployee::showEmployeeList() const{
+    vector<vector<wstring>> table1,table2;
+    table1.push_back({L"Danh sách nhân viên"});
+    drawTable(table1);
+    table2.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Level"});
+    for(const auto &e : employee_list){
+        table2.push_back({to_wstring(e.getId()), e.getName(), to_wstring(e.getAge()), e.getPhoneNumber(), e.getUserName(), e.getPassWord(), to_wstring(e.getLevel())});
+    }
+    drawTable(table2);
+}
+
+void ListOfEmployee::saveEmployee(const string& filename) const {
+    // Sử dụng wofstream để hỗ trợ ghi tiếng Việt
     wofstream file(filename);
-    if(file.is_open()){
-        for(const auto &e : employee_list){
-            file << e.getId() << endl;
-            file << e.getName() << endl;
-            file << e.getAge() << endl;
-            file << e.getPhoneNumber() << endl;
-            file << e.getUserName() << endl;
-            file << e.getPassWord() << endl;
-        }
-    }
-    else{
-        wcerr<< L"Không thể mở file để lưu trữ thông tin nhân viên" <<endl;
-    }
-}
-
-void ListOfEmployee::loadEmployees(const string& filename) {
-    wifstream file(filename);
+    file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>)); // Thiết lập ghi UTF-8
 
     if (file.is_open()) {
-        while (true) {
-            int id, age;
-            wstring name, phoneNumber, userName, passWord;
+        // Ghi tiêu đề cột
+        file << L"ID,Tên,Tuổi,Số Điện Thoại,Username,Password,Level" << endl;
 
-            if (!(file >> id)) break;
-            file.ignore();
-            if (!getline(file, name)) break;
-            if (!(file >> age)) break;
-            file.ignore();
-            if (!getline(file, phoneNumber)) break;
-            if (!getline(file, userName)) break;
-            if (!getline(file, passWord)) break;
-
-            Employee e(name, age, phoneNumber, userName, passWord);
-            e.setId(id);
-            employee_list.push_back(e);
+        // Ghi thông tin từng nhân viên
+        for (const auto &e : employee_list) {
+            file << e.getId() << L","
+                 << e.getName() << L","
+                 << e.getAge() << L","
+                 << e.getPhoneNumber() << L","
+                 << e.getUserName() << L","
+                 << e.getPassWord() << L","
+                 << e.getLevel() << endl;
         }
+        wcout << L"Danh sách nhân viên đã được lưu vào tệp employee.csv" << endl;
     } else {
-        wcerr << L"Không thể mở file để tải thông tin nhân viên" << endl;
+        wcout << L"Không thể mở file để lưu trữ thông tin nhân viên" << endl;
     }
+}
+
+// Hàm tải danh sách nhân viên từ file CSV
+void ListOfEmployee::loadEmployees(const string& filename) {
+    // Sử dụng wifstream để hỗ trợ đọc tiếng Việt
+    wifstream file(filename);
+    file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>)); // Thiết lập đọc UTF-8
+
+    if (!file.is_open()) {
+        wcerr << L"Không thể mở file: " << filename.c_str() << endl;
+        return; 
+    }
+
+    wstring line;
+    getline(file, line); 
+
+    while (getline(file, line)) {
+        wstringstream ss(line);
+        wstring token;
+
+        int id, age, level;
+        wstring name, phoneNumber, userName, passWord;
+
+        getline(ss, token, L',');
+        id = stoi(token);
+
+        getline(ss, name, L',');
+
+        getline(ss, token, L',');
+        age = stoi(token);
+
+        getline(ss, phoneNumber, L',');
+
+        getline(ss, userName, L',');
+
+        getline(ss, passWord, L',');
+
+        getline(ss, token, L',');
+        level = stoi(token);
+
+        Employee e(name, age, phoneNumber, userName, passWord, level);
+        e.setId(id);
+        employee_list.push_back(e);
+    }
+    file.close();
 }
 
 Employee *ListOfEmployee::signIn(const wstring &userName, const wstring &passWord) {

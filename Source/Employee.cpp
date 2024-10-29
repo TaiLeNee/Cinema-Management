@@ -3,11 +3,11 @@ using namespace std;
 
 Employee::Employee() : id(0), name(L""), age(0), phoneNumber(L""), userName(L""), passWord(L"") {}
 
-Employee::Employee(int id, const wstring &name, int age, const wstring &phoneNumber, const wstring &userName, const wstring &passWord)
-    : id(id), name(name), age(age), phoneNumber(phoneNumber), userName(userName), passWord(passWord) {}
+Employee::Employee(int id, const wstring &name, int age, const wstring &phoneNumber, const wstring &userName, const wstring &passWord, int level)
+    : id(id), name(name), age(age), phoneNumber(phoneNumber), userName(userName), passWord(passWord) , level(level){}
 
-Employee::Employee(const wstring &name, int age, const wstring &phoneNumber, const wstring &userName, const wstring &passWord)
-    : name(name), age(age), phoneNumber(phoneNumber), userName(userName), passWord(passWord) {}
+Employee::Employee(const wstring &name, int age, const wstring &phoneNumber, const wstring &userName, const wstring &passWord, int level)
+    : name(name), age(age), phoneNumber(phoneNumber), userName(userName), passWord(passWord) , level(level){}
 
 int Employee::getId() const
 {
@@ -27,6 +27,11 @@ int Employee::getAge() const
 wstring Employee::getPhoneNumber() const
 {
     return phoneNumber;
+}
+
+int Employee::getLevel() const
+{
+    return level;
 }
 
 wstring Employee::getUserName() const
