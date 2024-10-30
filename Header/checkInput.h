@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-void checkInput(int &choice);
+void checkInput(wstring text, int &choice);
 
 
 #endif // CHECKINPUT_H

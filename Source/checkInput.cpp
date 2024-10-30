@@ -1,21 +1,20 @@
 #include "../Header/checkInput.h"
+#include <sstream>
 
-void checkInput(int &choice) {
+void checkInput(wstring text, int &choice) {
    // Kiểm tra đầu vào của người dùng
-        bool validInput = false;
-        while (!validInput) {
-            wcout << L"Lựa chọn của bạn: ";
-            wcin >> choice;
+        wstring input;
+        wcin.ignore();
+        while(1){
+            wcout<<L"\033[92m═══════["<<text<<L"]==> \033[0m";
+            getline(wcin, input);
+            wstringstream ss(input);
 
-            if (wcin.fail()) {
-                wcin.clear(); // Xóa trạng thái lỗi
-                wcin.ignore(1e4, '\n'); // Xóa bộ nhớ đệm
-                wcout << L"Lựa chọn không hợp lệ. Vui lòng nhập lại." << endl;
-            } else {
-                validInput = true;
-                wcin.ignore();
-            }
+            if(!(ss>>choice)){
+                wcout <<L"\033[91m"<< L"[Lựa chọn không hợp lệ. Vui lòng nhập lại.]"<<L"\033[0m" << endl;
+                continue;
+            }   
+            return; 
         }
-
 }
 
