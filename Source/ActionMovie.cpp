@@ -11,7 +11,7 @@ using namespace std;
 
 // Thiết lập chế độ Unicode cho console
 
-
+ActionMovie::ActionMovie() {}
 
 ActionMovie::ActionMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel) 
     : Movie(id, name, duration, subTitle, country, limitAge, description), actionLevel(actionLevel) {}

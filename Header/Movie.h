@@ -55,6 +55,7 @@ public:
     virtual void deleteInfo();
     virtual void editInfo();
 
+    static int currentID;
 
 private:
     int id;
