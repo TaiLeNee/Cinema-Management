@@ -1,2 +1,4 @@
 ID,Tên,Tuổi,Số Điện Thoại,Username,Password,Level
-1,Lê Công Tài,19,0123456789,1,1,0
+0,Lê Công Tài,19,0123456789,1,1,0
+1,Mỹ Dung,1,1,Admin_1,123456,1
+2,Hiếu Đặng,19,0192731203,Admin_2,123456,1

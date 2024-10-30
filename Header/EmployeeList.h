@@ -29,6 +29,9 @@ class ListOfEmployee{
         //Chỉnh sửa thông tin nhân viên bằng ID
         void editEmployeeInfo(int id);
 
+        //Hiển thị thông tin nhân viên bằng ID
+        void showEmployeeInfo(int id) ;
+
         //Hiển thị danh sách nhân viên
         void showEmployeeList() const;
         
