@@ -4,15 +4,17 @@
 #include "../Header/gotoXY.h"
 using namespace std;
 
-int Customer::currentID = 1;
+int Customer::currentID = 0;
 
 Customer::Customer() {}
 
-Customer::Customer(int currentID, const wstring& name, int point)
-    : customerID(++currentID), name(name), point(point) {}
+Customer::Customer(int customerID,const wstring& name,const wstring& phoneNumber, int point)
+    : customerID(customerID), name(name), phoneNumber(phoneNumber), point(point) {
+        currentID = max(currentID, this->customerID);
+    }
 
-Customer::Customer( const wstring& name,const wstring& phoneNumber, int point)
-    : name(name), phoneNumber(phoneNumber), point(point) {}
+Customer::Customer(const wstring& name,const wstring& phoneNumber, int point)
+    : customerID(++currentID),  name(name), phoneNumber(phoneNumber), point(point) {}
 
 void Customer::displayInfo() const {
     drawTable({

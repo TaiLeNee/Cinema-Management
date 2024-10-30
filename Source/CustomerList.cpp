@@ -72,6 +72,7 @@ void CustomerList::saveToCSV(string filename = "../DATA/customers.csv") const {
     wofstream file(filename);   // mở file để ghi
     if (file.is_open()) {
         file.imbue(loc);    // đọc được tiếng việt từ file
+        file<<L"ID,Họ tên,Số điện thoại,Điểm\n";    // tiêu đề cột
         for (const auto& Customer : customers) {
             file << Customer.getCustomerID() << L","
                  << Customer.getName() << L",";
@@ -100,6 +101,8 @@ void CustomerList::loadFromCSV(const string& filename) {
         getline(ss, name, L',');
         getline(ss, phoneNumber, L',');
         getline(ss, point);
+
+        customers.push_back(Customer(stoi(id), name, phoneNumber, stoi(point)));
     }
     file.close();
 }

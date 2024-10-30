@@ -5,6 +5,7 @@
 #include <regex>
 #include "drawTable.cpp"
 #include "splitStringByWords.cpp"
+#include "Color.cpp"
 #include <iostream>
 
 using namespace std;
@@ -27,7 +28,7 @@ void CustomerMenu(CustomerList &customerList) {
         wcin >> choice;
         wcout << L"\033[0m";
         system("cls");
-        wcin.ignore();
+      
 
         switch (choice) {
             case 1: {
@@ -83,6 +84,8 @@ int main() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
     CustomerList customerList;
+    customerList.loadFromCSV("../DATA/customers.csv");
+    
     CustomerMenu(customerList);
     return 0;
 }

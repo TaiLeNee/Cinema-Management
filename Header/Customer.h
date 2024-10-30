@@ -17,7 +17,7 @@ public:
     static int currentID;
 
     Customer();
-    Customer(int customerID, const wstring& name, int point);
+    Customer(int customerID, const wstring& name,const wstring& phoneNumber, int point);
     Customer(const wstring& name, const wstring& phoneNumber, int point);
 
     int getCustomerID() const;
