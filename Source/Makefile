@@ -1,3 +1,3 @@
 QLRCP:
-	g++ -std=c++11 $(filter-out loadShowtimeFromCSV.cpp drawTableChair.cpp , $(wildcard *.cpp)) -o main
+	g++ -std=c++11 $(filter-out drawCalendar.cpp loadShowtimeFromCSV.cpp drawTableChair.cpp , $(wildcard *.cpp)) -o main
 	./main

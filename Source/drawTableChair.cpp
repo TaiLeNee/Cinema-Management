@@ -18,6 +18,8 @@ using namespace std;
 
 void drawTableChair(const vector<vector<Chair>>& chairs, int typeTicket) {
     const wstring GREEN = L"\033[92m"; // Màu xanh lá cây
+    const wstring BLACK = L"\033[30m"; // Màu đen
+    const wstring WHITE = L"\033[97m"; // Màu trắng
 
     wcout << L"\n\n════════════════════════════════════════════════════" << endl; 
     wcout << L"                     MÀN HÌNH       \n";
@@ -67,28 +69,33 @@ void drawTableChair(const vector<vector<Chair>>& chairs, int typeTicket) {
     for (int row = 0; row < numRows; ++row) {
         // Màu nền cho hàng
         wstring background;
+        wstring textColor;
         if(typeTicket == 1){
             background = (row < 2) ? WHITE_BG : RESET;
+            textColor = (row < 2) ? BLACK : GREEN;
         }
         else if(typeTicket == 2){
             background = (row < 2) ? RESET : PINK_BG;
+            textColor = (row < 2) ? GREEN : WHITE;
         }
         else if (typeTicket == 3){
             background = YELLOW_BG;
+            textColor = WHITE;
         }else{
             background = BLUE_BG;
+            textColor = WHITE;
         }
 
         // Vẽ từng dòng của hàng
         for (int col = 0; col < numCols; ++col) {
             wcout << L"║" << RESET ;
             if(!(chairs[row][col].getIsBooked())){
-                wcout << background << GREEN << " " << setw(colWidths[col]) << table[row][col];
+                wcout << background << textColor << " " << setw(colWidths[col]) << table[row][col];
             }
             else if (chairs[row][col].getIsBooked() == 1)
-                wcout << GREEN << " " << setw(colWidths[col]) << table[row][col];
+                wcout << textColor << " " << setw(colWidths[col]) << table[row][col];
             else 
-                wcout << RED_BG << GREEN << " " << setw(colWidths[col]) << table[row][col];
+                wcout << RED_BG << textColor << " " << setw(colWidths[col]) << table[row][col];
             
             wcout << L" "  << RESET;
         }

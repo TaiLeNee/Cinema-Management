@@ -30,6 +30,6 @@ void RoomList::loadRoom(){
     }  
 }
 
-vector<Room> RoomList::getRooms(){
+vector<Room>& RoomList::getRooms(){
     return rooms;
 }   

@@ -8,6 +8,8 @@ public:
     Datetime();
     Datetime(wstring fullTime);
     Datetime(wstring hour, wstring minute, wstring day, wstring month, wstring year);
+    Datetime(wstring day, wstring month, wstring year);
+
     void setDatetime();
     void setHour(wstring hour);
     wstring getHour() const;
@@ -30,6 +32,8 @@ public:
     wstring getFulltime();
     wstring getDate();
     wstring getTime();
+
+    bool operator == (const Datetime& other) const;
 
 
 

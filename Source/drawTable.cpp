@@ -13,7 +13,7 @@ using namespace std;
 void drawTable(const vector<vector<wstring>> &table);
 
 void drawTable(const vector<vector<wstring>>& table) {
-    size_t descriptionLimit = 60;
+    size_t descriptionLimit = 35;
 
     int numRows = table.size();
     if (numRows == 0) return; // Trường hợp bảng rỗng

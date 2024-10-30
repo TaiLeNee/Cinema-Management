@@ -16,9 +16,11 @@ void LoveMovie::inputMovieInfo() {
     getline(wcin, romantic);
 }
 
-void LoveMovie::displayInfo() const {
+void LoveMovie::displayInfo(){
     Movie::displayInfo();
-    wcout << L"Loại hoạt hình: " << romantic << endl;
+    drawTable({
+        {L"Thể loại tình cảm: ", romantic }
+    });
 }
 
 void LoveMovie::deleteInfo() {

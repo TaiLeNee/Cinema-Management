@@ -27,6 +27,10 @@ Datetime::Datetime(wstring fullTime){
 Datetime::Datetime(wstring hour, wstring minute, wstring day, wstring month, wstring year)
     : hour(hour), minute(minute), day(day), month(month), year(year) {}
 
+
+Datetime::Datetime(wstring day, wstring month, wstring year):
+    day(day), month(month), year(year) {}
+
 void Datetime::setDatetime() 
    {
         wcout << L"+-----------------------------------------------+" << endl;
@@ -170,4 +174,8 @@ wstring Datetime::getDate()
 wstring Datetime::getTime()
 {
     return hour + L":" + minute;
+}
+
+bool Datetime::operator == (const Datetime& other) const {
+    return hour == other.hour && minute == other.minute && day == other.day && month == other.month && year == other.year;
 }

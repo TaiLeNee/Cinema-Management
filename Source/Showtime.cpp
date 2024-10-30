@@ -1,7 +1,10 @@
 #include "../Header/Showtime.h"
 #include <iostream>
 #include "drawTableChair.cpp"
+#include "../Header/drawTable.h"
+
 #include <algorithm>
+
 
 
 using namespace std;    
@@ -79,17 +82,24 @@ void loadChairbooked_auto(int IDshowtime, vector<vector<Chair>>& chairs) {
 
 }
 
-
+int Showtime::currentID = 0;
 Showtime::Showtime() {}
 
 Showtime::Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime):
-    showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime) {}
+    showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime) {
+        currentID = max(currentID, this->showtimeID);
+    }
 
 Showtime::Showtime(int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs):
-    movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {}
+    showtimeID(++currentID), movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {}
+
+Showtime::Showtime(int movieID, int roomID, const Datetime& startTime ):
+    showtimeID(++currentID), movieID(movieID), roomID(roomID), startTime(startTime) {}
 
 Showtime::Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs):
-    showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {}
+    showtimeID(showtimeID), movieID(movieID), roomID(roomID), startTime(startTime), chairs(chairs) {
+        currentID = max(currentID, this->showtimeID);
+    }
 
 int Showtime::getMovieID() {
     return movieID;
@@ -121,9 +131,31 @@ void Showtime::setShowtimeID(int showtimeID) {
 }
 
 void Showtime::setChairs(vector<vector<Chair>> chairs) {
+
     this->chairs = chairs;
     loadChairbooked_auto(showtimeID, this->chairs);
 }
+
+
+void Showtime::inputShowtimeInfo()
+{   
+    // system("cls");
+    // drawTable({
+    //     {L"         THÊM KHUNG GIỜ CHIẾU         "}});
+    // drawTable({
+    //     {L"Nhập ID phim: ", L" "},
+    //     {L"Nhập ID phòng: ", L" "}
+    // }); 
+
+    // gotoXY(17, 3);
+    // wcin >> movieID;
+
+    // gotoXY(18, 5);
+    // wcin >> roomID;
+
+
+}
+
 
 void Showtime::displayChairs(int typeTicket) const
 {
@@ -167,15 +199,11 @@ void Showtime::bookTickets(int ticketID, vector<wstring> chairNames, int statusB
             });
 
             if (it != row.end()) {
-                wcout<<L"==="<<it->getName()<<" ";
                 it->setIsBooked(statusBooking);
                 break;
             }
         }   
     }
-    // Showtime::displayChairs(1);
-    wcout<<L"=====================";
-    wcout << L"Đặt vé thành công\n";
 }
 
 

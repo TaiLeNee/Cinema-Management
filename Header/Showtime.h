@@ -4,6 +4,7 @@
 #include <string>
 #include "Datetime.h"
 #include "Chair.h"
+#include "gotoXY.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -14,6 +15,7 @@
 using namespace std;
 class Showtime {
     public:
+        static int currentID;
         vector<vector<Chair>> chairs; // Danh sách ghế trong phòng
 
         int showtimeID; 
@@ -22,6 +24,7 @@ class Showtime {
         Showtime();
         Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime);
         Showtime(int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs);
+        Showtime(int movieID, int roomID, const Datetime& startTime);
         Showtime(int showtimeID, int movieID, int roomID, const Datetime& startTime, vector<vector<Chair>> chairs);
 
         int getMovieID();
@@ -34,7 +37,7 @@ class Showtime {
         void setShowtimeID(int showtimeID);
         void setStartTime(const Datetime& startTime);
 
-
+        void inputShowtimeInfo();
         void setChairs(vector<vector<Chair>> chairs);
         void displayChairs(int typeTicket) const;
         bool checkChairExist(int showtimeID, const wstring& chairName);
