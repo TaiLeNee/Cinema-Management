@@ -34,9 +34,12 @@ void HorrorMovie::inputMovieInfo() {
     getline(wcin, horrorLevel);
 }
 
-void HorrorMovie::displayInfo() {
+void HorrorMovie::displayInfo(){
     Movie::displayInfo();
-    wcout << L"Mức độ kinh dị: " << horrorLevel <<endl;
+    drawTable({
+        {L"Mức độ kinh dị: ",horrorLevel}
+    });
+    // wcout << L"Mức độ kinh dị: " << horrorLevel <<endl;
 }
 
 void HorrorMovie::editHorrorLevel() {

@@ -11,7 +11,7 @@ class RoomList{
     public:
         RoomList();
         void loadRoom();
-        vector<Room> getRooms();
+        vector<Room>& getRooms();
 
 };
 

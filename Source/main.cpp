@@ -8,8 +8,6 @@
 using namespace std;
 
 
-
-
 int main() {
     //thiết lập chế độ Unicode cho console
     _setmode(_fileno(stdout), _O_U16TEXT);
@@ -30,7 +28,7 @@ int main() {
     }
     /*======================================*/
     
-    mainMenu(movieList);
+    mainMenu(roomList, movieList);
    
 
 

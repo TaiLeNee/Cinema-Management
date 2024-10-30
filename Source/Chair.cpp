@@ -16,6 +16,7 @@ Chair::Chair(int id, const wstring &name, int isBooked)
     this->isBooked = isBooked;
 }
 
+
 int Chair::getId() const
 {
     return this->id;
