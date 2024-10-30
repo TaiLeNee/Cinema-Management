@@ -1,5 +1,5 @@
-#include "CustomerList.cpp"
-#include "Customer.cpp"
+#include "../Header/CustomerList.h"
+#include "../Header/Customer.h"
 #include <fcntl.h>
 #include <io.h>
 #include <regex>
@@ -7,6 +7,10 @@
 #include "splitStringByWords.cpp"
 #include "Color.cpp"
 #include <iostream>
+
+// #define NOMINMAX
+// #define WIN32_LEAN_AND_MEAN
+// #include <windows.h>
 
 using namespace std;
 
@@ -28,7 +32,6 @@ void CustomerMenu(CustomerList &customerList) {
         wcin >> choice;
         wcout << L"\033[0m";
         system("cls");
-      
 
         switch (choice) {
             case 1: {
@@ -52,17 +55,46 @@ void CustomerMenu(CustomerList &customerList) {
             }
             case 3: {
                 int id;
+                bool found = false;
                 wcout << L"Nhập ID của khách hàng cần xóa: ";
                 wcin >> id;
-                customerList.deleteCustomer(id);
+                for(auto& customer : customerList.getCustomers()){
+                    if(customer.getCustomerID() == id){
+                        found = true;
+                        customerList.deleteCustomer(id);
+                        wcout << L"Đã xóa khách hàng có ID " << id << endl;
+                        break;
+                    }
+                }
+                if(!found)
+                    wcout << L"Không tìm thấy khách hàng có ID " << id << endl;
                 break;
             }
             case 4: {
                 int id;
+                bool found = false;
+                // Customer updatedCustomer;
                 wcout << L"Nhập ID của khách hàng cần sửa: ";
                 wcin >> id;
-                Customer updatedCustomer;
-                customerList.editCustomer(id, updatedCustomer);
+                for(auto& customer : customerList.getCustomers()){
+                    if(customer.getCustomerID() == id){
+                        customer.displayInfo();
+                        found = true;
+                        wstring choose;
+                        wcin.ignore();
+                        wcout << L"Bạn có muốn sửa thông tin khách hàng này không? (y/n): ";
+                        getline(wcin, choose);
+                        if(choose == L"y"){
+                            customer.editCustomer();
+                            break;
+                        }else{
+                            wcout << L"Thoát..." << endl;
+                            break;
+                        }
+                    }
+                }
+                if(!found)
+                    wcout << L"Không tìm thấy khách hàng có ID " << id << endl;
                 break;
             }
             case 5:
@@ -72,7 +104,7 @@ void CustomerMenu(CustomerList &customerList) {
                 customerList.loadFromCSV("../DATA/customers.csv");
                 break;
             case 0:
-                wcout << L"Đăng xuất..." << endl;
+                wcout << L"Thoát..." << endl;
                 break;
             default:
                 wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
