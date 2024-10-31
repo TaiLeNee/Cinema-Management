@@ -21,7 +21,7 @@ void CustomerList::deleteCustomer(int id) {
     }), customers.end());
 }
 
-void CustomerList::editCustomer(int id, Customer updatedCustomer) {
+void CustomerList::editCustomer(Customer updatedCustomer) {
     customer:
     drawTable({
         {L"   THAY ĐỔI THÔNG TIN KHÁCH HÀNG    "},

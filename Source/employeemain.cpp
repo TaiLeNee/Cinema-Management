@@ -5,6 +5,7 @@
 #include "../Header/gotoXY.h"
 #include <fcntl.h>
 #include <io.h>
+#include <regex>
 
 void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList);
 
@@ -82,20 +83,22 @@ void employeeMenu(ListOfEmployee &employeeList){
     table.push_back({L"1. Hiện danh sách nhân viên"});
     table.push_back({L"2. Thêm nhân viên"});
     table.push_back({L"3. Xóa nhân viên"});
-    table.push_back({L"4. Đổi thông tin nhân viên"});
-    table.push_back({L"5. Lưu danh sách vào hệ thống"});
-    table.push_back({L"0. Quay lại"});
+    table.push_back({L"4. Lưu danh sách vào employee.csv"});
+    table.push_back({L"5. Tải danh sách từ employee.csv"});
+    table.push_back({L"0. Thoát"});
     drawTable(table);
     wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
     wcin >> choice;
     wcout<<L"\033[0m";
-    wcin.ignore();
     system("cls");
+    wcin.ignore();
+
     switch (choice) {
-            case 1: 
+            case 1: {
                 employeeList.showEmployeeList();
                 break;
-            case 2: 
+            }
+            case 2: {
                 employeeList.addEmployee();
                 system("cls");
                 wcout << L"\033[92m[Đã thêm nhân viên mới.] \033[0m" << endl;
@@ -212,31 +215,22 @@ void movieMenu(MovieList &movieList){
             }
             case 3: {
                 int id;
-                movieList.displayMovies();
-                wcout << L"\033[92mNhập ID của phim cần xóa: \033[0m";
+                wcout << L"Nhập ID của nhân viên cần xóa: ";
                 wcin >> id;
-                system("cls");
-                movieList.deleteMovie(id);
-                wcout << L"\033[92m[Đã xóa phim khỏi hệ thống.] \033[0m" << endl;
+                employeeList.deleteEmployee(id);
                 break;
             }
-            case 4: {
-                int id;
-                movieList.displayMovies();
-                wcout << L"\033[92mNhập ID của phim cần chỉnh sửa: \033[0m";
-                wcin >> id;
-                wcin.ignore();
-                system("cls");
-                movieList.updateMovie(id);
+            case 4:
+                employeeList.saveEmployee("../DATA/employee.csv");
                 break;
-            }
             case 5:
-                movieList.saveToCSV("../DATA/movies.csv");
-                system("cls");
-                wcout << L"\033[92m[Đã lưu danh sách phim vào hệ thống.] \033[0m" << endl;
+                employeeList.loadEmployees("../DATA/employee.csv");
+                break;
+            case 0:
+                wcout << L"Đăng xuất..." << endl;
                 break;
             default:
-                break;
+                wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
         }
     }while (choice != 0);
 }
@@ -315,23 +309,23 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     vector<vector<wstring>> table;
     wstring userName, passWord;
     Employee *loggedInUser = nullptr;
+    do{
+        // system("cls");
         table.push_back({L"         Đăng nhập "});
         table.push_back({L"Username:                  "});
         table.push_back({L"Password:                  "});
         drawTable(table);
-    do{
-        // system("cls");
         gotoXY(13, 3);
         getline(wcin, userName);
         gotoXY(13, 5);
         getline(wcin, passWord);
         loggedInUser = employeeList.signIn(userName, passWord);
         if (!loggedInUser) {
-            wcout << L"\n\033[92m[Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.]\033[0m" << endl;
+            wcout << L"Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập." << endl;
         }
         else{
             system("cls");
-            wcout << L"\n\033[92m[Đăng nhập thành công!]\033[0m" << endl;
+            wcout << L"\nĐăng nhập thành công!" << endl;
             break;
         }
     }while(!loggedInUser);
@@ -347,11 +341,9 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         managementMenu(employeeList, movieList, customerList);
     } 
     else {
-        wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
+        wcout << L"Xin chào Nhân Viên " << name << endl;
     }
 }
-
-
 
 int main(){
     system("cls");

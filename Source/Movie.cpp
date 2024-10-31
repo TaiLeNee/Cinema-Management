@@ -14,7 +14,6 @@ time_t wstringToTime(const wstring& dateTimeStr) {
     return mktime(&tm); // Chuyển sang time_t
 }
 
-int Movie::currentID = 0;
 
 void sortShowtimes(vector<Showtime>& showtimes) {
 
@@ -25,15 +24,16 @@ void sortShowtimes(vector<Showtime>& showtimes) {
 
 }
 
+
+////////////////////////// Movie class implementation //////////////////////////
+
 Movie::Movie() {}
 
 Movie::Movie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
-    : id(id), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {
-    currentID = max(currentID, this->id);
-    }
+    : id(id), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
 
 Movie::Movie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
-    : id(++currentID),name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
+    : name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
 
 void Movie::addShowtime(const Showtime& showtime) {
     showtimes.push_back(showtime);
@@ -62,9 +62,8 @@ vector<Showtime> Movie::getShowtimes() const
 }
 
 void Movie::inputMovieInfo() {
-    id = ++currentID;
-
     wcout << L"Nhập tên phim: ";
+    wcin.ignore();
     getline(wcin, name);
 
     wcout << L"Nhập thời lượng phim (phút): ";
@@ -82,6 +81,7 @@ void Movie::inputMovieInfo() {
 
     wcout << L"Nhập giới hạn tuổi: ";
     wcin >> limitAge;
+    wcin.ignore();
 }
 
 
@@ -120,14 +120,17 @@ void Movie::editInfo() {
         displayInfo();
 
         // Hiển thị menu chỉnh sửa
-        vector<vector<wstring>> table;
-        table.push_back({L"   Menu chỉnh sửa thông tin phim"});
-        table.push_back({L"1. Sửa tên phim"});
-        table.push_back({L"2. Sửa thể loại phim"});
-        table.push_back({L"3. Sửa thời lượng phim"});
-        table.push_back({L"4. Sửa mô tả phim"});
-        table.push_back({L"5. Thoát chỉnh sửa"});
-        drawTable(table);
+        wcout << L"+----------------------------------------+" << endl;
+        wcout << L"|           Chọn thông tin chỉnh sửa     |" << endl;
+        wcout << L"+-----------------+----------------------+" << endl;
+        wcout << L"| 1. Tên                                 |" << endl;
+        wcout << L"| 2. Thể loại                            |" << endl;
+        wcout << L"| 3. Thời lượng                          |" << endl;
+        wcout << L"| 4. Mô tả                               |" << endl;
+        wcout << L"| 5. Thoát                               |" << endl;
+        wcout << L"+-----------------+----------------------+" << endl;
+        wcout << L"Lựa chọn của bạn: ";
+        // Kiểm tra đầu vào của người dùng
         bool validInput = false;
         while (!validInput) {
             wcout << L"Lựa chọn của bạn: ";

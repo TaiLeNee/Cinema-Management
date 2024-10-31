@@ -1,13 +1,9 @@
 #ifndef MOVIELIST_H
 #define MOVIELIST_H
-#include "../Header/AnimatedMovie.h"
-#include "../Header/LoveMovie.h"
-#include "../Header/ActionMovie.h"
-#include "../Header/HorrorMovie.h"
 #include "Movie.h"
 #include <vector>
 #include <string>
-#include <algorithm> 
+#include <algorithm> // std::remove_if
 #include <sstream>
 #include <fstream>
 #include <locale>
@@ -17,28 +13,23 @@
 class MovieList {
 private:
     std::vector<Movie*> movies;
-    static int nextID;
+
 public:
     MovieList();
     ~MovieList();
     vector<Movie*>& getMovies();
 
-    int getNextID();
-
     // Tạo một bộ phim mới
     // Movie* createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
     // Thêm một bộ phim vào danh sách
-    void addMovie( const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
+    void addMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
 
     // Sửa thông tin một bộ phim trong danh sách
-    void updateMovie(int id);
+    void updateMovie(int id, const Movie& updatedMovie);
 
     // Xóa một bộ phim khỏi danh sách
     void deleteMovie(int id);
     
-    // Hiển thị thông tin một bộ phim trong danh sách
-    void displayMovieInfo(int id) const;
-
     // Hiển thị tất cả các bộ phim trong danh sách
     void displayMovies() const;
 

@@ -26,6 +26,7 @@ public:
     virtual void inputMovieInfo();
 
     virtual void displayInfo() const;  // hiển thị thông tin phim
+    
 
     void setId(int id);
     int getId() const;
@@ -55,7 +56,6 @@ public:
     virtual void deleteInfo();
     virtual void editInfo();
 
-    static int currentID;
 
 private:
     int id;
