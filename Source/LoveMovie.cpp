@@ -9,6 +9,8 @@ LoveMovie::LoveMovie(int id, const wstring& name, int duration, const wstring& s
 LoveMovie::LoveMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, wstring romantic):
     Movie(name, duration, subTitle, country, limitAge, description), romantic(romantic) {}
 
+LoveMovie::LoveMovie(const Movie& movie): Movie(movie.getId(), movie.getName(), movie.getDuration(), movie.getSubTitle(), movie.getCountry(), movie.getLimitAge(), movie.getDescription()), romantic(L"") {}
+
 void LoveMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
     wcout << L"Nhập thể loại tình cảm: ";

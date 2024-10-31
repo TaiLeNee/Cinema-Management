@@ -10,6 +10,7 @@ class LoveMovie : public Movie {
 
         LoveMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, wstring romantic);
        
+        LoveMovie(const Movie& movie);
         //Hàm ảo từ lớp cha
         void inputMovieInfo();
         void displayInfo() const;

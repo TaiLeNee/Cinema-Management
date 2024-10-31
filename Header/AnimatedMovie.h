@@ -13,6 +13,8 @@ class AnimatedMovie : public Movie {
 
         AnimatedMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, wstring animation);
        
+        AnimatedMovie(const Movie& movie);
+        
         //Hàm ảo từ lớp cha
         void inputMovieInfo();
         void displayInfo() const;

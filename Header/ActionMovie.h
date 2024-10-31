@@ -10,7 +10,7 @@ class ActionMovie : public Movie {
         ActionMovie();
         ActionMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);  // khởi tạo
         ActionMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);
-
+        ActionMovie(const Movie& movie);
         wstring getActionLevel();   // lấy mức độ hành động
         void setActionLevel(const wstring& actionLevel);
         void inputMovieInfo();  // in thông tin (hàm ảo)

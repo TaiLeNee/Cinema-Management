@@ -1,19 +1,22 @@
 #include "../Header/EmployeeList.h"
 #include "../Header/MovieList.h"
+#include "../Header/CustomerList.h"
 #include "../Header/drawTable.h"
 #include "../Header/gotoXY.h"
 #include <fcntl.h>
 #include <io.h>
 
-void loginMenu(ListOfEmployee &employeeList, MovieList &movieList);
+void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList);
 
 void employeeMenu(ListOfEmployee &employeeList);
 
 void movieMenu(MovieList &movieList);
 
-void managementMenu(ListOfEmployee &employeeList, MovieList &movieList);
+void customerMenu(CustomerList &customerList);
 
-void managementMenu(ListOfEmployee &employeeList, MovieList &movieList){
+void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList);
+
+void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList){
     int choice;
     do{
     vector<vector<wstring>> table;
@@ -21,6 +24,7 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList){
     table.push_back({L"1. Quản lý phòng chiếu"});
     table.push_back({L"2. Quản lý phim"});
     table.push_back({L"3. Quản lý nhân viên"});
+    table.push_back({L"4. Quản lý khách hàng"});
     table.push_back({L"0. Đăng xuất/Thoát"});
     drawTable(table);
     wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
@@ -38,6 +42,9 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList){
                 case 3: 
                     employeeMenu(employeeList);
                     break;
+                case 4:
+                    customerMenu(customerList);
+                    break;
                 case 0:
                     int choice1;
                     vector<vector<wstring>> table1;
@@ -53,12 +60,12 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList){
                     system("cls");
                     switch (choice1) {
                         case 1:
-                            loginMenu(employeeList, movieList);
+                            loginMenu(employeeList, movieList, customerList);
                             break;
                         case 2:
                             break;
                         case 0:
-                            managementMenu(employeeList, movieList);
+                            managementMenu(employeeList, movieList, customerList);
                             break;
                 default:
                     wcout << L"\033[92m[Lựa chọn không hợp lệ, vui lòng thử lại.\033[0m" << endl;
@@ -159,6 +166,7 @@ void movieMenu(MovieList &movieList){
                 table.push_back({L"2. Hoạt hình"});
                 table.push_back({L"3. Hành động"});
                 table.push_back({L"4. Kinh dị"});
+                table.push_back({L"0. Quay lại"});
                 drawTable(table);
                 wcout << L"\033[92m[Lựa chọn của bạn]  ";
                 wcin >> choice;
@@ -193,6 +201,9 @@ void movieMenu(MovieList &movieList){
                         movies.push_back(hmovie);
                         break;
                     }
+                    case 0:
+                        system("cls"); 
+                        break;
                     default:
                         wcout << L"Invalid choice. Please try again." << endl;
                         break;
@@ -230,7 +241,77 @@ void movieMenu(MovieList &movieList){
     }while (choice != 0);
 }
 
-void loginMenu(ListOfEmployee &employeeList , MovieList &movieList){
+void customerMenu(CustomerList &customerList){
+    int choice;
+    do{
+    vector<vector<wstring>> table;
+    table.push_back({L"    Menu Quản lý Khách hàng "});
+    table.push_back({L"1. Hiện danh sách khách hàng"});
+    table.push_back({L"2. Thêm khách hàng"});
+    table.push_back({L"3. Xóa khách hàng"});
+    table.push_back({L"4. Đổi thông tin khách hàng"});
+    table.push_back({L"5. Lưu danh sách vào hệ thống"});
+    table.push_back({L"0. Quay lại"});
+    drawTable(table);
+    wcout << L"\033[92m[Lựa chọn của bạn]  ";
+    wcin >> choice;
+    wcout << L"\033[0m";
+    wcin.ignore();
+    system("cls");
+        switch (choice) {
+            case 1:
+                customerList.displayCustomers();
+                break;
+            case 2: {
+                wstring name, phoneNumber;
+                int point;
+                vector<vector<wstring>> table;
+                table.push_back({L"           Thêm khách hàng mới              "});
+                table.push_back({L"Nhập tên khách hàng: "});
+                table.push_back({L"Nhập số điện thoại: "});
+                table.push_back({L"Nhập số điểm: "});
+                drawTable(table);
+
+                gotoXY(22,3);
+                getline(wcin, name);
+                
+                gotoXY(21,5);
+                wcin >> phoneNumber;
+
+                gotoXY(15,7);
+                wcin >> point;
+                customerList.addCustomer(name, phoneNumber, point);
+                system("cls");
+                wcout << L"Đã thêm khách hàng mới." << endl;
+                break;
+            }
+            case 3: {
+                int id;
+                wcout << L"Nhập ID của khách hàng cần xóa: ";
+                wcin >> id;
+                customerList.deleteCustomer(id);
+                break;
+            }
+            case 4: {
+                int id;
+                wcout << L"Nhập ID của khách hàng cần sửa: ";
+                wcin >> id;
+                Customer updatedCustomer;
+                customerList.editCustomer(id, updatedCustomer);
+                break;
+            }
+            case 5:
+                customerList.saveToCSV("../DATA/customers.csv");
+                break;
+            case 0:
+                break;
+            default:
+                wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
+        }
+    } while (choice != 0);
+}
+
+void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList){
     vector<vector<wstring>> table;
     wstring userName, passWord;
     Employee *loggedInUser = nullptr;
@@ -259,11 +340,11 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList){
     name = loggedInUser->getName();
     if (loggedInUser->getLevel() == 0) {
         wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
-        managementMenu(employeeList, movieList);
+        managementMenu(employeeList, movieList, customerList);
     }
     else if (loggedInUser->getLevel() == 1) {
         wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
-        managementMenu(employeeList, movieList);
+        managementMenu(employeeList, movieList, customerList);
     } 
     else {
         wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
@@ -280,9 +361,10 @@ int main(){
 
     ListOfEmployee employeeList;
     MovieList movieList;
+    CustomerList customerList;
     employeeList.loadEmployees("../DATA/employee.csv");
     movieList.loadFromCSV("../DATA/movies.csv");
-    loginMenu(employeeList, movieList);
+    loginMenu(employeeList, movieList, customerList);
     
     return 0;
 }

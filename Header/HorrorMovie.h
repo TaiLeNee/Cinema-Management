@@ -10,7 +10,7 @@ class HorrorMovie : public Movie {
         HorrorMovie();
         HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);  // khởi tạo
         HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& actionLevel);
-
+        HorrorMovie(const Movie& movie);
         wstring getHorrorLevel();   // lấy mức độ hành động
         void setHorrorLevel(const wstring& horrorLevel);
         void inputMovieInfo();  // in thông tin (hàm ảo)

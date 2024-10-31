@@ -19,6 +19,8 @@ HorrorMovie::HorrorMovie(int id, const wstring& name, int duration, const wstrin
 HorrorMovie::HorrorMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& horrorLevel) 
     : Movie(name, duration, subTitle, country, limitAge, description), horrorLevel(horrorLevel) {}
 
+HorrorMovie::HorrorMovie(const Movie& movie): Movie(movie.getId(), movie.getName(), movie.getDuration(), movie.getSubTitle(), movie.getCountry(), movie.getLimitAge(), movie.getDescription()), horrorLevel(L"") {}
+
 wstring HorrorMovie::getHorrorLevel() {
     return this->horrorLevel;
 }
@@ -32,6 +34,7 @@ void HorrorMovie::inputMovieInfo() {
     wcout << L"Nhập mức độ kinh dị (1-4): ";
     wcin.ignore();
     getline(wcin, horrorLevel);
+    horrorLevel = L"Kinh Dị " + horrorLevel; 
 }
 
 void HorrorMovie::displayInfo() {
@@ -43,7 +46,8 @@ void HorrorMovie::editHorrorLevel() {
     wstring newHorrorLevel;
     wcout << L"Nhập mức độ kinh dị (1-4): ";
     wcin.ignore();
-    getline(wcin, newHorrorLevel);   
+    getline(wcin, newHorrorLevel);  
+    horrorLevel = L"Kinh Dị " + newHorrorLevel; 
     this->horrorLevel = newHorrorLevel;
     wcout << L"Nhập thành công!!";
 }

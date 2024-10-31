@@ -9,6 +9,9 @@ AnimatedMovie::AnimatedMovie(int id, const wstring& name, int duration, const ws
 AnimatedMovie::AnimatedMovie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, wstring animation):
     Movie(name, duration, subTitle, country, limitAge, description), animation(animation) {}
 
+AnimatedMovie::AnimatedMovie(const Movie& movie)
+    : Movie(movie.getId(), movie.getName(), movie.getDuration(), movie.getSubTitle(), movie.getCountry(), movie.getLimitAge(), movie.getDescription()), animation(L"") {}
+
 void AnimatedMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
     wcout << L"Nhập loại hoạt hình: ";
