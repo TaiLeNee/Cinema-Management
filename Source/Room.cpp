@@ -56,6 +56,10 @@ vector<Showtime>& Room::getShowtimes() {
     return showtimes; 
 }
 
+void Room::resetShowtimes() {
+    showtimes.clear();
+}
+
 vector<vector<Chair>> Room::getChairs() {
     return chairs;  
 }

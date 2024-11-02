@@ -310,7 +310,7 @@ void editShowtime(vector<Showtime*>& showtimeList,  vector<vector<wstring>> tabl
                 red(L"══[ID phòng không hợp lệ, Vui lòng nhập lại]══\n");
                 goto choiceEdit;
             }
-       
+            wcout<<L"ID phòng: "<<getShowtime->roomID<<endl;
             break;
 
         }
@@ -402,7 +402,15 @@ void editShowtime(vector<Showtime*>& showtimeList,  vector<vector<wstring>> tabl
 
     //Lưu chỉnh sửa
     green(L"══[Lưu chỉnh sửa thành công]══\n");
-    wcin.get();
+    //Reset lại danh sách showtime
+    roomList.resetShowtimesofRoom();
+    movieList.resetShowtimesofMovie();
+    //Load lại danh sách showtime
+    roomList.loadRoom();
+    for(auto &room: roomList.getRooms()){
+        movieList.loadShowtimesofMovie(room.getShowtimes());
+    }
+
     return;
 
 }
@@ -559,7 +567,7 @@ void displayListShowtime(RoomList &roomList, MovieList &movieList){
     checkInput(L"Nhập lựa chọn", choice);
 
     if(!choice)
-        return;
+        goto displayShowtime;
     switch (choice){
         case 1:
             addShowtime(roomList, movieList);

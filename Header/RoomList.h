@@ -12,6 +12,7 @@ class RoomList{
         RoomList();
         void loadRoom();
         vector<Room>& getRooms();
+        void resetShowtimesofRoom();
 
 };
 

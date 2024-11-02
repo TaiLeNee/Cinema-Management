@@ -7,6 +7,7 @@ using namespace std;
 RoomList::RoomList(){};
 
 void RoomList::loadRoom(){
+    rooms.clear();
     wifstream file("../DATA/rooms.csv");
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
     if (!file.is_open()) {
@@ -33,3 +34,9 @@ void RoomList::loadRoom(){
 vector<Room>& RoomList::getRooms(){
     return rooms;
 }   
+
+void RoomList::resetShowtimesofRoom(){
+    for(auto &room: rooms){
+        room.resetShowtimes();
+    }
+}
