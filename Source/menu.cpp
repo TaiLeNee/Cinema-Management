@@ -18,9 +18,7 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
         table.push_back({L"5. Quản lý khách hàng"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
-        wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
-        wcin >> choice;
-        wcout << L"\033[0m";
+        checkInput(L"Lựa chọn của bạn", choice);
         wcin.ignore();
         system("cls");
         switch (choice)
@@ -61,9 +59,7 @@ void employeeMenu(ListOfEmployee &employeeList)
         table.push_back({L"5. Lưu danh sách vào employee.csv"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
-        wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
-        wcin >> choice;
-        wcout << L"\033[0m";
+        checkInput(L"Lựa chọn của bạn", choice);
         system("cls");
         wcin.ignore();
 
@@ -123,6 +119,7 @@ void movieMenu(MovieList &movieList)
     do
     {
         vector<vector<wstring>> table;
+        wcout << L"\033[0m";
         table.push_back({L"    Menu Quản lý Phim "});
         table.push_back({L"1. Hiện danh sách phim"});
         table.push_back({L"2. Thêm phim"});
@@ -131,9 +128,7 @@ void movieMenu(MovieList &movieList)
         table.push_back({L"5. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
-        wcout << L"\033[92m[Lựa chọn của bạn]  ";
-        wcin >> choice;
-        wcout << L"\033[0m";
+        checkInput(L"Lựa chọn của bạn", choice);
         wcin.ignore();
         system("cls");
         switch (choice)
@@ -153,9 +148,8 @@ void movieMenu(MovieList &movieList)
             table.push_back({L"4. Kinh dị"});
             table.push_back({L"0. Quay lại"});
             drawTable(table);
-            wcout << L"\033[91m[LƯU Ý : KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN]  ";
-            wcout << L"\033[92m[Lựa chọn của bạn]  ";
-            wcin >> choice;
+            wcout << L"\033[91m[LƯU Ý : KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN]  \n";
+            checkInput(L"Lựa chọn của bạn", choice);
             wcin.ignore();
 
             switch (choice)
@@ -246,9 +240,7 @@ void customerMenu(CustomerList &customerList)
         table.push_back({L"5. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
-        wcout << L"\033[92m[Lựa chọn của bạn]  ";
-        wcin >> choice;
-        wcout << L"\033[0m";
+        checkInput(L"Lựa chọn của bạn", choice);
         wcin.ignore();
         system("cls");
         switch (choice)
