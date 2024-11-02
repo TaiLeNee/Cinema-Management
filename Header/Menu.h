@@ -1,11 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
-#include "../Header/drawTable.h"
-#include "../Header/TicketList.h"
-#include "../Header/EmployeeList.h"
-#include "../Header/CustomerList.h"
-#include "../Header/drawTable.h"
-#include "../Header/gotoXY.h"
+#include "EmployeeList.h"
+#include "CustomerList.h"
+#include "gotoXY.h"
 #include <cstdlib>
 #include <iostream>
 #include "Color.h"

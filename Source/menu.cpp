@@ -7,8 +7,6 @@ using namespace std;
 // wstring YELLOW = L"\033[93m";
 
 
-
-
 void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList){
     int choice;
     do{
@@ -16,8 +14,9 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
     table.push_back({L"   Menu Quản lý hệ thống   "});
     table.push_back({L"1. Quản lý phòng chiếu"});
     table.push_back({L"2. Quản lý phim"});
-    table.push_back({L"3. Quản lý nhân viên"});
-    table.push_back({L"4. Quản lý khách hàng"});
+    table.push_back({L"3. Quản lý khung giờ"});
+    table.push_back({L"4. Quản lý nhân viên"});
+    table.push_back({L"5. Quản lý khách hàng"});
     table.push_back({L"0. Đăng xuất/Thoát"});
     drawTable(table);
     wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
@@ -32,10 +31,13 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
                 case 2: 
                     movieMenu(movieList);
                     break;
-                case 3: 
+                case 3:
+                    manageShowtimes(roomList, movieList);
+                    break;
+                case 4: 
                     employeeMenu(employeeList);
                     break;
-                case 4:
+                case 5:
                     customerMenu(customerList);
                     break;
                 case 0:
@@ -315,41 +317,6 @@ void manageMovie(MovieList &movieList){
 }
 
 
-
-// void manageMenu(RoomList &roomList, MovieList &movieList) {
-     
-//     system("cls");                                                             
-//    drawTable({
-//         {L"         HỆ THỐNG QUẢN LÝ RẠP CHIẾU PHIM            "},
-//         {L"1. Quản lý Phim            "},
-//         {L"2. Quản lý Phòng Chiếu            "},
-//         {L"3. Quản lý Lịch Chiếu            "},
-//         {L"4. Quản lý Ghế Ngồi            "},
-//         {L"5. Quản lý Nhân Viên            "},
-//         {L"6. Báo Cáo và Thống Kê            "},
-//         {L"7. Cài Đặt Hệ Thống            "},
-//         {L"8. Trợ Giúp và Hỗ Trợ            "},
-//         {L"0. Quay lại            "}
-//     });
-   
-//     wcout << L"══════════[Nhập lựa chọn]==> ";
-//     int choice;
-//     wcin >> choice;
-//     if(!choice)
-//         return;
-//     switch (choice)
-//     {
-//     case 1:
-//         break;
-//     case 2:
-//         break;
-//     case 3:
-//         manageShowtimes(roomList, movieList);
-//         break;
-//     }
-
-// }
-
 void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, int typeEmployee){
     system("cls");
     wcout<<L"\n\n";
@@ -367,7 +334,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
     table.push_back({L"        1. Bán vé            "});
 
     if(typeEmployee <= 1)
-        table.push_back({L"        2. Quản lý hệ thống            "});
+        table.push_back({L"        2. Quản lý hệ thống       "});
     
 
     int choice;

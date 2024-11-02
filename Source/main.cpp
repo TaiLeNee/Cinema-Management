@@ -49,6 +49,8 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     } 
     else {
         wcout << L"Xin chào Nhân Viên " << name << endl;
+        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
+
     }
 }
 
