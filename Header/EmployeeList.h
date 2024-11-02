@@ -40,7 +40,7 @@ class ListOfEmployee{
 
         //Đọc danh sách từ tệp
         void loadEmployees(const string& filename);
-
+        
         //Kiểm tra đăng nhập
         Employee *signIn(const wstring &userName, const wstring &passWord);
 

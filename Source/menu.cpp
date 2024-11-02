@@ -56,7 +56,7 @@ void employeeMenu(ListOfEmployee &employeeList)
         table.push_back({L"2. Thêm nhân viên"});
         table.push_back({L"3. Xóa nhân viên"});
         table.push_back({L"4. Đổi thông tin nhân viên"});
-        table.push_back({L"5. Lưu danh sách vào employee.csv"});
+        table.push_back({L"5. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
@@ -134,6 +134,7 @@ void movieMenu(MovieList &movieList)
         switch (choice)
         {
         case 1:
+            system("cls");
             movieList.displayMovies();
             break;
         case 2:
@@ -148,10 +149,10 @@ void movieMenu(MovieList &movieList)
             table.push_back({L"4. Kinh dị"});
             table.push_back({L"0. Quay lại"});
             drawTable(table);
-            wcout << L"\033[91m[LƯU Ý : KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN]  \n";
+            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAO KHI CHỌN.\n");
             checkInput(L"Lựa chọn của bạn", choice);
             wcin.ignore();
-
+            wcout << "\033[93m";
             switch (choice)
             {
             case 1:
@@ -193,13 +194,16 @@ void movieMenu(MovieList &movieList)
                 wcout << L"Invalid choice. Please try again." << endl;
                 break;
             }
+            wcout << "\033[0m";
+            system("cls");
+            green(L"Thêm phim thành công.");
             break;
         }
         case 3:
         {
             int id;
             movieList.displayMovies();
-            wcout << L"Nhập ID của phim cần xóa: ";
+            yellow(L"Nhập ID của phim cần xóa: ");
             wcin >> id;
             system("cls");
             movieList.deleteMovie(id);
@@ -209,7 +213,7 @@ void movieMenu(MovieList &movieList)
         {
             int id;
             movieList.displayMovies();
-            wcout << L"Nhập ID của phim cần sửa: ";
+            yellow(L"Nhập ID của phim cần sửa: ");
             wcin >> id;
             system("cls");
             movieList.updateMovie(id);
@@ -217,11 +221,13 @@ void movieMenu(MovieList &movieList)
         }
         case 5:
             movieList.saveToCSV("../DATA/movies.csv");
+            wcout << L"\033[92m[Đã lưu danh sách phim vào hệ thống.] \033[0m" << endl;
             break;
         case 0:
             break;
         default:
-            wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
+            red(L"Lựa chọn không hợp lệ, vui lòng thử lại.");
+            wcout << endl;
         }
     } while (choice != 0);
 }
@@ -302,7 +308,6 @@ void customerMenu(CustomerList &customerList)
 
 void manageMovie(MovieList &movieList)
 {
-
     system("cls");
     vector<vector<wstring>> table;
     table.push_back({L"        QUẢN LÝ PHIM            "});
@@ -330,6 +335,8 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
 
     if (typeEmployee <= 1)
         table.push_back({L"2. Quản lý hệ thống       "});
+    else
+        table.push_back({L"2. Đổi mật khẩu       "});
     table.push_back({L"0. Đăng xuất/Thoát            "});
 
     int choice;
@@ -343,9 +350,16 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             SellTicketInWeek(movieList);
             break;
         case 2:
+            system("cls");
             if (typeEmployee <= 1)
-                system("cls");
+            {
+            system("cls");
             managementMenu(employeeList, movieList, customerList, roomList);
+            }
+            else
+            {
+                
+            }
             break;
         case 0:
             system("cls");
@@ -361,7 +375,8 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
                 loginMenu(employeeList, movieList, customerList, roomList);
                 break;
             case 2:
-                system("cls");
+                wcout<<L"\033[91mĐang đăng xuất khỏi hệ thống...\033[0m"<<endl;
+                Sleep(2000);
                 exit(0);
                 break;
             case 0:

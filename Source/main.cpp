@@ -55,7 +55,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
 
     } 
     else {
-        wcout << L"Xin chào Nhân Viên " << name << endl;
+        wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
         Sleep(2000);
         mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
 

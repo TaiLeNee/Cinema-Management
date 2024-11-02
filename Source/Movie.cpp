@@ -157,52 +157,59 @@ void Movie::editInfo() {
 
         switch (choice) {
             case 1:
-                wcout << L"Nhập tên mới: ";
+                yellow(L"Nhập tên mới: ");
                 wcin.ignore();
                 getline(wcin, newName);
                 name = newName;
-                // system("cls");
+                system("cls");
+                green(L"[Đã cập nhật tên phim thành công.]\n");
                 break;
             case 2:
-                wcout << L"Nhập thời lượng mới: ";
+                yellow(L"Nhập thời lượng mới: ");
                 wcin >> newDuration;
                 duration = newDuration;
                 system("cls");
+                green(L"[Đã cập nhật thời lượng phim thành công.]\n");
                 break;
             case 3:
-                wcout << L"Nhập mô tả mới: ";
+                yellow(L"Nhập mô tả mới: ");
                 wcin.ignore();
                 getline(wcin, newDescription);
                 description = newDescription;
                 system("cls");
+                green(L"[Đã cập nhật mô tả phim thành công.]\n");
                 break;
             case 4:
-                wcout << L"Nhập quốc gia mới: ";
+                yellow(L"Nhập quốc gia mới: ");
                 wcin.ignore();
                 getline(wcin, newGenre);
                 country = newGenre;
                 system("cls");
+                green(L"[Đã cập nhật quốc gia sản xuất thành công.]\n");
                 break;
             case 5:
-                wcout << L"Nhập phụ đề mới: ";
+                yellow(L"Nhập phụ đề mới: ");
                 wcin.ignore();
                 getline(wcin, newGenre);
                 subTitle = newGenre;
                 system("cls");
+                green(L"[Đã cập nhật phụ đề phim thành công.]\n");
                 break;
             case 6:
-                wcout << L"Nhập giới hạn tuổi mới: ";
+                yellow(L"Nhập giới hạn tuổi mới: ");
                 wcin >> limitAge;
                 system("cls");
+                green(L"[Đã cập nhật giới hạn tuổi phim thành công.]\n");
                 break;
             case 0:
-                wcout << L"Thoát chỉnh sửa." << endl;
                 system("cls");
                 return;
             default:
-                wcout << L"Lựa chọn không hợp lệ. Vui lòng chọn lại." << endl;
+                system("cls");
+                red(L"Lựa chọn không hợp lệ. Vui lòng chọn lại.\n");
+                break;
         }
-    } while (choice != 5);
+    } while (choice != 0);
 }
 
 void Movie::setId(int id) {

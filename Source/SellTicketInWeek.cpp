@@ -41,8 +41,10 @@ void SellTicketInWeek(MovieList &movieList) {
     int choiceDate ;
     checkInput(L"Chọn ngày", choiceDate);;
 
-    if(choiceDate == 0)
+    if(choiceDate == 0){
+        system("cls");
         return;
+    }
     else if(choiceDate < 0 || choiceDate > 7){
         red(L"Chọn sai. Vui lòng chọn lại.\n");
         goto Date;
