@@ -1,5 +1,5 @@
 #include "../Header/Menu.h"
-
+#include "../Header/checkInput.h"
 
 void SellTicketInWeek(MovieList &movieList) {
     wstring GREEN = L"\033[92m";
@@ -35,24 +35,26 @@ void SellTicketInWeek(MovieList &movieList) {
     Date:
     system("cls");
     drawTable(table);
-    wcout<<L"\033[92mNhập 0: Quay lại\n";
-    wcout<<L"\033[92m════════[Chọn ngày]==> ";
+    wcout<<L"\033[91mNhập 0: Quay lại\n";
+
+    // wcout<<L"\033[92m════════[Chọn ngày]==> ";
     int choiceDate ;
-    wcin>>choiceDate;
-    wcout<<L"\033[0m";
+    checkInput(L"Chọn ngày", choiceDate);;
 
-    if(choiceDate == 0){
-        system("cls");
+    if(choiceDate == 0)
         return;
+    else if(choiceDate < 0 || choiceDate > 7){
+        red(L"Chọn sai. Vui lòng chọn lại.\n");
+        goto Date;
     }
-
     
     vector<vector<wstring>> tableMovie;
     tableMovie.push_back({L"Chọn", L"ID", L"Danh sách phim trong ngày: " + date[choiceDate-1]});
 
+
     
-    for(const auto& movie: movieList.getMovies()){
-        for(const auto& showtime: movie->getShowtimes()){
+    for(auto &movie: movieList.getMovies()){
+        for(auto showtime: movie->getShowtimes()){
             if(showtime.getStartTime().getDate() == date[choiceDate-1]){
                 tableMovie.push_back({ L"["+to_wstring(showtime.movieID) + L"]" , to_wstring(showtime.showtimeID) , movie->getName()});
                 break;
@@ -63,11 +65,10 @@ void SellTicketInWeek(MovieList &movieList) {
     /// Hiện thị danh sách phim trong ngày
     MovieInDay:
         drawTable(tableMovie);
-        wcout<<L"\033[92mNhập 0: Quay lại\n";
-        wcout<<L"\033[92m════════[Chọn phim]==> ";
+        wcout<<L"\033[91mNhập 0: Quay lại\n";
+        // wcout<<L"\033[92m════════[Chọn phim]==> ";
         int choiceMovie;
-        wcin>>choiceMovie;
-        wcout<<L"\033[0m";
+        checkInput(L"Chọn phim", choiceMovie);
         if(!choiceMovie)
             goto Date;
         
