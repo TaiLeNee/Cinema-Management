@@ -147,6 +147,7 @@ void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {
     wofstream file(filename);
     if (file.is_open()) {
         file.imbue(loc);
+        file << L"ID,Tên,Loại, Thời lượng, Phụ đề, Quốc gia, Độ tuổi, Đặc điểm riêng, Mô tả\n";
         for (const auto& movie : movies) {
             file << movie->getId() << L","
                  << movie->getName() << L",";
