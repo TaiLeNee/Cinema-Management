@@ -103,6 +103,7 @@ void employeeMenu(ListOfEmployee &employeeList){
                 system("cls");
                 wcout << L"\033[92m[Đã thêm nhân viên mới.] \033[0m" << endl;
                 break;
+            }
             case 3: 
                 int id;
                 employeeList.showEmployeeList();
@@ -215,19 +216,22 @@ void movieMenu(MovieList &movieList){
             }
             case 3: {
                 int id;
-                wcout << L"Nhập ID của nhân viên cần xóa: ";
+                wcout << L"Nhập ID của phim cần xóa: ";
                 wcin >> id;
-                employeeList.deleteEmployee(id);
+                movieList.deleteMovie(id);
                 break;
             }
-            case 4:
-                employeeList.saveEmployee("../DATA/employee.csv");
+            case 4: {
+                int id;
+                wcout << L"Nhập ID của phim cần sửa: ";
+                wcin >> id;
+                movieList.updateMovie(id);
                 break;
+            }
             case 5:
-                employeeList.loadEmployees("../DATA/employee.csv");
+                movieList.saveToCSV("../DATA/movies.csv");
                 break;
             case 0:
-                wcout << L"Đăng xuất..." << endl;
                 break;
             default:
                 wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
@@ -291,7 +295,7 @@ void customerMenu(CustomerList &customerList){
                 wcout << L"Nhập ID của khách hàng cần sửa: ";
                 wcin >> id;
                 Customer updatedCustomer;
-                customerList.editCustomer(id, updatedCustomer);
+                customerList.editCustomer(id);
                 break;
             }
             case 5:

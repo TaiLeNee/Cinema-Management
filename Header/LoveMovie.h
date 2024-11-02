@@ -1,3 +1,5 @@
+#ifndef LOVEMOVIE_H
+#define LOVEMOVIE_H
 #include "Movie.h"
 
 using namespace std;
@@ -23,3 +25,4 @@ class LoveMovie : public Movie {
     private:
         wstring romantic; // Loại phim tình cảm
 };
+#endif  // end LOVEMOVIE_H

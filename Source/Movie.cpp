@@ -4,7 +4,7 @@
 #include "../Header/ActionMovie.h"
 #include "../Header/HorrorMovie.h"
 #include <algorithm>
-#include <../Header/checkInput.h>
+#include "../Header/checkInput.h"
 using namespace std;
 
 

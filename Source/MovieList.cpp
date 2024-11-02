@@ -1,9 +1,4 @@
-#include "../Header/Movie.h"
 #include "../Header/MovieList.h"
-#include "../Header/AnimatedMovie.h"
-#include "../Header/LoveMovie.h"
-#include "../Header/ActionMovie.h"
-#include "../Header/HorrorMovie.h"
 
 using namespace std;
 

@@ -1,9 +1,9 @@
 #ifndef MOVIELIST_H
 #define MOVIELIST_H
-#include "../Header/AnimatedMovie.h"
-#include "../Header/LoveMovie.h"
-#include "../Header/ActionMovie.h"
-#include "../Header/HorrorMovie.h"
+#include "AnimatedMovie.h"
+#include "LoveMovie.h"
+#include "ActionMovie.h"
+#include "HorrorMovie.h"
 #include "Movie.h"
 #include <vector>
 #include <string>
