@@ -52,7 +52,7 @@ void Room::addShowtime(const Showtime &showtime)
     showtimes.push_back(showtime);
 }
 
-vector<Showtime> Room::getShowtimes() { 
+vector<Showtime>& Room::getShowtimes() { 
     return showtimes; 
 }
 
