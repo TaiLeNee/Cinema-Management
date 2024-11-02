@@ -21,33 +21,41 @@ void CustomerList::deleteCustomer(int id) {
     }), customers.end());
 }
 
-void CustomerList::editCustomer(Customer updatedCustomer) {
-    customer:
+void CustomerList::editCustomer(int id) {
+    auto it = find_if(customers.begin(), customers.end(), [id](const Customer& customer) {
+        return customer.getCustomerID() == id;
+    });
     drawTable({
         {L"   THAY ĐỔI THÔNG TIN KHÁCH HÀNG    "},
         {L"1. Họ tên.                          "},
         {L"2. Số điện thoại.                   "},
+        {L"0. Quay lại.                        "}
     });
+    wcout << L"\033[92m[Lựa chọn của bạn]  ";
     int choice;
-    wstring newName;
-    wstring newPhoneNumber;
     wcin >> choice;
-    switch(choice) {
-        case 1:
-            wcout << endl << L"Họ và tên mới: ";
-            wcin.ignore();
-            getline(wcin,newName);
-            updatedCustomer.setName(newName);
+    wcout << L"\033[0m";
+    wcin.ignore();
+    system("cls");
+    switch (choice) {
+        case 1: {
+            wstring name;
+            wcout << L"Nhập tên mới: ";
+            getline(wcin, name);
+            it->setName(name);
             break;
-        case 2:
-            wcout << endl << L"Số điện thoại mới: ";
-            wcin.ignore();
-            getline(wcin,newPhoneNumber);
-            updatedCustomer.setPhoneNumber(newPhoneNumber);
+        }
+        case 2: {
+            wstring phoneNumber;
+            wcout << L"Nhập số điện thoại mới: ";
+            wcin >> phoneNumber;
+            it->setPhoneNumber(phoneNumber);
+            break;
+        }
+        case 0:
             break;
         default:
-            wcout << L"Lựa chọn không hợp lệ!! Hãy chọn lại\n";
-            goto customer;
+            wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
     }
 }
 

@@ -24,7 +24,7 @@ public:
     void addCustomer( const wstring& name, const wstring& phoneNumber, int point);
 
     // Sửa thông tin một khách hàng trong danh sách
-    void editCustomer(Customer updatedCustomer);
+    void editCustomer(int id);
 
     // Xóa một khách hàng ra khỏi danh sách
     void deleteCustomer(int id);
