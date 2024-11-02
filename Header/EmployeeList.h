@@ -10,6 +10,8 @@
 #include<fstream>
 #include<codecvt>
 #include<sstream>
+#include<regex>
+
 using namespace std;
 
 class ListOfEmployee{
@@ -24,9 +26,15 @@ class ListOfEmployee{
         //Xóa một nhân viên khỏi danh sách
         void deleteEmployee(int id);
 
+        //Chỉnh sửa thông tin nhân viên bằng ID
+        void editEmployeeInfo(int id);
+
+        //Hiển thị thông tin nhân viên bằng ID
+        void showEmployeeInfo(int id) ;
+
         //Hiển thị danh sách nhân viên
         void showEmployeeList() const;
-
+        
         //Lưu nhân viên vào danh sách 
         void saveEmployee(const string& filename) const;
 

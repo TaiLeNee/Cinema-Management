@@ -26,7 +26,10 @@ public:
     virtual void inputMovieInfo();
 
     virtual void displayInfo() const;  // hiển thị thông tin phim
-    
+
+    void displayShowtimeInDay(const wstring& date) const;
+    void deleteShowtime(int showtimeID);
+
 
     void setId(int id);
     int getId() const;
@@ -51,11 +54,12 @@ public:
 
     void addShowtime(const Showtime& showtime);
     void displayShowtimes() const;
-    vector<Showtime> getShowtimes() const;
+    vector<Showtime>& getShowtimes();
 
     virtual void deleteInfo();
     virtual void editInfo();
 
+    static int currentID;
 
 private:
     int id;

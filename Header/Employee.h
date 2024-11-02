@@ -26,6 +26,12 @@ class Employee{
         wstring getPassWord() const;
         bool isSignIn(const wstring &inputUserName, const wstring &inputPassword) const;
         void setId(int newID);
+        void setName(const wstring &newName);
+        void setAge(int newAge);
+        void setPhoneNumber(const wstring &newPhoneNumber);
+        void setLevel(int newLevel);
+        void setUserName(const wstring &newUserName);
+        void setPassWord(const wstring &newPassWord);
 };
 
 #endif

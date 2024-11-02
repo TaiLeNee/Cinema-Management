@@ -4,7 +4,9 @@
 #include "../Header/ActionMovie.h"
 #include "../Header/HorrorMovie.h"
 #include <algorithm>
+#include <../Header/checkInput.h>
 using namespace std;
+
 
 //Khai báo thêm hàm//////////////
 time_t wstringToTime(const wstring& dateTimeStr) {
@@ -13,6 +15,8 @@ time_t wstringToTime(const wstring& dateTimeStr) {
     ss >> get_time(&tm, L"%H:%M %d/%m/%Y");
     return mktime(&tm); // Chuyển sang time_t
 }
+
+int Movie::currentID = 0;
 
 
 void sortShowtimes(vector<Showtime>& showtimes) {
@@ -56,7 +60,25 @@ void Movie::displayShowtimes() const {
     drawTable(table);
 }
 
-vector<Showtime> Movie::getShowtimes() const
+void Movie::displayShowtimeInDay(const wstring& date) const {
+    vector<Showtime> showtimes = this->showtimes;
+    sortShowtimes(showtimes);
+
+    vector<vector<wstring>> table;
+    table.push_back({L"ID", L" Giờ chiếu ", L" Ngày chiếu "});
+    
+    for(auto &showtime: showtimes){
+        Datetime startime = showtime.getStartTime();
+        if(startime.getDate() == date){
+            table.push_back({to_wstring(showtime.showtimeID), startime.getHour() + L":" + startime.getMinute(), 
+                          startime.getDay() + L"/" + startime.getMonth() + L"/" + startime.getYear()});
+        }
+    }
+    drawTable(table);
+}
+
+
+vector<Showtime>& Movie::getShowtimes()
 {
     return this->showtimes;
 }
@@ -120,31 +142,15 @@ void Movie::editInfo() {
         displayInfo();
 
         // Hiển thị menu chỉnh sửa
-        wcout << L"+----------------------------------------+" << endl;
-        wcout << L"|           Chọn thông tin chỉnh sửa     |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
-        wcout << L"| 1. Tên                                 |" << endl;
-        wcout << L"| 2. Thể loại                            |" << endl;
-        wcout << L"| 3. Thời lượng                          |" << endl;
-        wcout << L"| 4. Mô tả                               |" << endl;
-        wcout << L"| 5. Thoát                               |" << endl;
-        wcout << L"+-----------------+----------------------+" << endl;
-        wcout << L"Lựa chọn của bạn: ";
-        // Kiểm tra đầu vào của người dùng
-        bool validInput = false;
-        while (!validInput) {
-            wcout << L"Lựa chọn của bạn: ";
-            wcin >> choice;
-
-            if (wcin.fail()) {
-                wcin.clear(); // Xóa trạng thái lỗi
-                wcin.ignore(1e4, '\n'); // Xóa bộ nhớ đệm
-                wcout << L"Lựa chọn không hợp lệ. Vui lòng nhập lại." << endl;
-            } else {
-                validInput = true;
-                wcin.ignore();
-            }
-        }
+        vector<vector<wstring>> table;
+        table.push_back({L"   Menu chỉnh sửa thông tin phim"});
+        table.push_back({L"1. Sửa tên phim"});
+        table.push_back({L"2. Sửa thể loại phim"});
+        table.push_back({L"3. Sửa thời lượng phim"});
+        table.push_back({L"4. Sửa mô tả phim"});
+        table.push_back({L"5. Thoát chỉnh sửa"});
+        drawTable(table);
+        checkInput(L"Nhập lựa chọn:", choice);
 
         switch (choice) {
             case 1:
@@ -319,5 +325,11 @@ void Movie::setDescription(const wstring &description)
 wstring Movie::getDescription() const
 {
     return description;
+}
+
+void Movie::deleteShowtime(int showtimeID) {
+    showtimes.erase(remove_if(showtimes.begin(), showtimes.end(), [showtimeID](const Showtime& showtime) {
+        return showtime.showtimeID == showtimeID;
+    }), showtimes.end());
 }
 

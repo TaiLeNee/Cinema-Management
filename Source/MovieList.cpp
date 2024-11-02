@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 MovieList::MovieList() {
     loadFromCSV("../DATA/movies.csv");
 }
@@ -28,29 +29,64 @@ vector<Movie*>& MovieList::getMovies(){
 }
 
 
-Movie* MovieList::createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
+// Movie* MovieList::createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
+//     if (typeMovie == L"Tình cảm") {
+//         return new LoveMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+//     } else if (typeMovie == L"Hoạt hình") {
+//         return new AnimatedMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+//     } else if (typeMovie == L"Hành động") {
+//         return new ActionMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+//     } else if (typeMovie == L"Kinh dị") {
+//         return new HorrorMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+//     } else {
+//         return new Movie(id, name, duration, subtitle, country, limitAge, description);
+//     }
+// }
+
+
+void MovieList::addMovie(const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
+    Movie *movie = NULL;
     if (typeMovie == L"Tình cảm") {
-        return new LoveMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+        movie = new LoveMovie( name, duration, subtitle, country, limitAge, description, genre);
     } else if (typeMovie == L"Hoạt hình") {
-        return new AnimatedMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+        movie = new AnimatedMovie( name, duration, subtitle, country, limitAge, description, genre);
     } else if (typeMovie == L"Hành động") {
-        return new ActionMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+        movie = new ActionMovie( name, duration, subtitle, country, limitAge, description, genre);
     } else if (typeMovie == L"Kinh dị") {
-        return new HorrorMovie(id, name, duration, subtitle, country, limitAge, description, genre);
+        movie = new HorrorMovie( name, duration, subtitle, country, limitAge, description, genre);
     } else {
-        return new Movie(id, name, duration, subtitle, country, limitAge, description);
+        movie = new Movie( name, duration, subtitle, country, limitAge, description);
     }
-}
-
-
-void MovieList::addMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre) {
-    movies.push_back( createMovie(id, name, typeMovie, duration, subtitle, country, limitAge, description, genre) );
+    movies.push_back(movie);
 }
 
 void MovieList::deleteMovie(int id) {
     movies.erase(remove_if(movies.begin(), movies.end(), [id](Movie* movie) {
         return movie->getId() == id;
     }), movies.end());
+}
+
+
+void MovieList::displayMovieInfo(int id) const {
+    auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
+        return movie->getId() == id;
+    });
+
+    if (it == movies.end()) {
+        wcout << L"\033[92m[Phim không tồn tại] \033[0m" << endl;
+        return;
+    }
+
+    vector<vector<wstring>> table;
+    table.push_back({L"          Thông Tin Phim         "});
+    table.push_back({L"ID: " + to_wstring((*it)->getId())});
+    table.push_back({L"Tên: " + (*it)->getName()});
+    table.push_back({L"Thời lượng: " + to_wstring((*it)->getDuration())});
+    table.push_back({L"Phụ đề: " + (*it)->getSubTitle()});
+    table.push_back({L"Quốc gia: " + (*it)->getCountry()});
+    table.push_back({L"Độ tuổi: " + to_wstring((*it)->getLimitAge())});
+    table.push_back({L"Mô tả: " + (*it)->getDescription()});
+    drawTable(table);
 }
 
 void MovieList::displayMovies() const {
@@ -86,6 +122,23 @@ void MovieList::displayMovies() const {
     wcout << L"\n\n";
     drawTable(table);
 }
+
+
+
+void MovieList::updateMovie(int id) {
+    auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
+        return movie->getId() == id;
+    });
+
+    if (it == movies.end()) {
+        wcout << L"\033[92m[Phim không tồn tại] \033[0m" << endl;
+        return;
+    }
+
+    (*it)->editInfo();
+
+}
+
 
 void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {   
     locale loc(locale(), new codecvt_utf8<wchar_t>);   // UTF-8
