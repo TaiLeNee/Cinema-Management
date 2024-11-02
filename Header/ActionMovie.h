@@ -16,7 +16,7 @@ class ActionMovie : public Movie {
         void inputMovieInfo();  // in thông tin (hàm ảo)
         void displayInfo();     
         
-        void editActionLevel();
+        void editActionInfo();
     
     private:
         wstring actionLevel;    // mức độ hành động

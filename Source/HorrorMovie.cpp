@@ -46,15 +46,6 @@ void HorrorMovie::displayInfo(){
     // wcout << L"Mức độ kinh dị: " << horrorLevel <<endl;
 }
 
-void HorrorMovie::editHorrorLevel() {
-    wstring newHorrorLevel;
-    wcout << L"Nhập mức độ kinh dị (1-4): ";
-    wcin.ignore();
-    getline(wcin, newHorrorLevel);  
-    horrorLevel = L"Kinh Dị " + newHorrorLevel; 
-    this->horrorLevel = newHorrorLevel;
-    wcout << L"Nhập thành công!!";
-}
 
 
   

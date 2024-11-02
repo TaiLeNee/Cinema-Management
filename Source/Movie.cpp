@@ -34,10 +34,12 @@ void sortShowtimes(vector<Showtime>& showtimes) {
 Movie::Movie() {}
 
 Movie::Movie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
-    : id(id), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
+    : id(id), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {
+    currentID = max(currentID, id);
+    }
 
 Movie::Movie(const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description)
-    : name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
+    :id(++currentID), name(name), duration(duration), subTitle(subTitle), country(country), limitAge(limitAge), description(description) {}
 
 void Movie::addShowtime(const Showtime& showtime) {
     showtimes.push_back(showtime);
@@ -84,8 +86,8 @@ vector<Showtime>& Movie::getShowtimes()
 }
 
 void Movie::inputMovieInfo() {
+    this->id = ++currentID;
     wcout << L"Nhập tên phim: ";
-    wcin.ignore();
     getline(wcin, name);
 
     wcout << L"Nhập thời lượng phim (phút): ";
@@ -103,7 +105,6 @@ void Movie::inputMovieInfo() {
 
     wcout << L"Nhập giới hạn tuổi: ";
     wcin >> limitAge;
-    wcin.ignore();
 }
 
 
@@ -145,114 +146,56 @@ void Movie::editInfo() {
         vector<vector<wstring>> table;
         table.push_back({L"   Menu chỉnh sửa thông tin phim"});
         table.push_back({L"1. Sửa tên phim"});
-        table.push_back({L"2. Sửa thể loại phim"});
-        table.push_back({L"3. Sửa thời lượng phim"});
-        table.push_back({L"4. Sửa mô tả phim"});
-        table.push_back({L"5. Thoát chỉnh sửa"});
+        table.push_back({L"2. Sửa thời lượng phim"});
+        table.push_back({L"3. Sửa mô tả phim"});
+        table.push_back({L"4. Sửa quốc gia sản xuất"});
+        table.push_back({L"5. Sửa phụ đề"});
+        table.push_back({L"6. Sửa giới hạn tuổi"});
+        table.push_back({L"0. Thoát chỉnh sửa"});
         drawTable(table);
         checkInput(L"Nhập lựa chọn:", choice);
 
         switch (choice) {
             case 1:
                 wcout << L"Nhập tên mới: ";
+                wcin.ignore();
                 getline(wcin, newName);
                 name = newName;
-                system("cls");
+                // system("cls");
                 break;
-            case 2:{
-                vector<vector<wstring>> table;
-                table.push_back({L"  Chọn Thể Loại Phim Muốn Đổi"});
-                table.push_back({L"1. Tình cảm"});
-                table.push_back({L"2. Hoạt hình"});
-                table.push_back({L"3. Hành động"});
-                table.push_back({L"4. Kinh dị"});
-                table.push_back({L"0. Quay lại"});
-                drawTable(table);
-                wcout << L"\033[92m[Lựa chọn của bạn]  ";
-                int choice;
-                wcin >> choice;
-                wcin.ignore();
-                switch (choice){
-                    case 1: {
-                        // Tạo đối tượng LoveMovie mới và sao chép dữ liệu
-                        LoveMovie* loveMovie = new LoveMovie(*this);
-                        if (loveMovie) {
-                            system("cls");
-                            wcout << L"Đã chuyển đổi sang thể loại Tình cảm." << endl;
-                            // Thay thế đối tượng hiện tại bằng đối tượng mới
-                            *this = *loveMovie;
-                            delete loveMovie;
-                        } else {
-                            wcout << L"Không thể chuyển đổi sang thể loại Tình cảm." << endl;
-                        }
-                        break;
-                    }
-                    case 2: {
-                        // Tạo đối tượng AnimatedMovie mới và sao chép dữ liệu
-                        AnimatedMovie* animatedMovie = new AnimatedMovie(*this);
-                        if (animatedMovie) {
-                            system("cls");
-                            wcout << L"Đã chuyển đổi sang thể loại Hoạt hình." << endl;
-                            // Thay thế đối tượng hiện tại bằng đối tượng mới
-                            *this = *animatedMovie;
-                            delete animatedMovie;
-                            system("cls");
-                        } else {
-                            wcout << L"Không thể chuyển đổi sang thể loại Hoạt hình." << endl;
-                        }
-                        break;
-                    }
-                    case 3: {
-                        // Tạo đối tượng ActionMovie mới và sao chép dữ liệu
-                        ActionMovie* actionMovie = new ActionMovie(*this);
-                        if (actionMovie) {
-                            system("cls");
-                            wcout << L"Đã chuyển đổi sang thể loại Hành động." << endl;
-                            // Thay thế đối tượng hiện tại bằng đối tượng mới
-                            *this = *actionMovie;
-                            delete actionMovie;
-                        } else {
-                            wcout << L"Không thể chuyển đổi sang thể loại Hành động." << endl;
-                        }
-                        break;
-                    }
-                    case 4: {
-                        // Tạo đối tượng HorrorMovie mới và sao chép dữ liệu
-                        HorrorMovie* horrorMovie = new HorrorMovie(*this);
-                        if (horrorMovie) {
-                            system("cls");
-                            wcout << L"Đã chuyển đổi sang thể loại Kinh dị." << endl;
-                            // Thay thế đối tượng hiện tại bằng đối tượng mới
-                            *this = *horrorMovie;
-                            delete horrorMovie;
-                        } else {
-                            wcout << L"Không thể chuyển đổi sang thể loại Kinh dị." << endl;
-                        }
-                        break;
-                    }
-                    case 0:
-                        system("cls");
-                        break;
-                    default:
-                        wcout << L"Lựa chọn không hợp lệ. Vui lòng thử lại." << endl;
-                        break;
-                }
-            }
-                break;
-            case 3:
+            case 2:
                 wcout << L"Nhập thời lượng mới: ";
                 wcin >> newDuration;
                 duration = newDuration;
                 system("cls");
                 break;
-            case 4:
+            case 3:
                 wcout << L"Nhập mô tả mới: ";
                 wcin.ignore();
                 getline(wcin, newDescription);
                 description = newDescription;
                 system("cls");
                 break;
+            case 4:
+                wcout << L"Nhập quốc gia mới: ";
+                wcin.ignore();
+                getline(wcin, newGenre);
+                country = newGenre;
+                system("cls");
+                break;
             case 5:
+                wcout << L"Nhập phụ đề mới: ";
+                wcin.ignore();
+                getline(wcin, newGenre);
+                subTitle = newGenre;
+                system("cls");
+                break;
+            case 6:
+                wcout << L"Nhập giới hạn tuổi mới: ";
+                wcin >> limitAge;
+                system("cls");
+                break;
+            case 0:
                 wcout << L"Thoát chỉnh sửa." << endl;
                 system("cls");
                 return;

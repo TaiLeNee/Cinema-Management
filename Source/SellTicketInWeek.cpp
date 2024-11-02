@@ -41,8 +41,10 @@ void SellTicketInWeek(MovieList &movieList) {
     wcin>>choiceDate;
     wcout<<L"\033[0m";
 
-    if(choiceDate == 0)
+    if(choiceDate == 0){
+        system("cls");
         return;
+    }
 
     
     vector<vector<wstring>> tableMovie;

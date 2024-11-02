@@ -17,7 +17,7 @@ class LoveMovie : public Movie {
         void inputMovieInfo();
         void displayInfo() const;
         void deleteInfo();
-        void editInfo();    
+        void editLoveInfo();    
 
         void setRomantic(const wstring& romantic);
         wstring getRomantic() const;

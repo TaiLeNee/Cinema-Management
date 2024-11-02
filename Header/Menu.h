@@ -3,6 +3,7 @@
 #include "EmployeeList.h"
 #include "CustomerList.h"
 #include "gotoXY.h"
+#include "checkInput.h"
 #include <cstdlib>
 #include <iostream>
 #include "Color.h"

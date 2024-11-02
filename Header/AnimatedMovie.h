@@ -21,7 +21,7 @@ class AnimatedMovie : public Movie {
         void inputMovieInfo();
         void displayInfo() const;
         void deleteInfo();
-        void editInfo();    
+        void editAnimatedInfo();    
 
         void setAnimation(const wstring& animation);
         wstring getAnimation() const;

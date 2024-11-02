@@ -16,7 +16,7 @@ class HorrorMovie : public Movie {
         void inputMovieInfo();  // in thông tin (hàm ảo)
         void displayInfo();     
         
-        void editHorrorLevel();
+        void editHorrorInfo();
     
     private:
         wstring horrorLevel;    // mức độ hành động

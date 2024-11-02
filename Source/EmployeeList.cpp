@@ -83,7 +83,16 @@ void ListOfEmployee::showEmployeeInfo(int id) {
     table.push_back({L"Số Điện Thoại: " + it->getPhoneNumber()});
     table.push_back({L"Username: " + it->getUserName()});
     table.push_back({L"Password: " + it->getPassWord()});
-    table.push_back({L"Level: " + to_wstring(it->getLevel())});
+    if (it->getLevel() == 1) {
+        table.push_back({L"Cấp bậc: Admin"});
+    } 
+    else if (it->getLevel() == 2) {
+        table.push_back({L"Cấp Bậc: Nhân viên"});
+    }
+    else if (it->getLevel() == 0) {
+        table.push_back({L"Cấp Bậc: OWNER"});
+    }
+    
     drawTable(table);
 }
 
@@ -108,7 +117,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
         wcout << L"\033[92m[Nhân viên không tồn tại] \033[0m" << endl;
         return;
     }
-
+    showEmployeeInfo(id);
     vector<vector<wstring>> table;
     wstring name, phoneNumber, userName, passWord;
     int age, level;
