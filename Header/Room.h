@@ -26,7 +26,8 @@ class Room {
         int getId() const;
         wstring getName() const;
         void addShowtime(const Showtime& showtime);
-        vector<Showtime> getShowtimes();
+        vector<Showtime>& getShowtimes();
+        void resetShowtimes();
         void addChairs(int numRows, int numChairsPerRow);
         vector<vector<Chair>> getChairs();
         void loadShowtimes(const string& filename);

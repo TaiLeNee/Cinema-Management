@@ -49,6 +49,7 @@ public:
     void loadFromCSV(const std::string& filename);
 
     void loadShowtimesofMovie(vector<Showtime>& showtimes);
+    void resetShowtimesofMovie();
 };
 
 #endif // MOVIELIST_H

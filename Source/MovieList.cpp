@@ -19,6 +19,12 @@ void MovieList::loadShowtimesofMovie(vector<Showtime>& showtimes) {
     }
 }
 
+void MovieList::resetShowtimesofMovie() {
+    for(auto &movie : movies){
+        movie->resetShowtimes();
+    }
+}
+
 vector<Movie*>& MovieList::getMovies(){
     return movies;
 }

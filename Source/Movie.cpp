@@ -276,3 +276,7 @@ void Movie::deleteShowtime(int showtimeID) {
     }), showtimes.end());
 }
 
+void Movie::resetShowtimes() {
+    showtimes.clear();
+}
+
