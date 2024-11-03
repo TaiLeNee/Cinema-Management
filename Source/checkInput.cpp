@@ -5,7 +5,7 @@ void checkInput(wstring text, int &choice) {
    // Kiểm tra đầu vào của người dùng
         wstring input;
         while(1){
-            wcout<<L"\033[92m══["<<text<<L"]══> \033[0m";
+            wcout<<L"\033[92m══["<<text<<L"]==> \033[0m";
             wcin >> input ;
             wstringstream ss(input);
 

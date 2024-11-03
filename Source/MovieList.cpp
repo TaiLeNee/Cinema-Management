@@ -4,15 +4,13 @@ using namespace std;
 
 
 MovieList::MovieList() {
-    loadFromCSV("../DATA/movies.csv");
+    // loadFromCSV("../DATA/movies.csv");
 }
 
 void MovieList::loadShowtimesofMovie(vector<Showtime>& showtimes) {
     for(auto &movie : movies){
-        vector<Showtime> result;
         for (auto& showtime : showtimes) {
             if (showtime.getMovieID() == movie->getId()) {
-                result.push_back(showtime);
                 movie->addShowtime(showtime);
             }
         }
@@ -182,7 +180,7 @@ void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {
     }
 }
 
-void MovieList::loadFromCSV(const string& filename) {
+void MovieList::loadFromCSV(const string& filename = "../DATA/movies.csv") {
     movies.clear();
     wifstream file(filename);
     locale loc(locale(), new codecvt_utf8<wchar_t>);   // UTF-8

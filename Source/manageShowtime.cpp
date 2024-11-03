@@ -29,45 +29,47 @@ Datetime getDatetime(){
      x = pos.X;
 
     gotoXY(17, y-2);
-    int month; wcin>>month;
-
+    wstring month; wcin>>month;
+    int monthINT = stoi(month);
     //Kiểm tra tháng
-    if(month < 1 || month > 12 || month < monthNow){
+    if(monthINT < 1 || monthINT > 12 || monthINT < monthNow){
         red(L"══[Tháng không hợp lệ, Vui lòng nhập lại]══\n");
         goto getTime;
     }
     
     gotoXY(0, y+1);
-    startTime = drawCalendar(month, 2024);
-
+    startTime = drawCalendar(monthINT, 2024);
+    startTime.setMonth(month);
+    
     inputTime:
 
     drawTable({{L"Giờ: ", L"    ", L"Phút: ", L"    "}});
-    int hour, minute;
+    wstring hour, minute;
      pos = getXY();
      y = pos.Y;
      x = pos.X;
     gotoXY(10, y-2);
     wcin>>hour;
     
+    int hourINT = stoi(hour);
 
-    if(hour < 0 || hour > 23){
+    if(hourINT < 0 || hourINT > 23){
         red(L"══[Giờ không hợp lệ, Vui lòng nhập lại]══\n");
         goto inputTime;
     }
 
     gotoXY(26, y-2);
     wcin>>minute;
-
-    if(minute < 0 || minute > 59){
+    int minuteINT = stoi(minute);
+    if(minuteINT < 0 || minuteINT > 59){
         red(L"══[Phút không hợp lệ, Vui lòng nhập lại]══\n");
         goto inputTime;
     }
 
     gotoXY(0, y+1);
 
-    startTime.setHour(to_wstring(hour));
-    startTime.setMinute(to_wstring(minute));
+    startTime.setHour(hour);
+    startTime.setMinute(minute);
     return startTime;
 
    
@@ -560,7 +562,7 @@ void displayListShowtimeAll(RoomList &roomList, MovieList &movieList){
         return stoi(a[0]) < stoi(b[0]);
     });
 
-    
+    system("cls");
     drawTable(table);
 
     green(L"════════════════════════════════════════════════════════════════════════════════════════════════\n");

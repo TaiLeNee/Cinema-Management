@@ -191,7 +191,7 @@ void movieMenu(MovieList &movieList)
                 system("cls");
                 break;
             default:
-                wcout << L"Invalid choice. Please try again." << endl;
+                red(L"[Lựa chọn không hợp lệ. Vui lòng chọn lại.]\n");
                 break;
             }
             wcout << "\033[0m";
@@ -318,30 +318,30 @@ void manageMovie(MovieList &movieList)
 }
 
 void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, int typeEmployee)
-{
-    system("cls");
-    wcout << L"\n\n";
-    wcout << L"\033[92m      ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗██╗\n"
-          << L"\033[92m      ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝██║\n"
-          << L"\033[92m      ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  ██║\n"
-          << L"\033[92m      ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  ╚═╝\n"
-          << L"\033[92m      ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗██╗\n"
-          << L"\033[92m     ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝ \n";
-    wcout << L"\033[m";
-
-    vector<vector<wstring>> table;
-    table.push_back({L"HỆ THỐNG QUẢN LÝ RẠP CHIẾU PHIM            "});
-    table.push_back({L"1. Bán vé            "});
-
-    if (typeEmployee <= 1)
-        table.push_back({L"2. Quản lý hệ thống       "});
-    else
-        table.push_back({L"2. Đổi mật khẩu       "});
-    table.push_back({L"0. Đăng xuất/Thoát            "});
-
-    int choice;
+{   
+    int choice = -1;
     while (choice != 0)
     {
+        system("cls");
+        wcout << L"\n\n";
+        wcout << L"\033[92m      ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗██╗\n"
+            << L"\033[92m      ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝██║\n"
+            << L"\033[92m      ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  ██║\n"
+            << L"\033[92m      ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  ╚═╝\n"
+            << L"\033[92m      ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗██╗\n"
+            << L"\033[92m     ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝ \n";
+        wcout << L"\033[m";
+
+        vector<vector<wstring>> table;
+        table.push_back({L"HỆ THỐNG QUẢN LÝ RẠP CHIẾU PHIM            "});
+        table.push_back({L"1. Bán vé            "});
+
+        if (typeEmployee <= 1)
+            table.push_back({L"2. Quản lý hệ thống       "});
+        else
+            table.push_back({L"2. Đổi mật khẩu       "});
+        table.push_back({L"0. Đăng xuất/Thoát            "});
+    
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
         switch (choice)
@@ -353,8 +353,8 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             system("cls");
             if (typeEmployee <= 1)
             {
-            system("cls");
-            managementMenu(employeeList, movieList, customerList, roomList);
+                system("cls");
+                managementMenu(employeeList, movieList, customerList, roomList);
             }
             else
             {
