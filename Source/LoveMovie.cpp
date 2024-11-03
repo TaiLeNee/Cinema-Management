@@ -13,12 +13,12 @@ LoveMovie::LoveMovie(const Movie& movie): Movie(movie.getId(), movie.getName(), 
 
 void LoveMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
-    wcout << L"Nhập loại hoạt hình: ";
+    wcout << L"Nhập loại tình cảm: ";
     wcin.ignore();
     getline(wcin, romantic);
 }
 
-void LoveMovie::displayInfo(){
+void LoveMovie::displayInfo() const {
     Movie::displayInfo();
     drawTable({
         {L"Thể loại tình cảm: ", romantic }
@@ -30,12 +30,6 @@ void LoveMovie::deleteInfo() {
     romantic = L"";
 }
 
-void LoveMovie::editInfo() {
-    Movie::editInfo();
-    wcout << L"Nhập loại hoạt hình mới: ";
-    wcin.ignore();
-    getline(wcin, romantic);
-}   
 
 void LoveMovie::setRomantic(const wstring& romantic) {
     this->romantic = romantic;

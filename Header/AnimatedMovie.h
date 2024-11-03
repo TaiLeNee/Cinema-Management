@@ -1,3 +1,5 @@
+#ifndef ANIMATEDMOVIE_H
+#define ANIMATEDMOVIE_H
 #include "Movie.h"
 #include <iostream>
 #include <string>
@@ -19,7 +21,7 @@ class AnimatedMovie : public Movie {
         void inputMovieInfo();
         void displayInfo() const;
         void deleteInfo();
-        void editInfo();    
+        void editAnimatedInfo();    
 
         void setAnimation(const wstring& animation);
         wstring getAnimation() const;
@@ -27,3 +29,4 @@ class AnimatedMovie : public Movie {
     private:
         wstring animation; // Loại hoạt hình
 };
+#endif  // end ANIMATEDMOVIE_H

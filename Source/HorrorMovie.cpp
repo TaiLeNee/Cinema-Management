@@ -12,6 +12,7 @@ using namespace std;
 // Thiết lập chế độ Unicode cho console
 
 
+HorrorMovie::HorrorMovie() {}
 
 HorrorMovie::HorrorMovie(int id, const wstring& name, int duration, const wstring& subTitle, const wstring& country, int limitAge, const wstring& description, const wstring& horrorLevel) 
     : Movie(id, name, duration, subTitle, country, limitAge, description), horrorLevel(horrorLevel) {}
@@ -45,15 +46,6 @@ void HorrorMovie::displayInfo(){
     // wcout << L"Mức độ kinh dị: " << horrorLevel <<endl;
 }
 
-void HorrorMovie::editHorrorLevel() {
-    wstring newHorrorLevel;
-    wcout << L"Nhập mức độ kinh dị (1-4): ";
-    wcin.ignore();
-    getline(wcin, newHorrorLevel);  
-    horrorLevel = L"Kinh Dị " + newHorrorLevel; 
-    this->horrorLevel = newHorrorLevel;
-    wcout << L"Nhập thành công!!";
-}
 
 
   

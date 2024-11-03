@@ -52,11 +52,24 @@ void Room::addShowtime(const Showtime &showtime)
     showtimes.push_back(showtime);
 }
 
-vector<Showtime> Room::getShowtimes() { 
+vector<Showtime>& Room::getShowtimes() { 
     return showtimes; 
+}
+
+void Room::resetShowtimes() {
+    showtimes.clear();
 }
 
 vector<vector<Chair>> Room::getChairs() {
     return chairs;  
 }
 
+void Room::deleteShowtime(int showtimeID) {
+    auto it = find_if(showtimes.begin(), showtimes.end(), [showtimeID](const Showtime& showtime) {
+        return showtime.showtimeID == showtimeID;
+    });
+
+    if (it != showtimes.end()) {
+        showtimes.erase(it);
+    }
+}

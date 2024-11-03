@@ -74,7 +74,7 @@ Datetime drawCalendar(int month, int year) {
         green(L"═════[Nhập ngày]==> ");
         wcin >> day;
 
-        if (day >= currentDay && day <= daysInMonth) {
+        if (day > currentDay && day <= daysInMonth) {
             break;
         } else {
             red(L"[Ngày không hợp lệ. Vui lòng chọn lại.\n]");

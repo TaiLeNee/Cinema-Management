@@ -1,3 +1,5 @@
+#ifndef LOVEMOVIE_H
+#define LOVEMOVIE_H
 #include "Movie.h"
 
 using namespace std;
@@ -15,7 +17,7 @@ class LoveMovie : public Movie {
         void inputMovieInfo();
         void displayInfo() const;
         void deleteInfo();
-        void editInfo();    
+        void editLoveInfo();    
 
         void setRomantic(const wstring& romantic);
         wstring getRomantic() const;
@@ -23,3 +25,4 @@ class LoveMovie : public Movie {
     private:
         wstring romantic; // Loại phim tình cảm
 };
+#endif  // end LOVEMOVIE_H

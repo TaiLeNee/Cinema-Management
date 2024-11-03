@@ -16,6 +16,13 @@ void ListOfEmployee::addEmployee() {
     table.push_back({L"Nhập quyền của nhân viên (1. Admin, 2. Nhân viên):  "});
     drawTable(table);
 
+    int newID = 1; // Khởi tạo ID mới
+    if (!employee_list.empty()) {
+        newID = max_element(employee_list.begin(), employee_list.end(), [](const Employee &a, const Employee &b) {
+            return a.getId() < b.getId();
+        })->getId() + 1;
+    }
+
     gotoXY(27, 3);
     getline(wcin, name);
 
@@ -31,18 +38,12 @@ void ListOfEmployee::addEmployee() {
     wcin.ignore();
 
     if(level == 2){
-        userName = L"Nv_" + to_wstring(createID());
+        userName = L"Nv_" + to_wstring(newID);
         passWord = L"123456";
     }
     else if (level == 1){
-        userName = L"Admin_" + to_wstring(createID());
+        userName = L"Admin_" + to_wstring(newID);
         passWord = L"123456";
-    }
-    int newID = 1; // Khởi tạo ID mới
-    if (!employee_list.empty()) {
-        newID = max_element(employee_list.begin(), employee_list.end(), [](const Employee &a, const Employee &b) {
-            return a.getId() < b.getId();
-        })->getId() + 1;
     }
 
     Employee newE(name, age, phoneNumber, userName, passWord, level);
@@ -83,7 +84,16 @@ void ListOfEmployee::showEmployeeInfo(int id) {
     table.push_back({L"Số Điện Thoại: " + it->getPhoneNumber()});
     table.push_back({L"Username: " + it->getUserName()});
     table.push_back({L"Password: " + it->getPassWord()});
-    table.push_back({L"Level: " + to_wstring(it->getLevel())});
+    if (it->getLevel() == 1) {
+        table.push_back({L"Cấp bậc: Admin"});
+    } 
+    else if (it->getLevel() == 2) {
+        table.push_back({L"Cấp Bậc: Nhân viên"});
+    }
+    else if (it->getLevel() == 0) {
+        table.push_back({L"Cấp Bậc: OWNER"});
+    }
+    
     drawTable(table);
 }
 
@@ -91,15 +101,23 @@ void ListOfEmployee::showEmployeeList() const{
     vector<vector<wstring>> table1,table2;
     table1.push_back({L"Danh sách nhân viên"});
     drawTable(table1);
-    table2.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Level"});
+    table2.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Cấp Bậc"});
     for(const auto &e : employee_list){
-        table2.push_back({to_wstring(e.getId()), e.getName(), to_wstring(e.getAge()), e.getPhoneNumber(), e.getUserName(), e.getPassWord(), to_wstring(e.getLevel())});
+        table2.push_back({to_wstring(e.getId()), 
+        e.getName(), 
+        to_wstring(e.getAge()), 
+        e.getPhoneNumber(), 
+        e.getUserName(), 
+        e.getPassWord(), 
+        e.getLevel() == 1 ? L"Admin" : L"Nhân viên"
+        });
     }
     drawTable(table2);
 }
 
 
 void ListOfEmployee::editEmployeeInfo(int id) {
+    int choice;
     auto it = find_if(employee_list.begin(), employee_list.end(), [id](Employee &e) {
         return e.getId() == id;
     });
@@ -108,69 +126,81 @@ void ListOfEmployee::editEmployeeInfo(int id) {
         wcout << L"\033[92m[Nhân viên không tồn tại] \033[0m" << endl;
         return;
     }
+    do{
+        system("cls");
+        showEmployeeInfo(id);
+        vector<vector<wstring>> table;
+        wstring name, phoneNumber, userName, passWord;
+        int age, level;
+        table.push_back({L"Hãy chọn thông tin bạn muốn sửa đổi"});
+        table.push_back({L"1. Họ và tên"});
+        table.push_back({L"2. Tuổi"});
+        table.push_back({L"3. Số điện thoại"});
+        table.push_back({L"4. Username"});
+        table.push_back({L"5. Password"});
+        table.push_back({L"6. Level"});
+        table.push_back({L"7. Thoát"});
+        drawTable(table);
+        wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
+        wcin >> choice;
+        wcin.ignore();
 
-    vector<vector<wstring>> table;
-    wstring name, phoneNumber, userName, passWord;
-    int age, level;
-    table.push_back({L"Hãy chọn thông tin bạn muốn sửa đổi"});
-    table.push_back({L"1. Họ và tên"});
-    table.push_back({L"2. Tuổi"});
-    table.push_back({L"3. Số điện thoại"});
-    table.push_back({L"4. Username"});
-    table.push_back({L"5. Password"});
-    table.push_back({L"6. Level"});
-    table.push_back({L"7. Thoát"});
-    drawTable(table);
-    wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
-    int choice;
-    wcin >> choice;
-    wcin.ignore();
-
-    switch (choice){
-        case 1: {
-            wcout << L"\033[92m[Nhập tên mới] \033[0m";
-            std::getline(wcin, name);
-            it->setName(name);
-            break;
+        switch (choice){
+            case 1: {
+                wcout << L"\033[92m[Nhập tên mới] \033[0m";
+                getline(wcin, name);
+                it->setName(name);
+                break;
+            }
+            case 2: {
+                wcout << L"\033[92m[Nhập tuổi mới] \033[0m";
+                wcin >> age;
+                it->setAge(age);
+                break;
+            }
+            case 3: {
+                wcout << L"\033[92m[Nhập số điện thoại mới] \033[0m";
+                getline(wcin, phoneNumber);
+                it->setPhoneNumber(phoneNumber);
+                break;
+            }
+            case 4: {
+                wcout << L"\033[92m[Nhập username mới] \033[0m";
+                getline(wcin, userName);
+                it->setUserName(userName);
+                break;
+            }
+            case 5: {
+                wcout << L"\033[92m[Nhập password mới] \033[0m";
+                getline(wcin, passWord);
+                it->setPassWord(passWord);
+                break;
+            }
+            case 6: {
+                wcout << L"\033[92m[Nhập level mới] \033[0m";
+                wcin >> level;
+                if(level == 2){
+                    userName = L"Nv" + to_wstring(it->getId());
+                    passWord = L"123456";
+                }
+                else if (level == 1){
+                    userName = L"Admin_" + to_wstring(it->getId());
+                    passWord = L"123456";
+                }
+                it->setLevel(level);
+                it->setUserName(userName);
+                it->setPassWord(passWord);
+                break;
+            }
+            case 7: {
+                return;
+            }  
+            default:{
+                wcout << L"\033[92m[Lựa chọn không hợp lệ] \033[0m" << endl;
+                break;
+            }
         }
-        case 2: {
-            wcout << L"\033[92m[Nhập tuổi mới] \033[0m";
-            wcin >> age;
-            it->setAge(age);
-            break;
-        }
-        case 3: {
-            wcout << L"\033[92m[Nhập số điện thoại mới] \033[0m";
-            std::getline(wcin, phoneNumber);
-            it->setPhoneNumber(phoneNumber);
-            break;
-        }
-        case 4: {
-            wcout << L"\033[92m[Nhập username mới] \033[0m";
-            std::getline(wcin, userName);
-            it->setUserName(userName);
-            break;
-        }
-        case 5: {
-            wcout << L"\033[92m[Nhập password mới] \033[0m";
-            std::getline(wcin, passWord);
-            it->setPassWord(passWord);
-            break;
-        }
-        case 6: {
-            wcout << L"\033[92m[Nhập level mới] \033[0m";
-            wcin >> level;
-            it->setLevel(level);
-            break;
-        }
-        case 7: {
-            break;
-        }  
-        default:{
-            wcout << L"\033[92m[Lựa chọn không hợp lệ] \033[0m" << endl;
-            break;
-        }
-    }
+    }while(choice != 7);
 }
 
 

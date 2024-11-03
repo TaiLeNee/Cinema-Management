@@ -29,12 +29,6 @@ void AnimatedMovie::deleteInfo() {
     animation = L"";
 }
 
-void AnimatedMovie::editInfo() {
-    Movie::editInfo();
-    wcout << L"Nhập loại hoạt hình mới: ";
-    wcin.ignore();
-    getline(wcin, animation);
-}   
 
 void AnimatedMovie::setAnimation(const wstring& animation) {
     this->animation = animation;

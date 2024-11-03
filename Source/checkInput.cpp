@@ -4,10 +4,9 @@
 void checkInput(wstring text, int &choice) {
    // Kiểm tra đầu vào của người dùng
         wstring input;
-        wcin.ignore();
         while(1){
-            wcout<<L"\033[92m═══════["<<text<<L"]==> \033[0m";
-            getline(wcin, input);
+            wcout<<L"\033[92m══["<<text<<L"]==> \033[0m";
+            wcin >> input ;
             wstringstream ss(input);
 
             if(!(ss>>choice)){
@@ -17,4 +16,3 @@ void checkInput(wstring text, int &choice) {
             return; 
         }
 }
-

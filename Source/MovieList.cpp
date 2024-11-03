@@ -1,26 +1,25 @@
-#include "../Header/Movie.h"
 #include "../Header/MovieList.h"
-#include "../Header/AnimatedMovie.h"
-#include "../Header/LoveMovie.h"
-#include "../Header/ActionMovie.h"
-#include "../Header/HorrorMovie.h"
 
 using namespace std;
 
 
 MovieList::MovieList() {
-    loadFromCSV("../DATA/movies.csv");
+    // loadFromCSV("../DATA/movies.csv");
 }
 
 void MovieList::loadShowtimesofMovie(vector<Showtime>& showtimes) {
     for(auto &movie : movies){
-        vector<Showtime> result;
         for (auto& showtime : showtimes) {
             if (showtime.getMovieID() == movie->getId()) {
-                result.push_back(showtime);
                 movie->addShowtime(showtime);
             }
         }
+    }
+}
+
+void MovieList::resetShowtimesofMovie() {
+    for(auto &movie : movies){
+        movie->resetShowtimes();
     }
 }
 
@@ -146,6 +145,7 @@ void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {
     wofstream file(filename);
     if (file.is_open()) {
         file.imbue(loc);
+        file << L"ID,Tên,Loại, Thời lượng, Phụ đề, Quốc gia, Độ tuổi, Đặc điểm riêng, Mô tả\n";
         for (const auto& movie : movies) {
             file << movie->getId() << L","
                  << movie->getName() << L",";
@@ -180,7 +180,7 @@ void MovieList::saveToCSV(string filename = "../DATA/movies.csv") const {
     }
 }
 
-void MovieList::loadFromCSV(const string& filename) {
+void MovieList::loadFromCSV(const string& filename = "../DATA/movies.csv") {
     movies.clear();
     wifstream file(filename);
     locale loc(locale(), new codecvt_utf8<wchar_t>);   // UTF-8
