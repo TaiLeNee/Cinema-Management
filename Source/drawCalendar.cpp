@@ -6,6 +6,7 @@
 #include <codecvt>
 #include "../Header/drawTable.h"
 #include "../Header/Datetime.h"
+#include "../Header/checkInput.h"
 
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 
 void drawTable(const vector<vector<wstring>> &table);
 
-Datetime drawCalendar(int month, int year) {
+Datetime drawCalendar(int month, int year, int type) {
 
     
     // Lấy ngày hiện tại
@@ -70,14 +71,34 @@ Datetime drawCalendar(int month, int year) {
         case 2: daysInMonth = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ? 29 : 28; break;
     }
 
+        
     while (true) {
-        green(L"═════[Nhập ngày]==> ");
-        wcin >> day;
+        if(type==1){
+            checkInput(L"Chọn ngày", day);
+            if(day > 1 && day <= daysInMonth){
+                return Datetime(to_wstring(day), to_wstring(month), to_wstring(year));
+            }
+            else if(day == 0){
+                return Datetime();
+            }
+            else{
+                red(L"[Ngày không hợp lệ. Vui lòng chọn lại.\n]");
+                
+            }
+        }
+        else{
 
-        if (day > currentDay && day <= daysInMonth) {
-            break;
-        } else {
-            red(L"[Ngày không hợp lệ. Vui lòng chọn lại.\n]");
+            checkInput(L"Chọn ngày", day);
+
+            if (day > currentDay && day <= daysInMonth) {
+                break;
+            } 
+            else if(day == 0){
+                return Datetime();
+            }
+            else {
+                red(L"[Ngày không hợp lệ. Vui lòng chọn lại.\n]");
+            }
         }
     }
 

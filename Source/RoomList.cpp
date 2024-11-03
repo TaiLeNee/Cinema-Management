@@ -40,3 +40,13 @@ void RoomList::resetShowtimesofRoom(){
         room.resetShowtimes();
     }
 }
+
+void RoomList::displayRooms(){
+    drawTable({{L"          DANH SÁCH PHÒNG CHIẾU          "}});
+    vector<vector<wstring>> table;
+    table.push_back({L" ID ", L" Tên phòng ", L" Số lượng ghế "});
+    for(auto &room: rooms){
+        table.push_back({to_wstring(room.getId()), room.getName(), to_wstring(room.getNumRows()*room.getNumChairsPerRow())});
+    }
+    drawTable(table);
+}

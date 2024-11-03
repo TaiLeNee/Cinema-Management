@@ -32,15 +32,19 @@ Datetime getDatetime(){
     wstring month; wcin>>month;
     int monthINT = stoi(month);
     //Kiểm tra tháng
+    if(!monthINT){
+        system("cls");
+        return startTime;
+    }
     if(monthINT < 1 || monthINT > 12 || monthINT < monthNow){
         red(L"══[Tháng không hợp lệ, Vui lòng nhập lại]══\n");
         goto getTime;
     }
     
     gotoXY(0, y+1);
-    startTime = drawCalendar(monthINT, 2024);
+    startTime = drawCalendar(monthINT, 2024, 0);
     startTime.setMonth(month);
-    
+
     inputTime:
 
     drawTable({{L"Giờ: ", L"    ", L"Phút: ", L"    "}});
@@ -107,8 +111,10 @@ void addShowtime(RoomList &roomList, MovieList& movieList){
     addShowtime:
     drawTable(table);
     int movieID, roomID;
+
     drawTable({
         {L"         THÊM KHUNG GIỜ CHIẾU         "}});
+    red(L"[Nhập 0: quay lại]\n");
     drawTable({
         {L"Nhập ID phim: ", L" "},
         {L"Nhập ID phòng: ", L" "}
@@ -121,6 +127,10 @@ void addShowtime(RoomList &roomList, MovieList& movieList){
     gotoXY(20, y - 4);
 
     wcin >> movieID;
+    if(!movieID){
+        system("cls");
+        return;
+    }
 
     int checkMovieID = 0;
     for(auto &movie: movies){
@@ -140,6 +150,11 @@ void addShowtime(RoomList &roomList, MovieList& movieList){
     gotoXY(20, y - 2);
     wcin >> roomID;
     gotoXY(0, y+1);
+
+    if(!roomID){
+        system("cls");
+        return;
+    }
 
     bool checkRoomID = 0;
     for(auto &room: rooms){
@@ -162,7 +177,10 @@ void addShowtime(RoomList &roomList, MovieList& movieList){
     
     inputTime:
     Datetime startTime = getDatetime();
-
+    if(startTime.getHour() == L"0"){
+        system("cls");
+        goto addShowtime;
+    }
     
     Showtime showtime(movieID, roomID, startTime);
 
@@ -604,6 +622,288 @@ void displayListShowtimeAll(RoomList &roomList, MovieList &movieList){
 }
 
 
+void displayListShowtimeOfDate(RoomList &roomList, MovieList &movieList){
+    vector<vector<wstring>> table;
+    vector<Room>& rooms = roomList.getRooms();
+    vector<Movie*>& movies = movieList.getMovies();
+
+    vector<Showtime*> showtimeList;
+
+    Position pos; int x, y;
+    Datetime startTime;
+    //chọn ngày
+    getTime:
+    system("cls");
+    green(L"══════════[Chọn ngày cần xem lịch chiếu]══════════\n");
+    red(L"Nhập 0: quay lại\n");
+    drawTable({{L"Nhập tháng: ", L"          "}});
+    pos = getXY();
+     y = pos.Y;
+     x = pos.X;
+
+    gotoXY(17, y-2);
+    wstring month; wcin>>month;
+    int monthINT = stoi(month);
+    //Kiểm tra tháng
+    if(!monthINT){
+        system("cls");
+        return;
+    }
+    if(monthINT < 1 || monthINT > 12){
+        red(L"══[Tháng không hợp lệ, Vui lòng nhập lại]══\n");
+        goto getTime;
+    }
+    
+    gotoXY(0, y+1);
+    startTime = drawCalendar(monthINT, 2024, 1);
+    if(startTime.getDay() == L"0"){
+        system("cls");
+        goto getTime;
+    }
+    
+    
+    //Kiểm tra ngày
+
+    displayShowtime:
+    table.clear();
+    table.push_back({L" ID Khung giờ ", L" Tên phòng ", L" Tên phim ", L" Giờ chiếu ", L" Ngày chiếu "});
+    
+
+
+    for(auto &room: rooms){
+        vector<Showtime>& showtimes = room.getShowtimes();
+        for(auto &showtime: showtimes){
+            for(auto &movie: movies){
+                if(showtime.movieID == movie->getId() && showtime.getStartTime().getDate() == startTime.getDate()){
+                    Datetime startime = showtime.getStartTime();
+                    table.push_back({to_wstring(showtime.showtimeID), room.getName(), movie->getName(), 
+                                    startime.getTime(), startime.getDate()});
+
+                    showtimeList.push_back(&showtime);
+
+                }
+            }
+        }
+    }
+
+    sort(table.begin()+1, table.end(), [](const vector<wstring>& a, const vector<wstring>& b){
+        return stoi(a[0]) < stoi(b[0]);
+    });
+
+    system("cls");
+    drawTable(table);
+
+    green(L"════════════════════════════════════════════════════════════════════════════════════════════════\n");
+
+    drawTable({
+        {L"1. Thêm Khung giờ chiếu"},
+        {L"2. Sửa Khung giờ chiếu"},
+        {L"3. Xóa Khung giờ chiếu"},
+        {L"0. Quay lại"}
+    });
+
+    
+    int choice;
+    checkInput(L"Nhập lựa chọn", choice);
+
+    if(!choice){
+        system("cls");
+        return;
+    }
+        
+    switch (choice){
+        case 1:
+            addShowtime(roomList, movieList);
+            break;
+        case 2:
+            editShowtime(showtimeList, table, roomList, movieList);
+            break;
+        case 3:
+            deleteShowtime(roomList, movieList);
+            break;
+        default:
+            system("cls");
+            red(L"══[Lựa chọn không hợp lệ, Vui lòng chọn lại]══\n");
+            
+            break;
+    }
+    goto displayShowtime;
+
+}
+
+void displayShowtimeOfMovie(RoomList &roomList, MovieList& movieList){
+      vector<vector<wstring>> table;
+    vector<Room>& rooms = roomList.getRooms();
+    vector<Movie*>& movies = movieList.getMovies();
+
+    vector<Showtime*> showtimeList;
+
+    Position pos; int x, y;
+    
+    //chọn phim
+    system("cls");
+    movieList.displayMovies();
+    green(L"══════════[Chọn phim cần xem lịch chiếu]══════════\n");
+    red(L"Nhập 0: quay lại\n");
+    int choiceMovie;
+    checkInput(L"Nhập ID phim", choiceMovie);
+    if(!choiceMovie){
+        system("cls");
+        return;
+    }
+
+    displayShowtime:
+    table.clear();
+    table.push_back({L" ID Khung giờ ", L" Tên phòng ", L" Tên phim ", L" Giờ chiếu ", L" Ngày chiếu "});
+    
+
+
+    for(auto &room: rooms){
+        vector<Showtime>& showtimes = room.getShowtimes();
+        for(auto &showtime: showtimes){
+            for(auto &movie: movies){
+                if(showtime.movieID == movie->getId() && movie->getId() == choiceMovie){
+                    Datetime startime = showtime.getStartTime();
+                    table.push_back({to_wstring(showtime.showtimeID), room.getName(), movie->getName(), 
+                                    startime.getTime(), startime.getDate()});
+
+                    showtimeList.push_back(&showtime);
+
+                }
+            }
+        }
+    }
+
+    sort(table.begin()+1, table.end(), [](const vector<wstring>& a, const vector<wstring>& b){
+        return stoi(a[0]) < stoi(b[0]);
+    });
+
+    system("cls");
+    drawTable(table);
+
+    green(L"════════════════════════════════════════════════════════════════════════════════════════════════\n");
+
+    drawTable({
+        {L"1. Thêm Khung giờ chiếu"},
+        {L"2. Sửa Khung giờ chiếu"},
+        {L"3. Xóa Khung giờ chiếu"},
+        {L"0. Quay lại"}
+    });
+
+    
+    int choice;
+    checkInput(L"Nhập lựa chọn", choice);
+
+    if(!choice){
+        system("cls");
+        return;
+    }
+        
+    switch (choice){
+        case 1:
+            addShowtime(roomList, movieList);
+            break;
+        case 2:
+            editShowtime(showtimeList, table, roomList, movieList);
+            break;
+        case 3:
+            deleteShowtime(roomList, movieList);
+            break;
+        default:
+            system("cls");
+            red(L"══[Lựa chọn không hợp lệ, Vui lòng chọn lại]══\n");
+            
+            break;
+    }
+    goto displayShowtime;
+}
+
+void displayShowtimeOfRoom(RoomList &roomList, MovieList& movieList){
+      vector<vector<wstring>> table;
+    vector<Room>& rooms = roomList.getRooms();
+    vector<Movie*>& movies = movieList.getMovies();
+
+    vector<Showtime*> showtimeList;
+
+    Position pos; int x, y;
+    
+    //chọn phim
+    system("cls");
+    roomList.displayRooms();
+    green(L"══════════[Chọn phòng chiếu cần xem lịch]══════════\n");
+    red(L"Nhập 0: quay lại\n");
+    int choiceRoom;
+    checkInput(L"Nhập ID phòng", choiceRoom);
+    if(!choiceRoom){
+        system("cls");
+        return;
+    }
+
+    displayShowtime:
+    table.clear();
+    table.push_back({L" ID Khung giờ ", L" Tên phòng ", L" Tên phim ", L" Giờ chiếu ", L" Ngày chiếu "});
+    
+
+
+    for(auto &room: rooms){
+        vector<Showtime>& showtimes = room.getShowtimes();
+        for(auto &showtime: showtimes){
+            for(auto &movie: movies){
+                if(showtime.roomID == choiceRoom && showtime.movieID == movie->getId()){
+                    Datetime startime = showtime.getStartTime();
+                    table.push_back({to_wstring(showtime.showtimeID), room.getName(), movie->getName(), 
+                                    startime.getTime(), startime.getDate()});
+
+                    showtimeList.push_back(&showtime);
+
+                }
+            }
+        }
+    }
+
+    sort(table.begin()+1, table.end(), [](const vector<wstring>& a, const vector<wstring>& b){
+        return stoi(a[0]) < stoi(b[0]);
+    });
+
+    system("cls");
+    drawTable(table);
+
+    green(L"════════════════════════════════════════════════════════════════════════════════════════════════\n");
+
+    drawTable({
+        {L"1. Thêm Khung giờ chiếu"},
+        {L"2. Sửa Khung giờ chiếu"},
+        {L"3. Xóa Khung giờ chiếu"},
+        {L"0. Quay lại"}
+    });
+
+    
+    int choice;
+    checkInput(L"Nhập lựa chọn", choice);
+
+    if(!choice){
+        system("cls");
+        return;
+    }
+        
+    switch (choice){
+        case 1:
+            addShowtime(roomList, movieList);
+            break;
+        case 2:
+            editShowtime(showtimeList, table, roomList, movieList);
+            break;
+        case 3:
+            deleteShowtime(roomList, movieList);
+            break;
+        default:
+            system("cls");
+            red(L"══[Lựa chọn không hợp lệ, Vui lòng chọn lại]══\n");
+            
+            break;
+    }
+    goto displayShowtime;
+}
 
 
 void manageShowtimes(RoomList &roomList, MovieList &movieList){
@@ -632,6 +932,17 @@ void manageShowtimes(RoomList &roomList, MovieList &movieList){
             displayListShowtimeAll(roomList, movieList);
             break;
         case 2:
+            displayListShowtimeOfDate(roomList, movieList);
+            break;
+        case 3:
+            displayShowtimeOfMovie(roomList, movieList);
+            break;
+        case 4:
+            displayShowtimeOfRoom(roomList, movieList);
+            break;
+        default:
+            system("cls");
+            red(L"══[Lựa chọn không hợp lệ, Vui lòng chọn lại]══\n");
             break;
 
     }

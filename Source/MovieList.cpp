@@ -90,7 +90,9 @@ void MovieList::displayMovieInfo(int id) const {
 
 void MovieList::displayMovies() const {
     vector<vector<wstring>> table;
-    // table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Thể loại", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Mô tả"});
+    drawTable({
+        {L"                                   DANH SÁCH PHIM                                "}
+    });
     table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
     for (const auto& movie : movies) {
         vector<wstring> row;
