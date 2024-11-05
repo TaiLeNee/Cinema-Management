@@ -419,34 +419,38 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             {
                 vector<vector<wstring>> table2;
                 table2.push_back({L" ĐỔI MẬT KHẨU "});
+                table2.push_back({L" Username: " + loggedin->getUserName()});
                 table2.push_back({L" Nhập mật khẩu cũ: "});
-                table2.push_back({L" Nhập mật khẩu mới: "});
-                table2.push_back({L" Nhập lại mật khẩu mới:          "});
+                table2.push_back({L" Nhập mật khẩu mới:               "});
+                table2.push_back({L" Nhập lại mật khẩu mới:"});
                 drawTable(table2);
                 wstring newPass, oldPass, rePass;
                 do{
+                    oldPass = L"";
+                    newPass = L"";
                     gotoXY(21, 3);
-                    wcin.ignore();
-                    getline(wcin, oldPass);
+                    wcin >> oldPass;
                     gotoXY(22, 5);
-                    getline(wcin, newPass);
+                    wcin >> newPass;
                     gotoXY(26, 7);
-                    getline(wcin, rePass);
+                    wcin >> rePass;
                     if(oldPass != loggedin->getPassWord())
                     {
-                        wcout << L"\033[91m[Mật khẩu cũ không đúng. Vui lòng nhập lại.]\033[0m" << endl;
+                        red(L"\n[Mật khẩu cũ không đúng. Vui lòng nhập lại.]");
+                        wcout <<L"\nold :"<< oldPass << endl;
+                        wcout <<L"\npass :"<< loggedin->getPassWord() << endl;
                         Sleep(2000);
                         system("cls");
                         drawTable(table2);
                     }
-                    else if (newPass != rePass)
+                    else if(newPass != rePass)
                     {
-                        wcout << L"\033[91m[Mật khẩu không khớp. Vui lòng nhập lại.]\033[0m" << endl;
+                        red(L"\n[Mật khẩu mới không khớp. Vui lòng nhập lại.]");
                         Sleep(2000);
                         system("cls");
                         drawTable(table2);
                     }
-                }while(newPass != rePass);
+                }while(oldPass != loggedin->getPassWord()|| newPass != rePass);
                 
                 loggedin->setPassWord(newPass);
                 employeeList.saveEmployee("../DATA/employee.csv");

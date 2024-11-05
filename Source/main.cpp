@@ -63,20 +63,20 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     name = loggedInUser->getName();
     if (loggedInUser->getLevel() == 0) {
         employeeIDLogin = loggedInUser->getId();
-        wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
+        wcout << L"\033[92m[Xin chào Owner "<< name <<"]\033[0m"<< endl;
         Sleep(2000);
         mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedInUser);
     }
     else if (loggedInUser->getLevel() == 1) {
         employeeIDLogin = loggedInUser->getId();
-        wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
+        wcout << L"\033[92m[Xin chào Admin " << name <<"]\033[0m"<< endl;
         Sleep(2000);
         mainMenu(employeeList, movieList, customerList, roomList,bookedList , loggedInUser);
 
     } 
     else {
         employeeIDLogin = loggedInUser->getId();
-        wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
+        wcout << L"\033[92m[Xin chào nhân viên " << name <<"]\033[0m"<< endl;
         Sleep(2000);
         mainMenu(employeeList, movieList, customerList, roomList,  bookedList, loggedInUser);
     }

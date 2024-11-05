@@ -148,8 +148,8 @@ void ListOfEmployee::editEmployeeInfo(int id) {
         table.push_back({L"3. Số điện thoại"});
         table.push_back({L"4. Username"});
         table.push_back({L"5. Password"});
-        table.push_back({L"6. Level"});
-        table.push_back({L"7. Thoát"});
+        table.push_back({L"6. Cấp bậc"});
+        table.push_back({L"0. Thoát"});
         drawTable(table);
         wcout << L"\033[92m════════[Lựa chọn của bạn]══> ";
         wcin >> choice;
@@ -202,7 +202,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                 it->setPassWord(passWord);
                 break;
             }
-            case 7: {
+            case 0: {
                 return;
             }  
             default:{
