@@ -56,17 +56,19 @@ void ListOfEmployee::deleteEmployee(int id){
         return e.getId() == id;
     });
     if (it->getLevel() == 0) {
-        wcout << L"Không thể xóa tài khoản OWNER" << endl;
+        wcout << L"\033[92m[Không thể xóa tài khoản OWNER]\033[0m" << endl;
         return;
     }
+    wstring name = it->getName();
     if(it != employee_list.end()){
         employee_list.erase(it);
-        wcout << L"Đã xóa nhân viên có ID " << id << endl;
+        wcout << L"\033[92m[Đã xóa nhân viên "<< name <<L"] \033[0m" << endl;
     }
 }
 
 
 void ListOfEmployee::showEmployeeInfo(int id) {
+    wcout<< L"\033[0m";
     auto it = find_if(employee_list.begin(), employee_list.end(), [id]( Employee &e) {
         return e.getId() == id;
     });
@@ -213,6 +215,66 @@ void ListOfEmployee::editEmployeeInfo(int id) {
     }while(choice != 7);
 }
 
+void ListOfEmployee::findEmployee(const wstring &name){
+    int id;
+    vector<vector<wstring>> table1,table2;
+    green(L"\nCác nhân viên với tên " + name + L" là: \n");
+    table1.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Cấp Bậc"});
+    for(const auto &e : employee_list){
+        if(e.getName().find(name) != wstring::npos){
+            wstring level;
+            if (e.getLevel() == 1) {
+                level = L"Admin";
+            }    
+            else if (e.getLevel() == 2) {
+                level = L"Nhân viên";
+            }
+            else if (e.getLevel() == 0) {
+                level = L"Owner";
+            }
+            table1.push_back({to_wstring(e.getId()), 
+            e.getName(), 
+            to_wstring(e.getAge()), 
+            e.getPhoneNumber(), 
+            e.getUserName(), 
+            e.getPassWord(), 
+            level
+            });
+        }
+    }
+    drawTable(table1);
+    
+}
+
+void ListOfEmployee::interactWithEmployee(int id){
+    int choice;
+    do{
+        system("cls");
+        showEmployeeInfo(id);
+        vector<vector<wstring>> table;
+        table.push_back({L"1. Chỉnh sửa thông tin nhân viên"});
+        table.push_back({L"2. Xóa nhân viên"});
+        table.push_back({L"0. Thoát"});
+        drawTable(table);
+        checkInput(L"Lựa chọn của bạn", choice);
+        switch (choice){
+            case 1:
+                system("cls");
+                editEmployeeInfo(id);
+                break;
+            case 2:
+                system("cls");
+                deleteEmployee(id);
+                break;
+            case 0:
+                system("cls");
+                break;
+            default:
+                wcout << L"\033[92m[Lựa chọn không hợp lệ] \033[0m" << endl;
+                break;
+        }
+    }while(choice != 0 && choice !=2);
+}
 
 void ListOfEmployee::saveEmployee(const string& filename) const {
     // Sử dụng wofstream để hỗ trợ ghi tiếng Việt
