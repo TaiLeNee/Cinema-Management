@@ -27,8 +27,7 @@ void customerMenu(CustomerList &customerList);
 void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList);
 
 // void manageMenu(RoomList &roomList, MovieList &movieList);
-void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, int typeEmployee);
-
+void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList,BookedList &bookedList, Employee *loggedin);
 void SellTicketInWeek(MovieList &movieList);
 void manageShowtimes(RoomList &roomList, MovieList &movieList);
 void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList);

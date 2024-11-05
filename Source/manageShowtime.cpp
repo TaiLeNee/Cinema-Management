@@ -258,9 +258,12 @@ void editShowtime(vector<Showtime*>& showtimeList,  vector<vector<wstring>> tabl
     // wcin>>choiceShowtime;
     checkInput(L"Nhập ID khung giờ chiếu cần sửa", choiceShowtime);
 
+    if (choiceShowtime == 0){
+        system("cls");
+        return;
+    }
     Showtime *getShowtime = nullptr;
     for(Showtime *showtime: showtimeList){
-     
         if(showtime->showtimeID == choiceShowtime){
             checkShowtime = 1;            
             getShowtime = showtime;
@@ -716,6 +719,7 @@ void displayListShowtimeOfDate(RoomList &roomList, MovieList &movieList){
             addShowtime(roomList, movieList);
             break;
         case 2:
+            red(L"Nhập 0: Quay lại\n");
             editShowtime(showtimeList, table, roomList, movieList);
             break;
         case 3:

@@ -43,7 +43,6 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
             statisticMenu(movieList, roomList, customerList, employeeList, bookedList);
             break;
         case 0:
-            mainMenu(employeeList, movieList, customerList, roomList, bookedList, 1);
             break;
         }
     } while (choice != 0);
@@ -107,6 +106,7 @@ void employeeMenu(ListOfEmployee &employeeList)
             break;
         case 5:
             employeeList.saveEmployee("../DATA/employee.csv");
+            wcout << L"\033[92m[Đã lưu danh sách nhân viên vào hệ thống.] \033[0m" << endl;
             break;
         case 0:
             break;
@@ -200,7 +200,7 @@ void movieMenu(MovieList &movieList)
             }
             wcout << "\033[0m";
             system("cls");
-            green(L"Thêm phim thành công.");
+            green(L"Thêm phim thành công.\n");
             break;
         }
         case 3:
@@ -211,6 +211,7 @@ void movieMenu(MovieList &movieList)
             wcin >> id;
             system("cls");
             movieList.deleteMovie(id);
+            green(L"Xóa phim thành công.\n");
             break;
         }
         case 4:
@@ -372,7 +373,7 @@ void  statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &cust
     } while (choice != 0);
 }
 
-void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, int typeEmployee)
+void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, Employee *loggedin)
 {   
     int choice = -1;
     while (choice != 0)
@@ -394,7 +395,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         table.push_back({L"HỆ THỐNG QUẢN LÝ RẠP CHIẾU PHIM            "});
         table.push_back({L"1. Bán vé            "});
 
-        if (typeEmployee <= 1)
+        if (loggedin->getId() <= 1)
             table.push_back({L"2. Quản lý hệ thống       "});
         else
             table.push_back({L"2. Đổi mật khẩu       "});
@@ -409,14 +410,48 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             break;
         case 2:
             system("cls");
-            if (typeEmployee <= 1)
+            if (loggedin->getId() <= 1)
             {
                 system("cls");
                 managementMenu(employeeList, movieList, customerList, roomList, bookedList);
             }
             else
             {
+                vector<vector<wstring>> table2;
+                table2.push_back({L" ĐỔI MẬT KHẨU "});
+                table2.push_back({L" Nhập mật khẩu cũ: "});
+                table2.push_back({L" Nhập mật khẩu mới: "});
+                table2.push_back({L" Nhập lại mật khẩu mới:          "});
+                drawTable(table2);
+                wstring newPass, oldPass, rePass;
+                do{
+                    gotoXY(21, 3);
+                    wcin.ignore();
+                    getline(wcin, oldPass);
+                    gotoXY(22, 5);
+                    getline(wcin, newPass);
+                    gotoXY(26, 7);
+                    getline(wcin, rePass);
+                    if(oldPass != loggedin->getPassWord())
+                    {
+                        wcout << L"\033[91m[Mật khẩu cũ không đúng. Vui lòng nhập lại.]\033[0m" << endl;
+                        Sleep(2000);
+                        system("cls");
+                        drawTable(table2);
+                    }
+                    else if (newPass != rePass)
+                    {
+                        wcout << L"\033[91m[Mật khẩu không khớp. Vui lòng nhập lại.]\033[0m" << endl;
+                        Sleep(2000);
+                        system("cls");
+                        drawTable(table2);
+                    }
+                }while(newPass != rePass);
                 
+                loggedin->setPassWord(newPass);
+                employeeList.saveEmployee("../DATA/employee.csv");
+                wcout << L"\033[92m\n[Đã đổi mật khẩu thành công.]\033[0m" << endl;
+                Sleep(2000);
             }
             break;
         case 0:
@@ -438,7 +473,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
                 exit(0);
                 break;
             case 0:
-                mainMenu(employeeList, movieList, customerList, roomList, bookedList, typeEmployee);
+                mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedin);
                 break;
             default:
                 cout << "Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
