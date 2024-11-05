@@ -27,7 +27,7 @@ void loading(int duration) {
 }
 
 
-void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList, RoomList &roomList){
+void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList){
     vector<vector<wstring>> table;
     wstring userName, passWord;
     Employee *loggedInUser = nullptr;
@@ -63,20 +63,20 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
         loading(3); 
-        mainMenu(employeeList, movieList, customerList, roomList, 0);
+        mainMenu(employeeList, movieList, customerList, roomList, bookedList, 0);
     }
     else if (loggedInUser->getLevel() == 1) {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
         loading(3);
-        mainMenu(employeeList, movieList, customerList, roomList, 1);
+        mainMenu(employeeList, movieList, customerList,  roomList, bookedList, 1);
 
     } 
     else {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
         loading(3);
-        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
+        mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedInUser->getLevel());
 
     }
 }
@@ -99,7 +99,7 @@ int main() {
         movieList.loadShowtimesofMovie(room.getShowtimes());
     }
 
-    // BookedList bookedList;
+    BookedList bookedList;
     // bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
     
     ListOfEmployee employeeList;
@@ -108,7 +108,7 @@ int main() {
     /*======================================*/
 
 
-    loginMenu(employeeList, movieList, customerList, roomList);
+    loginMenu(employeeList, movieList, customerList, roomList, bookedList);
     
    
     return 0;

@@ -1,33 +1,17 @@
 #include <iostream>
-#include <ctime>
-#include <iomanip>
+#include <string>
 
-using namespace std;
-
-void printCurrentTimeAndNextWeek() {
-    // Lấy thời gian hiện tại
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-
-    // In thời gian hiện tại
-    cout << "Thời gian hiện tại: ";
-    cout << ltm->tm_mday << "/"
-         << setfill('0') << setw(2) << 1 + ltm->tm_mon << "/"
-         << setfill('0') << setw(2) << 1900 + ltm->tm_year  << " "<<endl;
-
-    //Các ngày trong tuần 1 tuần
-
-    for(int i = 0; i < 7; i++){
-        now += 24 * 60 * 60;
-        tm *ltm = localtime(&now);
-        cout << ltm->tm_mday << "/"
-         << setfill('0') << setw(2) << 1 + ltm->tm_mon << "/"
-         << setfill('0') << setw(2) << 1900 + ltm->tm_year  << " ";
-         cout << endl;
+std::wstring getDate(const std::wstring& datetime) {
+    size_t pos = datetime.find(L" ");
+    if (pos != std::wstring::npos) {
+        return datetime.substr(pos + 1);
     }
+    return L""; // Trả về chuỗi rỗng nếu không tìm thấy dấu cách
 }
 
 int main() {
-    printCurrentTimeAndNextWeek();
+    std::wstring datetime = L"23:45:1 4/11/2024";
+    std::wstring date = getDate(datetime);
+    std::wcout << L"Date: " << date << std::endl;
     return 0;
 }

@@ -1,18 +1,7 @@
-#include <iostream>
-#include <vector>
-#include <iomanip>
-#include <ctime>
-#include <locale>
-#include <codecvt>
-#include "../Header/drawTable.h"
-#include "../Header/Datetime.h"
-#include "../Header/checkInput.h"
+#include "../Header/drawCalendar.h"
 
 
 using namespace std;
-
-
-void drawTable(const vector<vector<wstring>> &table);
 
 Datetime drawCalendar(int month, int year, int type) {
 

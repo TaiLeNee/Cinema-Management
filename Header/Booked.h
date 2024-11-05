@@ -2,6 +2,7 @@
 #define BOOKED_H
 #include "Chair.h"
 #include "drawTable.h"
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -48,6 +49,10 @@ class Booked{
 
         vector<wstring> getChairNames() const;
         void setChairNames(vector<wstring> chairNames);
+
+        wstring getDate() const;
+
+
         
 };
 

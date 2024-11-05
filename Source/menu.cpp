@@ -4,7 +4,7 @@ using namespace std;
 
 // wstring YELLOW = L"\033[93m";
 
-void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList)
+void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList)
 {
     int choice;
     do
@@ -16,6 +16,7 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
         table.push_back({L"3. Quản lý khung giờ"});
         table.push_back({L"4. Quản lý nhân viên"});
         table.push_back({L"5. Quản lý khách hàng"});
+        table.push_back({L"6. Thống kê"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
@@ -38,8 +39,11 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
         case 5:
             customerMenu(customerList);
             break;
+        case 6:
+            statisticMenu(movieList, roomList, customerList, employeeList, bookedList);
+            break;
         case 0:
-            mainMenu(employeeList, movieList, customerList, roomList, 1);
+            mainMenu(employeeList, movieList, customerList, roomList, bookedList, 1);
             break;
         }
     } while (choice != 0);
@@ -317,7 +321,58 @@ void manageMovie(MovieList &movieList)
     table.push_back({L"        4. Danh sách phim theo độ tuổi            "});
 }
 
-void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, int typeEmployee)
+
+void  statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList)
+{     
+
+    int choice;
+    do
+    {
+        vector<vector<wstring>> table;
+        table.push_back({L"    MENU THỐNG KÊ     "});
+        table.push_back({L"1. Thống kê doanh thu"});
+        table.push_back({L"2. Thống kê số lượng vé "});
+        // table.push_back({L"3.  "});
+        // table.push_back({L"4. Thống kê số lượng vé "});
+        // table.push_back({L"5. Thống kê số lượng vé "});
+        // table.push_back({L"6. Thống kê số lượng vé "});
+        // table.push_back({L"7. Thống kê số lượng vé "});
+        table.push_back({L"0. Quay lại"});
+        drawTable(table);
+        checkInput(L"Lựa chọn của bạn", choice);
+        system("cls");
+        switch (choice)
+        {
+        case 1:
+            statisticRevenue(movieList, employeeList, bookedList);
+            break;
+        case 2:
+            // statisticSoldTicket();
+            break;
+        case 3:
+            // statisticBookedTicket();
+            break;
+        case 4:
+            // statisticCanceledTicket();
+            break;
+        case 5:
+            // statisticBookedTicketByMovie();
+            break;
+        case 6:
+            // statisticBookedTicketByDate();
+            break;
+        case 7:
+            // statisticBookedTicketByMonth();
+            break;
+        case 0:
+            break;
+        default:
+            wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
+        }
+    } while (choice != 0);
+}
+
+void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, int typeEmployee)
 {   
     int choice = -1;
     while (choice != 0)
@@ -357,7 +412,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             if (typeEmployee <= 1)
             {
                 system("cls");
-                managementMenu(employeeList, movieList, customerList, roomList);
+                managementMenu(employeeList, movieList, customerList, roomList, bookedList);
             }
             else
             {
@@ -375,7 +430,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             {
             case 1:
                 system("cls");
-                loginMenu(employeeList, movieList, customerList, roomList);
+                loginMenu(employeeList, movieList, customerList, roomList, bookedList);
                 break;
             case 2:
                 wcout<<L"\033[91mĐang đăng xuất khỏi hệ thống...\033[0m"<<endl;
@@ -383,7 +438,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
                 exit(0);
                 break;
             case 0:
-                mainMenu(employeeList, movieList, customerList, roomList, typeEmployee);
+                mainMenu(employeeList, movieList, customerList, roomList, bookedList, typeEmployee);
                 break;
             default:
                 cout << "Lựa chọn không hợp lệ, vui lòng thử lại." << endl;

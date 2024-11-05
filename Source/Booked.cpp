@@ -1,6 +1,5 @@
 #include "../Header/Booked.h"
 
-
 using namespace std;
 
 
@@ -86,3 +85,11 @@ void Booked::setChairNames(vector<wstring> chairNames) {
     this->chairNames = chairNames;
 }
 
+wstring Booked::getDate() const
+{
+    size_t pos = datetime.find(L" ");
+    if (pos != wstring::npos) {
+        return datetime.substr(pos + 1);
+    }
+    return L"";
+}   

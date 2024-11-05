@@ -2,7 +2,7 @@
 #include "../Header/checkInput.h"
 #include "../Header/globals.h"
 
-void SellTicketInWeek(MovieList &movieList) {
+void SellTicketInWeek(MovieList &movieList) {   
     BookedList bookedList;
     bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
 

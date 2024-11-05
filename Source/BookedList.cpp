@@ -13,7 +13,8 @@ void BookedList::removeBooked(size_t index) {
 }
 
 void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/chairbooked.csv")
-{
+{   
+    bookedList.clear();
     wifstream file(filename);
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
 
