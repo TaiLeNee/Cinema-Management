@@ -74,7 +74,6 @@ void employeeMenu(ListOfEmployee &employeeList)
         case 1:
         {
             employeeList.showEmployeeList();
-
             break;
         }
         case 2:
@@ -82,8 +81,14 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần tìm: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
+            red(L"Nhập 0 để quay lại.\n");
             wcout<< L"\033[92mNhập ID nhân viên cần tương tác: \033[0m";
             wcin >> id;
+            if (id == 0)
+            {
+                system("cls");
+                break;
+            }
             employeeList.interactWithEmployee(id);
             break;
         }
@@ -139,18 +144,20 @@ void employeeMenu(ListOfEmployee &employeeList)
 
 void movieMenu(MovieList &movieList)
 {
+    int choice, id;
+    wstring name;
     auto &movies = movieList.getMovies();
-    int choice;
     do
     {
         vector<vector<wstring>> table;
         wcout << L"\033[0m";
         table.push_back({L"    Menu Quản lý Phim "});
         table.push_back({L"1. Hiện danh sách phim"});
-        table.push_back({L"2. Thêm phim"});
-        table.push_back({L"3. Xóa phim"});
+        table.push_back({L"2. Tìm kiếm phim"});
+        table.push_back({L"3. Thêm phim"});
         table.push_back({L"4. Đổi thông tin phim"});
-        table.push_back({L"5. Lưu danh sách vào hệ thống"});
+        table.push_back({L"5. Xóa phim"});
+        table.push_back({L"6. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
@@ -164,7 +171,24 @@ void movieMenu(MovieList &movieList)
             break;
         case 2:
         {
-            int duration, limitAge, choice;
+            wcout << L"\033[92mNhập tên phim cần tìm: \033[0m";
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            red(L"Nhập 0 để quay lại.\n");
+            wcout << L"\033[92mNhập ID phim cần tương tác: \033[0m";
+            wcin >> id;
+            if (id == 0)
+            {
+                system("cls");
+                break;
+            }
+            movieList.interactWithMovie(id);
+
+            break;
+        }
+        case 3:
+        {
+            int duration, limitAge;
             wstring name, typeMovie, subtitle, country, description, genre;
             vector<vector<wstring>> table;
             table.push_back({L"  Chọn Thể Loại Phim"});
@@ -224,28 +248,30 @@ void movieMenu(MovieList &movieList)
             green(L"Thêm phim thành công.\n");
             break;
         }
-        case 3:
-        {
-            int id;
-            movieList.displayMovies();
-            yellow(L"Nhập ID của phim cần xóa: ");
-            wcin >> id;
-            system("cls");
-            movieList.deleteMovie(id);
-            green(L"Xóa phim thành công.\n");
-            break;
-        }
         case 4:
         {
-            int id;
-            movieList.displayMovies();
-            yellow(L"Nhập ID của phim cần sửa: ");
+            green(L"Nhập tên phim cần sửa: ");
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            green(L"Nhập ID của phim cần sửa: ");
             wcin >> id;
             system("cls");
             movieList.updateMovie(id);
             break;
         }
         case 5:
+        {
+            green(L"Nhập tên phim cần xóa: ");
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            green(L"Nhập ID của phim cần xóa: ");
+            wcin >> id;
+            system("cls");
+            movieList.deleteMovie(id);
+            green(L"Xóa phim thành công.\n");
+            break;
+        }
+        case 6:
             movieList.saveToCSV("../DATA/movies.csv");
             wcout << L"\033[92m[Đã lưu danh sách phim vào hệ thống.] \033[0m" << endl;
             break;

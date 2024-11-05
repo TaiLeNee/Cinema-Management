@@ -124,7 +124,75 @@ void MovieList::displayMovies() const {
     drawTable(table);
 }
 
+void MovieList::searchMovie(const wstring& name) {
+    vector<vector<wstring>> table;
+    drawTable({
+        {L"                                   KẾT QUẢ TÌM KIẾM                                "}
+    });
+    table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
+    for (const auto& movie : movies) {
+        if (movie->getName().find(name) != wstring::npos) {
+            vector<wstring> row;
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
 
+            if (dynamic_cast<LoveMovie*>(movie)) {
+                row.push_back(dynamic_cast<LoveMovie*>(movie)->getRomantic());
+            } else if (dynamic_cast<AnimatedMovie*>(movie)) {
+                row.push_back(dynamic_cast<AnimatedMovie*>(movie)->getAnimation());
+            } else if (dynamic_cast<ActionMovie*>(movie)) {
+                row.push_back(dynamic_cast<ActionMovie*>(movie)->getActionLevel());
+            } else if (dynamic_cast<HorrorMovie*>(movie)) {
+                row.push_back(dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel());
+            } else {
+                row.push_back(L"");
+            }
+
+            row.push_back(movie->getDescription());
+            table.push_back(row);
+        }
+    }
+    wcout << L"\n\n";
+    drawTable(table);
+}
+
+void MovieList::interactWithMovie(int id){
+    int choice;
+    do {
+        system("cls");
+        displayMovieInfo(id);
+        vector<vector<wstring>> table;
+        wcout << L"\033[0m";
+        table.push_back({L"1. Đổi thông tin phim"});
+        table.push_back({L"2. Xóa phim"});
+        table.push_back({L"0. Quay lại"});
+        drawTable(table);
+        checkInput(L"Lựa chọn của bạn", choice);
+        wcin.ignore();
+        system("cls");
+        switch (choice) {
+            case 1:
+                system("cls");
+                updateMovie(id);
+                break;
+            case 2:
+                system("cls");
+                deleteMovie(id);
+                green(L"Xóa phim thành công.\n");
+                break;
+            case 0:
+                system("cls");
+                break;
+            default:
+                red(L"Lựa chọn không hợp lệ, vui lòng thử lại.");
+                wcout << endl;
+        }
+    } while (choice != 0 && choice !=2);
+}
 
 void MovieList::updateMovie(int id) {
     auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
