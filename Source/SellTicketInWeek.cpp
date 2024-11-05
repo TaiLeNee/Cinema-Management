@@ -1,7 +1,10 @@
 #include "../Header/Menu.h"
 #include "../Header/checkInput.h"
+#include "../Header/globals.h"
 
 void SellTicketInWeek(MovieList &movieList) {
+    BookedList bookedList;
+    bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
 
     wstring GREEN = L"\033[92m";
     wstring YELLOW = L"\033[93m";
@@ -56,9 +59,13 @@ Date:
 
 
     for(auto &movie: movieList.getMovies()){
-        for(auto showtime: movie->getShowtimes()){
+        for(auto &showtime: movie->getShowtimes()){
             if(showtime.getStartTime().getDate() == date[choiceDate-1]){
+
                 tableMovie.push_back({ L"["+to_wstring(showtime.movieID) + L"]" , to_wstring(showtime.showtimeID) , movie->getName()});
+
+                showtime.loadChairbooked(bookedList);
+
                 break;
             }
         }
@@ -169,13 +176,16 @@ choiceTicket:
     }
 
     system("cls");
+    int totalMoney = 0;
     //Hiển thị thông tin loại vé và số lượng ghế
     for(auto& ticket: ticketList.getTickets()){
         if(ticket.getTicketID() == ticketID){
+            //Tính tổng tiền vé
+            totalMoney = ticket.getPrice() * numChairs;
+
             drawTable({{L"     THÔNG TIN VÉ ĐÃ CHỌN   "}});
             drawTable({{L"Loại vé", L"Giá vé", L"Số lượng ghế", L"Tổng tiền vé"},
-                        {ticket.getTypeTicket(), to_wstring(ticket.getPrice()), to_wstring(numChairs), to_wstring(ticket.getPrice() * numChairs)}
-                });
+                        {ticket.getTypeTicket(), to_wstring(ticket.getPrice()), to_wstring(numChairs), to_wstring(totalMoney) }});
             break;
         }
     }
@@ -252,10 +262,7 @@ choiceChair:
         wchar_t c;
         wcin>>c;
         c = towlower(c);
-        if(c == 'y'){
-            showtimeCurrent->bookTickets(ticketID, chairNames, 1);
-        }
-        else{
+        if(c != 'y'){
             system("cls");
             showtimeCurrent->bookTickets(ticketID, chairNames, 0);
             red(L"══════[Đặt hủy đặt vé]══════\n");
@@ -264,8 +271,20 @@ choiceChair:
         }
 
 
+                //lấy thời gian hiện tại để lưu vào vé
+        time_t now_date = time(0);
+        tm *ltm_now = localtime(&now_date);
+        wstring datetime = to_wstring(ltm_now->tm_hour) + L":" + to_wstring(ltm_now->tm_min) + L":" + to_wstring(ltm_now->tm_sec) + L" " + to_wstring(ltm_now->tm_mday) + L"/" + to_wstring(1 + ltm_now->tm_mon) + L"/" + to_wstring(1900 + ltm_now->tm_year)  ;
+
+        
+        
+
+        showtimeCurrent->bookTickets(ticketID, chairNames, 1);
         // Lưu thông tin vé vào file
-        showtimeCurrent->saveChairbooked(ticketID, chairNames);
+        Booked booked(ticketID, showtimeID, employeeIDLogin , datetime, to_wstring(totalMoney), chairNames);
+        bookedList.addBooked(booked);
+        // booked.saveChairbooked(ticketID, chairNames);
+        booked.saveChairbooked();
 
     }
 

@@ -1,6 +1,7 @@
 #include "../Header/Menu.h"
 #include "../Header/RoomList.h"
 #include "../Header/MovieList.h"
+#include "../Header/globals.h"
 #include <fcntl.h>
 #include <io.h>
 
@@ -8,6 +9,7 @@
 
 
 using namespace std;
+
 
 
 void loading(int duration) {
@@ -58,19 +60,22 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     wstring name;
     name = loggedInUser->getName();
     if (loggedInUser->getLevel() == 0) {
+        employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
-        loading(5);
+        loading(3); 
         mainMenu(employeeList, movieList, customerList, roomList, 0);
     }
     else if (loggedInUser->getLevel() == 1) {
+        employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
-        loading(5);
+        loading(3);
         mainMenu(employeeList, movieList, customerList, roomList, 1);
 
     } 
     else {
+        employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
-        loading(5);
+        loading(3);
         mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
 
     }
@@ -93,6 +98,9 @@ int main() {
     for(auto room: roomList.getRooms()){
         movieList.loadShowtimesofMovie(room.getShowtimes());
     }
+
+    // BookedList bookedList;
+    // bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
     
     ListOfEmployee employeeList;
     CustomerList customerList;

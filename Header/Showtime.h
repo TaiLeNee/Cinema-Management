@@ -10,6 +10,8 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
+#include "drawTable.h"
+#include "BookedList.h"
 
 
 using namespace std;
@@ -45,7 +47,7 @@ class Showtime {
         void changeStatusChair(int chairId, int isBooked);
         void bookTickets(int ticketID, vector<wstring> chairNames, int statusBooking);
 
-        void loadChairbooked();
+        void loadChairbooked(BookedList &bookedList);
         void saveChairbooked(int ticketID, vector<wstring> chairNames);
 
 
