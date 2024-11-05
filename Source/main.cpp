@@ -24,6 +24,7 @@ void loading(int duration) {
         Sleep(500);
     }
     green(L"\rLoading complete!\n" );
+    Sleep(500);
 }
 
 
@@ -52,6 +53,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         }
         else{
             system("cls");
+            loading(4);
             wcout << L"\n\033[92m[Đăng nhập thành công!]\033[0m" << endl;
             
         }
@@ -62,22 +64,21 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     if (loggedInUser->getLevel() == 0) {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
-        loading(3); 
-        mainMenu(employeeList, movieList, customerList, roomList, 0);
+        Sleep(2000);
+        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser);
     }
     else if (loggedInUser->getLevel() == 1) {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
-        loading(3);
-        mainMenu(employeeList, movieList, customerList, roomList, 1);
+        Sleep(2000);
+        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser);
 
     } 
     else {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
-        loading(3);
-        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
-
+        Sleep(2000);
+        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser);
     }
 }
 

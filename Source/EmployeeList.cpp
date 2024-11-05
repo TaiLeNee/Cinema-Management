@@ -103,13 +103,23 @@ void ListOfEmployee::showEmployeeList() const{
     drawTable(table1);
     table2.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Cấp Bậc"});
     for(const auto &e : employee_list){
+        wstring level;
+        if (e.getLevel() == 1) {
+            level = L"Admin";
+        }    
+        else if (e.getLevel() == 2) {
+            level = L"Nhân viên";
+        }
+        else if (e.getLevel() == 0) {
+            level = L"Owner";
+        }
         table2.push_back({to_wstring(e.getId()), 
         e.getName(), 
         to_wstring(e.getAge()), 
         e.getPhoneNumber(), 
         e.getUserName(), 
         e.getPassWord(), 
-        e.getLevel() == 1 ? L"Admin" : L"Nhân viên"
+        level
         });
     }
     drawTable(table2);
@@ -223,7 +233,6 @@ void ListOfEmployee::saveEmployee(const string& filename) const {
                  << e.getPassWord() << L","
                  << e.getLevel() << endl;
         }
-        wcout << L"Danh sách nhân viên đã được lưu vào tệp employee.csv" << endl;
     } else {
         wcout << L"Không thể mở file để lưu trữ thông tin nhân viên" << endl;
     }
