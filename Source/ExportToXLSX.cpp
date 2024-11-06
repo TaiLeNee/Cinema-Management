@@ -1,25 +1,42 @@
-
+// #include "checkInput.cpp"
+// #include "Color.cpp"
 #include <nlohmann/json.hpp>
-#include "base64.hpp"
+#include "../Header/base64.hpp"
 #include <cpr/cpr.h>
 #include <fstream>
 #include <iostream>
-
+#include <fcntl.h>
+#include <io.h>
+#include <unistd.h>
+#include <limits.h>
 
 using namespace std;
-bool exportToXLSX(std::string filename);
 
-bool exportToXLSX(string filename) {
+
+string getFullPath(const string& filename) {
+    char temp[PATH_MAX];
+    if (getcwd(temp, sizeof(temp)) != NULL) {
+        string fullPath = string(temp) + "/" + filename;
+        return fullPath;
+    } else {
+        cerr << "Error getting current directory" << endl;
+        return "";
+    }
+}
+
+
+int exportToXLSX(string filename) {
     // Đọc tệp với mã hóa UTF-8
     ifstream file(filename, ios::binary);
 
     // Đọc tệp với mã hóa UTF-8
-    ifstream file("../DATA/movies.csv", ios::binary);
+    // ifstream file("../DATA/movies.csv", ios::binary);
 
     // Mã hóa dữ liệu thành Base64
     string file_content_utf8;
     getline(file, file_content_utf8, '\0');
     file.close();
+    remove(filename.c_str());
 
     auto file_content_base64 = base64::to_base64(file_content_utf8);
   
@@ -48,7 +65,7 @@ bool exportToXLSX(string filename) {
                                             {"Authorization", "Bearer secret_iBJfWaNhPSIdDruQ"}},
                                 cpr::Body{data.dump()});
 
-    cout << r.text << endl;
+    // cout << r.text << endl;
 
     //lấy url từ json
     nlohmann::json j = nlohmann::json::parse(r.text);
@@ -67,7 +84,7 @@ bool exportToXLSX(string filename) {
     size_t pos = filename.rfind(".csv");
     if (pos != string::npos) {
         // Thay thế phần mở rộng .csv bằng .xlsx
-        filename.replace(pos, 4, ".xlsx");
+        filename.replace(pos, 4, ".xls");
     }
 
     cpr::Response r2 = cpr::Get(cpr::Url{url});
@@ -75,9 +92,23 @@ bool exportToXLSX(string filename) {
     file2 << r2.text;
     file2.close();
 
-    string command = "start EXCEL.EXE " + filename;
+    string command = "start EXCEL.EXE " + getFullPath(filename);
     system(command.c_str());
+
+    //delete file csv
+    
 
     return 1;
 }
 
+
+int main(int argc, char* argv[]) {
+
+    if (argc < 2) {
+        cerr << L"Usage: exportPDF <input_file>" << endl;
+        return 1;
+    }
+
+    string filename = argv[1];
+    return exportToXLSX(filename);
+}

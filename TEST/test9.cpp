@@ -1,16 +1,30 @@
 #include <iostream>
+#include <unistd.h>
+#include <limits.h>
 #include <string>
-int main() {
-    std::string filename = "../DATA/chairbooked.csv";
 
-    // Tìm vị trí của phần mở rộng .csv
-    size_t pos = filename.rfind(".csv");
-    if (pos != std::string::npos) {
-        // Thay thế phần mở rộng .csv bằng .xlsx
-        filename.replace(pos, 4, ".xlsx");
+std::string getFullPath(const std::string& filename) {
+    char temp[PATH_MAX];
+    if (getcwd(temp, sizeof(temp)) != NULL) {
+        std::string fullPath = std::string(temp) + "/" + filename;
+        return fullPath;
+    } else {
+        std::cerr << "Error getting current directory" << std::endl;
+        return "";
     }
+}
 
-    std::cout << "New filename: " << filename << std::endl;
+int main(int argc, char* argv[]) {
+    // if (argc < 2) {
+    //     std::cerr << "Usage: exportPDF <input_file>" << std::endl;
+    //     return 1;
+    // }
 
+    std::string filename = "../DATA/chairbooked.csv";
+    std::string fullPath = getFullPath(filename);
+    std::cout << "Full path: " << fullPath << std::endl;
+
+    // Gọi hàm exportToXLSX với đường dẫn đầy đủ
+    // return exportToXLSX(fullPath);
     return 0;
 }

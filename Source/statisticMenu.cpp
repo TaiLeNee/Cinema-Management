@@ -1,33 +1,65 @@
 #include "../Header/Menu.h"
 // #include "ExportToXLSX.cpp"
 
+
 struct BookingData {
     int totalChairBooked;
     long long totalRevenue;
 };
 
-
-
-void exportPDF(vector<vector<wstring>> table){
-    // Lấy thời gian hiện tại
-    time_t t = time(nullptr);
-    tm tm = *localtime(&t);
-
-    // Định dạng thời gian thành chuỗi
-    ostringstream oss;
-    oss << put_time(&tm, "%Y%m%d_%H%M%S");
-    string timeStr = oss.str();
-
-    // Tạo tên tệp dựa trên chuỗi thời gian
-    string fileName =  "report_" + timeStr + ".csv";
-    string filename = "../OUTPUT/" + fileName;
-
-    if(exportToXLSX(filename)){
-        green(L"[Xuất file thành công\n]");
-    } else {
-        red(L"[Xuất file thất bại\n]");
-    }
+bool fileExists(const string& filename) {
+    struct stat buffer;
+    return (stat(filename.c_str(), &buffer) == 0);
 }
+
+
+
+void exportPDF(const vector<vector<wstring>>& table) {
+    //lấy thời gian hiện tại
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+     // Định dạng thời gian thành chuỗi
+     string filename = "../OUTPUT/ThongKeDoanhThu.csv";
+    //                        to_string(1900 + ltm->tm_year) + "_" +
+    //                        to_string(1 + ltm->tm_mon) + "_" +
+    //                        to_string(ltm->tm_mday) + "_" +
+    //                        to_string(ltm->tm_hour) + "_" +
+    //                        to_string(ltm->tm_min) + "_" +
+    //                        to_string(ltm->tm_sec) + ".csv";
+
+    wofstream file(filename);
+    file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
+
+    if (!file.is_open()) {
+        wcout << L"Không thể mở file " << filename.c_str() << endl;
+        return;
+    }
+
+    for (auto row : table) {
+        for (auto cell : row) {
+            file << cell << L",";
+        }
+        file << L"\n";
+    }
+
+    file.close();
+
+    // Mở file bằng ứng dụng mặc định
+    string command = "exportPDF.exe " + string(filename.begin(), filename.end());
+
+    //kiểm tra xem có tồn tại file không
+    if(fileExists("exportPDF.exe")){
+        if(!system(string(command.begin(), command.end()).c_str()))
+            green(L"Xuất file thành công\n");
+        else
+            red(L"Không thể xuất file\n");
+    }
+    else{
+        red(L"Không tìm thấy file exportPDF.exe\n");
+    }
+
+}
+
 
 
 void statisticRevenue(MovieList &movieList, ListOfEmployee &employeeList, BookedList &bookedList){
