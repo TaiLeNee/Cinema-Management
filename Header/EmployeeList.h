@@ -46,6 +46,9 @@ class ListOfEmployee{
 
         // Tạo ID mới mỗi khi nhân viên mới đến
         static int createID();
+
+        //Trả về danh sách nhân viên
+        vector<Employee>& getEmployees();
 };
 
 #endif

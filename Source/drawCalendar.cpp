@@ -64,7 +64,7 @@ Datetime drawCalendar(int month, int year, int type) {
     while (true) {
         if(type==1){
             checkInput(L"Chọn ngày", day);
-            if(day > 1 && day <= daysInMonth){
+            if(day >= 1 && day <= daysInMonth){
                 return Datetime(to_wstring(day), to_wstring(month), to_wstring(year));
             }
             else if(day == 0){

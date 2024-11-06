@@ -7,9 +7,14 @@
 
 
 using namespace std;
-int main() {
+bool exportToXLSX(std::string filename);
+
+bool exportToXLSX(string filename) {
     // Đọc tệp với mã hóa UTF-8
-    ifstream file("../DATA/chairbooked.csv", ios::binary);
+    ifstream file(filename, ios::binary);
+
+    // Đọc tệp với mã hóa UTF-8
+    ifstream file("../DATA/movies.csv", ios::binary);
 
     // Mã hóa dữ liệu thành Base64
     string file_content_utf8;
@@ -23,7 +28,7 @@ int main() {
             {
                 {"Name", "File"},
                 {"FileValue", {
-                    {"Name", "chairbooked.csv"},
+                    {"Name", "ouput.csv"},
                     {"Data", file_content_base64}
                 }}
             },
@@ -59,10 +64,20 @@ int main() {
 
     string url = j["Files"][0]["Url"];
     //tải file từ url
+    size_t pos = filename.rfind(".csv");
+    if (pos != string::npos) {
+        // Thay thế phần mở rộng .csv bằng .xlsx
+        filename.replace(pos, 4, ".xlsx");
+    }
+
     cpr::Response r2 = cpr::Get(cpr::Url{url});
-    ofstream file2("../DATA/hairbooked.xlsx", ios::binary);
+    ofstream file2(filename, ios::binary);
     file2 << r2.text;
     file2.close();
 
-    return 0;
+    string command = "start EXCEL.EXE " + filename;
+    system(command.c_str());
+
+    return 1;
 }
+

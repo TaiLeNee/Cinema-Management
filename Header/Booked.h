@@ -51,6 +51,9 @@ class Booked{
         void setChairNames(vector<wstring> chairNames);
 
         wstring getDate() const;
+        wstring getMonth() const;
+
+        
 
 
         

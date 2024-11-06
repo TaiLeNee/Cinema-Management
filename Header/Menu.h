@@ -3,6 +3,7 @@
 #include "EmployeeList.h"
 #include "CustomerList.h"
 #include "gotoXY.h"
+#include "getXY.h"
 #include "checkInput.h"
 #include <cstdlib>
 #include <iostream>
@@ -15,6 +16,7 @@
 #include <vector>
 #include <regex>
 #include "drawCalendar.h"
+#include <unordered_map>
 
 void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList);
 

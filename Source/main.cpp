@@ -44,7 +44,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         wcin >> userName;
         gotoXY(13, 5);
         wcin >> passWord;
-        loggedInUser = employeeList.signIn(userName, passWord);
+        loggedInUser = employeeList.signIn(userName, passWord); 
         if (!loggedInUser) {
             wcout << L"\n\033[92mĐăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập...\033[0m" << endl;
             Sleep(2000);

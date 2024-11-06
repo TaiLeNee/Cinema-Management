@@ -1,7 +1,5 @@
 #include "../Header/Menu.h"
 #include "../Header/drawCalendar.h"
-#include "../Header/gotoXY.h"
-#include "../Header/getXY.h"
 #include "../Header/checkInput.h"
 
 

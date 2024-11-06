@@ -1,7 +1,5 @@
 #include "../Header/Booked.h"
 
-using namespace std;
-
 
 int Booked::curentIDBooked = 0;
 
@@ -93,3 +91,14 @@ wstring Booked::getDate() const
     }
     return L"";
 }   
+
+wstring Booked::getMonth() const
+{
+    size_t pos = datetime.find(L" ");
+    if (pos != std::wstring::npos) {
+        size_t monthStart = datetime.find(L"/", pos) + 1;
+        size_t monthEnd = datetime.find(L"/", monthStart);
+        return datetime.substr(monthStart, monthEnd - monthStart);
+    }
+    return L"";
+}

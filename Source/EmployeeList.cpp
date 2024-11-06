@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "../Header/gotoXY.h"
 
+
 int ListOfEmployee::nextID = 1;
 
 void ListOfEmployee::addEmployee() {
@@ -299,4 +300,7 @@ int ListOfEmployee::createID(){
     return nextID++;
 }
 
-
+vector<Employee> &ListOfEmployee::getEmployees()
+{
+    return employee_list;
+}
