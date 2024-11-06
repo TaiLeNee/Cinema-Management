@@ -19,13 +19,13 @@ void exportPDF(const vector<vector<wstring>>& table) {
     time_t now = time(0);
     tm *ltm = localtime(&now);
      // Định dạng thời gian thành chuỗi
-     string filename = "../OUTPUT/ThongKeDoanhThu.csv";
-    //                        to_string(1900 + ltm->tm_year) + "_" +
-    //                        to_string(1 + ltm->tm_mon) + "_" +
-    //                        to_string(ltm->tm_mday) + "_" +
-    //                        to_string(ltm->tm_hour) + "_" +
-    //                        to_string(ltm->tm_min) + "_" +
-    //                        to_string(ltm->tm_sec) + ".csv";
+    string filename = "../OUTPUT/ThongKeDoanhThu.csv";
+                           to_string(1900 + ltm->tm_year) + "_" +
+                           to_string(1 + ltm->tm_mon) + "_" +
+                           to_string(ltm->tm_mday) + "_" +
+                           to_string(ltm->tm_hour) + "_" +
+                           to_string(ltm->tm_min) + "_" +
+                           to_string(ltm->tm_sec) + ".csv";
 
     wofstream file(filename);
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
