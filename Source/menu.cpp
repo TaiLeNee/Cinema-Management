@@ -50,16 +50,19 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
 
 void employeeMenu(ListOfEmployee &employeeList)
 {
-    int choice;
+    int choice, id;
+    wstring name;
     do
     {
+        wcout << L"\033[0m";
         vector<vector<wstring>> table;
         table.push_back({L"    Menu Quản lý Nhân viên "});
         table.push_back({L"1. Hiện danh sách nhân viên"});
-        table.push_back({L"2. Thêm nhân viên"});
-        table.push_back({L"3. Xóa nhân viên"});
-        table.push_back({L"4. Đổi thông tin nhân viên"});
-        table.push_back({L"5. Lưu danh sách vào hệ thống"});
+        table.push_back({L"2. Tìm nhân viên"});
+        table.push_back({L"3. Thêm nhân viên"});
+        table.push_back({L"4. Xóa nhân viên"});
+        table.push_back({L"5. Đổi thông tin nhân viên"});
+        table.push_back({L"6. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
@@ -75,21 +78,43 @@ void employeeMenu(ListOfEmployee &employeeList)
         }
         case 2:
         {
+            wcout << L"\033[92mNhập tên nhân viên cần tìm: \033[0m";
+            getline(wcin, name);
+            employeeList.findEmployee(name);
+            red(L"Nhập 0 để quay lại.\n");
+            wcout<< L"\033[92mNhập ID nhân viên cần tương tác: \033[0m";
+            wcin >> id;
+            if (id == 0)
+            {
+                system("cls");
+                break;
+            }
+            employeeList.interactWithEmployee(id);
+            break;
+        }
+        case 3:
+        {
             employeeList.addEmployee();
             system("cls");
             wcout << L"\033[92m[Đã thêm nhân viên mới.] \033[0m" << endl;
             break;
         }
-        case 3:
-            int id;
-            employeeList.showEmployeeList();
+        case 4:
+        {
+            wcout << L"\033[92mNhập tên nhân viên cần xóa: \033[0m";
+            getline(wcin, name);
+            employeeList.findEmployee(name);
             wcout << L"\033[92mNhập ID của nhân viên cần xóa: \033[0m";
             wcin >> id;
             system("cls");
             employeeList.deleteEmployee(id);
             break;
-        case 4:
-            employeeList.showEmployeeList();
+        }
+        case 5:
+        {
+            wcout << L"\033[92mNhập tên nhân viên cần chỉnh sửa: \033[0m";
+            getline(wcin, name);
+            employeeList.findEmployee(name);
             wcout << L"\033[92mNhập ID của nhân viên cần chỉnh sửa: \033[0m";
             wcin >> id;
             wcin.ignore();
@@ -104,7 +129,8 @@ void employeeMenu(ListOfEmployee &employeeList)
             system("cls");
             wcout << L"\033[92m[Đã chỉnh sửa thông tin nhân viên.] \033[0m" << endl;
             break;
-        case 5:
+        }
+        case 6:
             employeeList.saveEmployee("../DATA/employee.csv");
             wcout << L"\033[92m[Đã lưu danh sách nhân viên vào hệ thống.] \033[0m" << endl;
             break;
@@ -118,18 +144,20 @@ void employeeMenu(ListOfEmployee &employeeList)
 
 void movieMenu(MovieList &movieList)
 {
+    int choice, id;
+    wstring name;
     auto &movies = movieList.getMovies();
-    int choice;
     do
     {
         vector<vector<wstring>> table;
         wcout << L"\033[0m";
         table.push_back({L"    Menu Quản lý Phim "});
         table.push_back({L"1. Hiện danh sách phim"});
-        table.push_back({L"2. Thêm phim"});
-        table.push_back({L"3. Xóa phim"});
+        table.push_back({L"2. Tìm kiếm phim"});
+        table.push_back({L"3. Thêm phim"});
         table.push_back({L"4. Đổi thông tin phim"});
-        table.push_back({L"5. Lưu danh sách vào hệ thống"});
+        table.push_back({L"5. Xóa phim"});
+        table.push_back({L"6. Lưu danh sách vào hệ thống"});
         table.push_back({L"0. Quay lại"});
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
@@ -143,7 +171,24 @@ void movieMenu(MovieList &movieList)
             break;
         case 2:
         {
-            int duration, limitAge, choice;
+            wcout << L"\033[92mNhập tên phim cần tìm: \033[0m";
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            red(L"Nhập 0 để quay lại.\n");
+            wcout << L"\033[92mNhập ID phim cần tương tác: \033[0m";
+            wcin >> id;
+            if (id == 0)
+            {
+                system("cls");
+                break;
+            }
+            movieList.interactWithMovie(id);
+
+            break;
+        }
+        case 3:
+        {
+            int duration, limitAge;
             wstring name, typeMovie, subtitle, country, description, genre;
             vector<vector<wstring>> table;
             table.push_back({L"  Chọn Thể Loại Phim"});
@@ -203,28 +248,30 @@ void movieMenu(MovieList &movieList)
             green(L"Thêm phim thành công.\n");
             break;
         }
-        case 3:
-        {
-            int id;
-            movieList.displayMovies();
-            yellow(L"Nhập ID của phim cần xóa: ");
-            wcin >> id;
-            system("cls");
-            movieList.deleteMovie(id);
-            green(L"Xóa phim thành công.\n");
-            break;
-        }
         case 4:
         {
-            int id;
-            movieList.displayMovies();
-            yellow(L"Nhập ID của phim cần sửa: ");
+            green(L"Nhập tên phim cần sửa: ");
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            green(L"Nhập ID của phim cần sửa: ");
             wcin >> id;
             system("cls");
             movieList.updateMovie(id);
             break;
         }
         case 5:
+        {
+            green(L"Nhập tên phim cần xóa: ");
+            getline(wcin, name);
+            movieList.searchMovie(name);
+            green(L"Nhập ID của phim cần xóa: ");
+            wcin >> id;
+            system("cls");
+            movieList.deleteMovie(id);
+            green(L"Xóa phim thành công.\n");
+            break;
+        }
+        case 6:
             movieList.saveToCSV("../DATA/movies.csv");
             wcout << L"\033[92m[Đã lưu danh sách phim vào hệ thống.] \033[0m" << endl;
             break;
@@ -322,9 +369,8 @@ void manageMovie(MovieList &movieList)
     table.push_back({L"        4. Danh sách phim theo độ tuổi            "});
 }
 
-
-void  statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList)
-{     
+void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList)
+{
 
     int choice;
     do
@@ -374,20 +420,19 @@ void  statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &cust
 }
 
 void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, Employee *loggedin)
-{   
+{
     int choice = -1;
     while (choice != 0)
     {
         system("cls");
         wcout << L"\n\n";
-            
+
         wcout << L"\033[92m   ████████╗██╗  ██╗██████╗     ███████╗████████╗ █████╗ ██████╗\n"
               << L"\033[92m   ╚══██╔══╝██║  ██║██╔══██╗    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗\n"
               << L"\033[92m      ██║   ███████║██║  ██║    ███████╗   ██║   ███████║██████╔╝\n"
               << L"\033[92m      ██║   ██╔══██║██║  ██║    ╚════██║   ██║   ██╔══██║██╔══██╗\n"
               << L"\033[92m      ██║   ██║  ██║██████╔╝    ███████║   ██║   ██║  ██║██║  ██║\n"
               << L"\033[92m      ╚═╝   ╚═╝  ╚═╝╚═════╝     ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝\n";
-                                                              
 
         wcout << L"\033[m";
 
@@ -400,7 +445,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         else
             table.push_back({L"2. Đổi mật khẩu       "});
         table.push_back({L"0. Đăng xuất/Thoát            "});
-    
+
         drawTable(table);
         checkInput(L"Lựa chọn của bạn", choice);
         switch (choice)
@@ -419,35 +464,40 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             {
                 vector<vector<wstring>> table2;
                 table2.push_back({L" ĐỔI MẬT KHẨU "});
+                table2.push_back({L" Username: " + loggedin->getUserName()});
                 table2.push_back({L" Nhập mật khẩu cũ: "});
-                table2.push_back({L" Nhập mật khẩu mới: "});
-                table2.push_back({L" Nhập lại mật khẩu mới:          "});
+                table2.push_back({L" Nhập mật khẩu mới:               "});
+                table2.push_back({L" Nhập lại mật khẩu mới:"});
                 drawTable(table2);
                 wstring newPass, oldPass, rePass;
-                do{
+                do
+                {
+                    oldPass = L"";
+                    newPass = L"";
                     gotoXY(21, 3);
-                    wcin.ignore();
-                    getline(wcin, oldPass);
+                    wcin >> oldPass;
                     gotoXY(22, 5);
-                    getline(wcin, newPass);
+                    wcin >> newPass;
                     gotoXY(26, 7);
-                    getline(wcin, rePass);
-                    if(oldPass != loggedin->getPassWord())
+                    wcin >> rePass;
+                    if (oldPass != loggedin->getPassWord())
                     {
-                        wcout << L"\033[91m[Mật khẩu cũ không đúng. Vui lòng nhập lại.]\033[0m" << endl;
+                        red(L"\n[Mật khẩu cũ không đúng. Vui lòng nhập lại.]");
+                        wcout << L"\nold :" << oldPass << endl;
+                        wcout << L"\npass :" << loggedin->getPassWord() << endl;
                         Sleep(2000);
                         system("cls");
                         drawTable(table2);
                     }
                     else if (newPass != rePass)
                     {
-                        wcout << L"\033[91m[Mật khẩu không khớp. Vui lòng nhập lại.]\033[0m" << endl;
+                        red(L"\n[Mật khẩu mới không khớp. Vui lòng nhập lại.]");
                         Sleep(2000);
                         system("cls");
                         drawTable(table2);
                     }
-                }while(newPass != rePass);
-                
+                } while (oldPass != loggedin->getPassWord() || newPass != rePass);
+
                 loggedin->setPassWord(newPass);
                 employeeList.saveEmployee("../DATA/employee.csv");
                 wcout << L"\033[92m\n[Đã đổi mật khẩu thành công.]\033[0m" << endl;
@@ -468,7 +518,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
                 loginMenu(employeeList, movieList, customerList, roomList, bookedList);
                 break;
             case 2:
-                wcout<<L"\033[91mĐang đăng xuất khỏi hệ thống...\033[0m"<<endl;
+                wcout << L"\033[91mĐang đăng xuất khỏi hệ thống...\033[0m" << endl;
                 Sleep(2000);
                 exit(0);
                 break;

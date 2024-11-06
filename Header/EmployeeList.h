@@ -2,6 +2,7 @@
 #define EMPLOYEELIST_H
 #include "../Header/Employee.h"
 #include "../Header/drawTable.h"
+#include "../Header/checkInput.h"
 #include<string>
 #include<vector>
 #include<iostream>
@@ -35,6 +36,12 @@ class ListOfEmployee{
         //Hiển thị danh sách nhân viên
         void showEmployeeList() const;
         
+        //Tìm kiếm nhân viên theo tên
+        void findEmployee(const wstring &name);
+
+        //Tương tác với nhân viên
+        void interactWithEmployee(int id);
+
         //Lưu nhân viên vào danh sách 
         void saveEmployee(const string& filename) const;
 

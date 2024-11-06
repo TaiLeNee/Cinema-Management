@@ -5,6 +5,7 @@
 #include "ActionMovie.h"
 #include "HorrorMovie.h"
 #include "Movie.h"
+#include "../Header/checkInput.h"
 #include <vector>
 #include <string>
 #include <algorithm> 
@@ -41,6 +42,12 @@ public:
 
     // Hiển thị tất cả các bộ phim trong danh sách
     void displayMovies() const;
+
+    //Tìm kiếm phim theo tên
+    void searchMovie(const wstring& name);
+
+    //Tương tác với phim
+    void interactWithMovie(int id);
 
     // Lưu danh sách phim vào tệp CSV
     void saveToCSV(string filename) const;
