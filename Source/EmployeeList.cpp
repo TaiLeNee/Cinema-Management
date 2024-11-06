@@ -247,6 +247,36 @@ void ListOfEmployee::findEmployee(const wstring &name){
     
 }
 
+Employee* ListOfEmployee::findEmployeeByID(int id){
+    auto it = find_if(employee_list.begin(), employee_list.end(), [id](Employee &e){
+        return e.getId() == id;
+    });
+    if(it != employee_list.end()){
+        return &(*it);
+    }
+    return nullptr;
+}
+
+Employee* ListOfEmployee::findEmployeeByName(const wstring &name){
+    // Hàm lambda để chuyển đổi chuỗi sang chữ thường
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+
+    auto it = find_if(employee_list.begin(), employee_list.end(), [toLower, name](Employee &e){
+        return toLower(e.getName()).find(toLower(name)) != std::wstring::npos;
+    });
+    if(it != employee_list.end()){
+        return &(*it);
+    }
+    return nullptr;
+}
+
 void ListOfEmployee::interactWithEmployee(int id){
     int choice;
     do{

@@ -38,6 +38,10 @@ class ListOfEmployee{
         
         //Tìm kiếm nhân viên theo tên
         void findEmployee(const wstring &name);
+        Employee* findEmployeeByName(const wstring &userName);
+
+        //tìm kiếm nhân viên theo ID
+        Employee* findEmployeeByID(int id);
 
         //Tương tác với nhân viên
         void interactWithEmployee(int id);

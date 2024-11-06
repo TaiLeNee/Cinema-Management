@@ -57,6 +57,8 @@ public:
 
     void loadShowtimesofMovie(vector<Showtime>& showtimes);
     void resetShowtimesofMovie();
+
+    void searchMovieByID(int id);
 };
 
 #endif // MOVIELIST_H

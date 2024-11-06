@@ -146,7 +146,11 @@ menuStatistic:
             exportPDF(tableBooked);
         }
 
-
+        //nhấn phím bất kỳ để quay lại
+        green(L"Nhấn phím bất kỳ để quay lại...\n");
+        // wcin.ignore();
+        wcin.get();
+        system("cls");
         break;
     }
         
@@ -240,6 +244,11 @@ menuStatistic:
             exportPDF(tableBooked);
         }
 
+        //nhấn phím bất kỳ để quay lại
+        green(L"Nhấn phím bất kỳ để quay lại...\n");
+        // wcin.ignore();
+        wcin.get();
+        system("cls");
 
         break;
     }
@@ -294,10 +303,54 @@ menuStatistic:
             bookingDataMap[employeeID][month].totalChairBooked += chairsBooked;
             bookingDataMap[employeeID][month].totalRevenue += revenue;
         }
+        
+        //tìm nhân viên để xem doanh thu, hoặc xem tất cả
+        int cntIgnore = 0;
+    SearchEmployee:
+        wstring searchEmployee;
+        red(L"Nhập 0: để xem tất cả\n");    
+        drawTable({{L" Nhập tên hoặc ID nhân viên cần xem doanh thu: ", L"               "}});
+        Position pos2 = getXY();
+        int x2 = pos2.X;
+        int y2 = pos2.Y;
+        gotoXY(52, y2-2);
 
-        // Duyệt qua các nhân viên và sử dụng các bản đồ để lấy dữ liệu đặt vé
-        for (auto &employee : employeeList.getEmployees()) {
-            int employeeID = employee.getId();
+        // wcin >> searchEmployee;
+        if((cntIgnore < 1))
+            wcin.ignore();
+        getline(wcin, searchEmployee);
+
+        bool checkSearchEmp = 0;
+        Employee *employeeSearch = nullptr;
+        if(searchEmployee != L"0"){
+            if(isdigit(searchEmployee[0])){
+               employeeSearch = employeeList.findEmployeeByID(stoi(searchEmployee));
+                if(!employeeSearch){
+                    system("cls");
+                    red(L"Không tìm thấy ID nhân viên\n");
+                    cntIgnore ++;
+                    goto SearchEmployee;
+                }
+                
+            }else{
+               employeeSearch = employeeList.findEmployeeByName(searchEmployee);
+                if(!employeeSearch){
+                    system("cls");
+                    red(L"Không tìm thấy tên nhân viên\n");
+                    // wcout << searchEmployee <<endl;
+                    cntIgnore ++;
+                    goto SearchEmployee;
+                }
+            }
+            checkSearchEmp = 1;
+
+        }else{
+            checkSearchEmp = 0;
+        }
+
+        if(checkSearchEmp){
+            int employeeID = employeeSearch->getId();
+            wcout << employeeID <<endl;
             wstring month = date.getMonth();
 
             if (bookingDataMap.find(employeeID) != bookingDataMap.end() &&
@@ -306,11 +359,32 @@ menuStatistic:
                 BookingData &data = bookingDataMap[employeeID][month];
                 tableBooked.push_back({ 
                     to_wstring(employeeID),
-                    employee.getName(),
+                    employeeSearch->getName(),
                     to_wstring(data.totalChairBooked),
                     to_wstring(data.totalRevenue)
                 });
                 total += data.totalRevenue;
+            }
+        }
+        else{
+            // Duyệt qua các nhân viên và sử dụng các bản đồ để lấy dữ liệu đặt vé
+            for (auto &employee : employeeList.getEmployees()) {
+                int employeeID = employee.getId();
+
+                wstring month = date.getMonth();
+
+                if (bookingDataMap.find(employeeID) != bookingDataMap.end() &&
+                    bookingDataMap[employeeID].find(month) != bookingDataMap[employeeID].end()) {
+                    
+                    BookingData &data = bookingDataMap[employeeID][month];
+                    tableBooked.push_back({ 
+                        to_wstring(employeeID),
+                        employee.getName(),
+                        to_wstring(data.totalChairBooked),
+                        to_wstring(data.totalRevenue)
+                    });
+                    total += data.totalRevenue;
+                }
             }
         }
         system("cls");
@@ -326,6 +400,11 @@ menuStatistic:
             tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU NHÂN VIÊN THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       ",L""});
             exportPDF(tableBooked);
         }
+        //nhấn phím bất kỳ để quay lại
+        green(L"Nhấn phím bất kỳ để quay lại...\n");
+        
+        wcin.get();
+        system("cls");
         break;     
     }
 

@@ -160,6 +160,47 @@ void MovieList::searchMovie(const wstring& name) {
     drawTable(table);
 }
 
+void MovieList::searchMovieByID(int id) {
+    auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
+        return movie->getId() == id;
+    });
+
+    if (it == movies.end()) {
+        wcout << L"\033[92m[Phim không tồn tại] \033[0m" << endl;
+        return;
+    }
+
+    vector<vector<wstring>> table;
+    drawTable({
+        {L"                                   KẾT QUẢ TÌM KIẾM                                "}
+    });
+    table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
+    vector<wstring> row;
+    row.push_back(to_wstring((*it)->getId()));
+    row.push_back((*it)->getName());
+    row.push_back(to_wstring((*it)->getDuration()));
+    row.push_back((*it)->getSubTitle());
+    row.push_back((*it)->getCountry());
+    row.push_back(to_wstring((*it)->getLimitAge()));
+
+    if (dynamic_cast<LoveMovie*>(*it)) {
+        row.push_back(dynamic_cast<LoveMovie*>(*it)->getRomantic());
+    } else if (dynamic_cast<AnimatedMovie*>(*it)) {
+        row.push_back(dynamic_cast<AnimatedMovie*>(*it)->getAnimation());
+    } else if (dynamic_cast<ActionMovie*>(*it)) {
+        row.push_back(dynamic_cast<ActionMovie*>(*it)->getActionLevel());
+    } else if (dynamic_cast<HorrorMovie*>(*it)) {
+        row.push_back(dynamic_cast<HorrorMovie*>(*it)->getHorrorLevel());
+    } else {
+        row.push_back(L"");
+    }
+
+    row.push_back((*it)->getDescription());
+    table.push_back(row);
+    wcout << L"\n\n";
+    drawTable(table);
+}
+
 void MovieList::interactWithMovie(int id){
     int choice;
     do {
