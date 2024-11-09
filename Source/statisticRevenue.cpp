@@ -19,7 +19,7 @@ void exportPDF(const vector<vector<wstring>>& table) {
     time_t now = time(0);
     tm *ltm = localtime(&now);
      // Định dạng thời gian thành chuỗi
-    string filename = "../OUTPUT/ThongKeDoanhThu.csv";
+    string filename = "../OUTPUT/ThongKeDoanhThu.csv" +
                            to_string(1900 + ltm->tm_year) + "_" +
                            to_string(1 + ltm->tm_mon) + "_" +
                            to_string(ltm->tm_mday) + "_" +
@@ -148,7 +148,7 @@ menuStatistic:
 
         //nhấn phím bất kỳ để quay lại
         green(L"Nhấn phím bất kỳ để quay lại...\n");
-        // wcin.ignore();
+        wcin.ignore();
         wcin.get();
         system("cls");
         break;
@@ -246,7 +246,7 @@ menuStatistic:
 
         //nhấn phím bất kỳ để quay lại
         green(L"Nhấn phím bất kỳ để quay lại...\n");
-        // wcin.ignore();
+        wcin.ignore();
         wcin.get();
         system("cls");
 
@@ -402,7 +402,7 @@ menuStatistic:
         }
         //nhấn phím bất kỳ để quay lại
         green(L"Nhấn phím bất kỳ để quay lại...\n");
-        
+        wcin.ignore();
         wcin.get();
         system("cls");
         break;     

@@ -36,7 +36,7 @@ void manageShowtimes(RoomList &roomList, MovieList &movieList);
 void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList);
 
 void statisticRevenue(MovieList &movieList, ListOfEmployee &employeeList, BookedList &bookedList);
-
+void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &bookedList);   
 
 
 

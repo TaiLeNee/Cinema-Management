@@ -394,22 +394,7 @@ void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &custo
             statisticRevenue(movieList, employeeList, bookedList);
             break;
         case 2:
-            // statisticSoldTicket();
-            break;
-        case 3:
-            // statisticBookedTicket();
-            break;
-        case 4:
-            // statisticCanceledTicket();
-            break;
-        case 5:
-            // statisticBookedTicketByMovie();
-            break;
-        case 6:
-            // statisticBookedTicketByDate();
-            break;
-        case 7:
-            // statisticBookedTicketByMonth();
+            statisticBooked(movieList, roomList, bookedList);
             break;
         case 0:
             break;
@@ -422,9 +407,13 @@ void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &custo
 void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList, Employee *loggedin)
 {
     int choice = -1;
+    int cntCLS = 0;
     while (choice != 0)
-    {
-        system("cls");
+    {   
+        if(cntCLS >= 1)
+            system("cls");
+        cntCLS++;
+        
         wcout << L"\n\n";
 
         wcout << L"\033[92m   ████████╗██╗  ██╗██████╗     ███████╗████████╗ █████╗ ██████╗\n"

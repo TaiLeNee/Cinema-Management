@@ -59,6 +59,9 @@ public:
     void resetShowtimesofMovie();
 
     void searchMovieByID(int id);
+
+    Movie* findMovieByName(const wstring& name);
+    Movie* findMovieByID(int id);
 };
 
 #endif // MOVIELIST_H

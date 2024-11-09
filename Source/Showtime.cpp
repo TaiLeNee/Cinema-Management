@@ -7,6 +7,7 @@
 
 
 
+
 using namespace std;    
 
 static int curentIDBooked = 0; // ID của vé đã đặt
@@ -69,6 +70,14 @@ void Showtime::setChairs(vector<vector<Chair>> chairs) {
     // loadChairbooked_auto(showtimeID, this->chairs);
 }
 
+int Showtime::getNumChair() const
+{
+    int numChairs = 0;
+    for (auto &row : chairs) {
+        numChairs += row.size();
+    }
+    return numChairs;
+}
 
 void Showtime::inputShowtimeInfo()
 {   

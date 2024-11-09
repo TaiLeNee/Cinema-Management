@@ -126,12 +126,23 @@ void MovieList::displayMovies() const {
 
 void MovieList::searchMovie(const wstring& name) {
     vector<vector<wstring>> table;
+     // Hàm lambda để chuyển đổi chuỗi sang chữ thường
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+
+
     drawTable({
         {L"                                   KẾT QUẢ TÌM KIẾM                                "}
     });
     table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
     for (const auto& movie : movies) {
-        if (movie->getName().find(name) != wstring::npos) {
+        if (toLower(movie->getName()).find(toLower(name)) != wstring::npos) {
             vector<wstring> row;
             row.push_back(to_wstring(movie->getId()));
             row.push_back(movie->getName());
@@ -158,6 +169,37 @@ void MovieList::searchMovie(const wstring& name) {
     }
     wcout << L"\n\n";
     drawTable(table);
+}
+
+
+Movie* MovieList::findMovieByName(const wstring& name){
+     // Hàm lambda để chuyển đổi chuỗi sang chữ thường
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+    auto it = find_if(movies.begin(), movies.end(), [toLower, name](Movie* movie) {
+        return toLower(movie->getName()).find(toLower(name)) != std::wstring::npos;
+    });
+    if (it != movies.end()) {
+        return *it;
+    }
+
+    return nullptr;
+}
+
+Movie* MovieList::findMovieByID(int id){
+    auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
+        return movie->getId() == id;
+    });
+    if (it != movies.end()) {
+        return *it;
+    }
+    return nullptr;
 }
 
 void MovieList::searchMovieByID(int id) {
