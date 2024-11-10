@@ -103,7 +103,7 @@ bool Showtime::checkChairExist(int showtimeID, const wstring &chairName)
             return false;
         }
         else{
-            return true;
+            continue;
         }
     }
     return false;
