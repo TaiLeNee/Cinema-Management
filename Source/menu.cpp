@@ -82,8 +82,8 @@ void employeeMenu(ListOfEmployee &employeeList)
             getline(wcin, name);
             employeeList.findEmployee(name);
             red(L"Nhập 0 để quay lại.\n");
-            wcout<< L"\033[92mNhập ID nhân viên cần tương tác: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
+            // wcin >> id;
             if (id == 0)
             {
                 system("cls");
@@ -104,8 +104,7 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần xóa: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
-            wcout << L"\033[92mNhập ID của nhân viên cần xóa: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
             system("cls");
             employeeList.deleteEmployee(id);
             break;
@@ -115,8 +114,7 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần chỉnh sửa: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
-            wcout << L"\033[92mNhập ID của nhân viên cần chỉnh sửa: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
             wcin.ignore();
             system("cls");
             if (id == 0)
