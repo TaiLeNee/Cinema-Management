@@ -376,6 +376,7 @@ void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &custo
     do
     {
         vector<vector<wstring>> table;
+        system("cls");
         table.push_back({L"    MENU THỐNG KÊ     "});
         table.push_back({L"1. Thống kê doanh thu"});
         table.push_back({L"2. Thống kê số lượng vé "});

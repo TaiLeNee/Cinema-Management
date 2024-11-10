@@ -49,7 +49,7 @@ void exportPDF(const vector<vector<wstring>>& table) {
 
     //kiểm tra xem có tồn tại file không
     if(fileExists("exportPDF.exe")){
-        if(!system(string(command.begin(), command.end()).c_str()))
+        if(system(string(command.begin(), command.end()).c_str()))
             green(L"Xuất file thành công\n");
         else
             red(L"Không thể xuất file\n");
@@ -65,6 +65,7 @@ void exportPDF(const vector<vector<wstring>>& table) {
 void statisticRevenue(MovieList &movieList, ListOfEmployee &employeeList, BookedList &bookedList){
 
 menuStatistic:
+    system("cls");
     drawTable({{L"       THỐNG KÊ DOANH THU        "},
             {L"1. Doanh thu theo ngày"},
             {L"2. Doanh thu theo tháng"},
@@ -78,7 +79,7 @@ menuStatistic:
     {
     case 1:{
         long long total = 0;
-        //Lấy than giờ hiện tại
+        //Lấy giờ hiện tại
         time_t now = time(0);
         tm *ltm = localtime(&now);
         // int day = ltm->tm_mday;
@@ -131,26 +132,75 @@ menuStatistic:
                 total += data.totalRevenue;
             }
         }
-        system("cls");
         tableBooked.push_back({L" ", L" ", L" ", L" ", L" "});
         tableBooked.push_back({L"", L"", L"", L"Tổng doanh thu: ", to_wstring(total)});
+
+    displayStatisticBooked:
+        system("cls");
         drawTable({{L"       THỐNG KÊ DOANH THU THEO NGÀY " + date.getDate() + L"       "}});
         drawTable(tableBooked);
 
+        drawTable({
+            {L"1. Tăng dần theo doanh thu"},
+            {L"2. Giảm dần theo doanh thu"},
+            {L"3. Tăng dần theo số lượng vé"},
+            {L"4. Giảm dần theo số lượng vé"},
+            {L"5. Xuất file Excel"},
+            {L"0. Quay lại"}
+        });
 
-        //Xuất file Excel
-        int choiceExport;
-        checkInput(L"Xuất file Excel? 1. Có | 0. Không", choiceExport);
-        if(choiceExport){
-            tableBooked.insert(tableBooked.begin(), {L"", L"", L"       THỐNG KÊ DOANH THU NGÀY " + date.getDate() + L"       ", L"", L""});
-            exportPDF(tableBooked);
+        int choiceSort;
+        checkInput(L"Nhập lựa chọn ", choiceSort);
+        switch (choiceSort)
+        {
+            case 1:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[4]) < stoi(b[4]);
+                });
+                goto displayStatisticBooked;
+                break;
+            }
+            case 2:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[4]) > stoi(b[4]);
+                });
+                goto displayStatisticBooked;
+                break;
+            }
+            case 3:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) < stoi(b[3]);
+                });
+                goto displayStatisticBooked;
+                break;
+            }
+            case 4:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) > stoi(b[3]);
+                });
+                goto displayStatisticBooked;
+                break;
+            }
+            case 5:{
+                wstring confirm;
+                green(L" [ Bạn có chắc chắn muốn xuất file Excel không? (Y/N): ] ==> ");
+                wcin >> confirm;
+                if (confirm == L"Y" || confirm == L"y") {
+                    tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU NGÀY " + date.getDate() + L"       ",L"",L""});
+                    exportPDF(tableBooked);
+                    tableBooked.erase(tableBooked.begin());
+                }
+                break;
+            }
+            case 0:
+                system("cls");
+                break;
+            
+            default:
+                system("cls");
+                red(L"Lựa chọn không hợp lệ, vui lòng chọn lại.\n");
+                goto displayStatisticBooked;
         }
-
-        //nhấn phím bất kỳ để quay lại
-        green(L"Nhấn phím bất kỳ để quay lại...\n");
-        wcin.ignore();
-        wcin.get();
-        system("cls");
         break;
     }
         
@@ -229,26 +279,76 @@ menuStatistic:
                 total += data.totalRevenue;
             }
         }
-        system("cls");
         tableBooked.push_back({L" ", L" ", L" ", L" ", L" "});
         tableBooked.push_back({L"", L"", L"", L"Tổng doanh thu: ", to_wstring(total)});
 
+    displayStatisticBooked2:
+        system("cls");
         drawTable({{L"       THỐNG KÊ DOANH THU THEO THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       "}});
         drawTable(tableBooked);
 
-        //Xuất file Excel
-        int choiceExport;
-        checkInput(L"Xuất file Excel? 1. Có | 0. Không", choiceExport);
-        if(choiceExport){
-            tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU THEO THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       ",L"",L""});
-            exportPDF(tableBooked);
-        }
+        drawTable({
+            {L"1. Tăng dần theo doanh thu"},
+            {L"2. Giảm dần theo doanh thu"},
+            {L"3. Tăng dần theo số lượng vé"},
+            {L"4. Giảm dần theo số lượng vé"},
+            {L"5. Xuất file Excel"},
+            {L"0. Quay lại"}
+        });
 
-        //nhấn phím bất kỳ để quay lại
-        green(L"Nhấn phím bất kỳ để quay lại...\n");
-        wcin.ignore();
-        wcin.get();
-        system("cls");
+        int choiceSort;
+        checkInput(L"Nhập lựa chọn ", choiceSort);
+        switch (choiceSort)
+        {
+            case 1:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[4]) < stoi(b[4]);
+                });
+                goto displayStatisticBooked2;
+                break;
+            }
+            case 2:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[4]) > stoi(b[4]);
+                });
+                goto displayStatisticBooked2;
+                break;
+            }
+            case 3:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) < stoi(b[3]);
+                });
+                goto displayStatisticBooked2;
+                break;
+            }
+            case 4:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) > stoi(b[3]);
+                });
+                goto displayStatisticBooked2;
+                break;
+            }
+            case 5:{
+                wstring confirm;
+                green(L" [ Bạn có chắc chắn muốn xuất file Excel không? (Y/N): ] ==> ");
+                wcin >> confirm;
+                if (confirm == L"Y" || confirm == L"y") {
+                    tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU THEO THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       ",L"",L""});
+                    exportPDF(tableBooked);
+                    tableBooked.erase(tableBooked.begin());
+                }
+                break;
+            }
+            case 0:
+                system("cls");
+                break;
+
+            default:
+                system("cls");
+                red(L"Lựa chọn không hợp lệ, vui lòng chọn lại.\n");
+                goto displayStatisticBooked2;
+            
+        }
 
         break;
     }
@@ -387,25 +487,75 @@ menuStatistic:
                 }
             }
         }
-        system("cls");
         tableBooked.push_back({L" ", L" ", L" ", L" "});
         tableBooked.push_back({L" ", L" ", L"Tổng doanh thu: ", to_wstring(total)});
-
+    displayStatisticEmployee:
+        system("cls");
         drawTable({{L"       THỐNG KÊ DOANH THU NHÂN VIÊN THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       "}});
         drawTable(tableBooked);
 
-        int choiceExport;
-        checkInput(L"Xuất file Excel? 1. Có | 0. Không", choiceExport);
-        if(choiceExport){
-            tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU NHÂN VIÊN THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       ",L""});
-            exportPDF(tableBooked);
+        drawTable({
+            {L"1. Tăng dần theo doanh thu"},
+            {L"2. Giảm dần theo doanh thu"},
+            {L"3. Tăng dần theo số lượng vé"},
+            {L"4. Giảm dần theo số lượng vé"},
+            {L"5. Xuất file Excel"},
+            {L"0. Quay lại"}
+        });
+
+        int choiceSort;
+        checkInput(L"Nhập lựa chọn ", choiceSort);
+        switch (choiceSort)
+        {
+            case 1:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) < stoi(b[3]);
+                });
+                goto displayStatisticEmployee;
+                break;
+            }
+            case 2:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[3]) > stoi(b[3]);
+                });
+                goto displayStatisticEmployee;
+                break;
+            }
+            case 3:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[2]) < stoi(b[2]);
+                });
+                goto displayStatisticEmployee;
+                break;
+            }
+            case 4:{
+                sort(tableBooked.begin() + 1, tableBooked.end()-2, [](vector<wstring> &a, vector<wstring> &b) {
+                    return stoi(a[2]) > stoi(b[2]);
+                });
+                goto displayStatisticEmployee;
+                break;
+            }
+            case 5:{
+                wstring confirm;
+                green(L" [ Bạn có chắc chắn muốn xuất file Excel không? (Y/N): ] ==> ");
+                wcin >> confirm;
+                if (confirm == L"Y" || confirm == L"y") {
+                    tableBooked.insert(tableBooked.begin(), {L"", L"",L"       THỐNG KÊ DOANH THU NHÂN VIÊN THÁNG " + date.getMonth() + L"/" + to_wstring(year) + L"       ",L""});
+                    exportPDF(tableBooked);
+                    tableBooked.erase(tableBooked.begin());
+                }
+                break;
+            }
+            case 0:
+                system("cls");
+                break;
+
+            default:
+                system("cls");
+                red(L"Lựa chọn không hợp lệ, vui lòng chọn lại.\n");
+                goto displayStatisticEmployee;
         }
-        //nhấn phím bất kỳ để quay lại
-        green(L"Nhấn phím bất kỳ để quay lại...\n");
-        wcin.ignore();
-        wcin.get();
-        system("cls");
-        break;     
+        break;      
     }
 
     case 0:
