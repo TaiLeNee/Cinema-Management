@@ -61,6 +61,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
 
     wstring name;
     name = loggedInUser->getName();
+    loggedin_global = loggedInUser;
     if (loggedInUser->getLevel() == 0) {
         employeeIDLogin = loggedInUser->getId();
         wcout << L"\033[92m[Xin chào Owner "<< name <<"]\033[0m"<< endl;

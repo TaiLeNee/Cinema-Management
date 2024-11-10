@@ -102,3 +102,8 @@ wstring Booked::getMonth() const
     }
     return L"";
 }
+
+void Booked::pay(Pay* payment) {
+    payment->setPaymentStatus(1);
+    saveChairbooked();
+}
