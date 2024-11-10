@@ -114,7 +114,6 @@ bool menuSort(vector<vector<wstring>>& tableBooked){
             return 0;
         }
 
-
         case 0:
             return 0;
         default:
