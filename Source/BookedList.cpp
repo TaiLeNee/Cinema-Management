@@ -11,7 +11,7 @@ void BookedList::removeBooked(size_t index) {
     bookedList.erase(bookedList.begin() + index);
 }
 
-void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/chairbooked.csv")
+void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/payments.csv")
 {   
     bookedList.clear();
     wifstream file(filename);
@@ -19,7 +19,7 @@ void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/chairb
 
     if (!file.is_open())
     {
-        wcerr << L"Không thể mở file chairbooked.csv!" << endl;
+        wcerr << L"Không thể mở file payments.csv!" << endl;
         return;
     }
 

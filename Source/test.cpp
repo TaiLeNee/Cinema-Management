@@ -19,7 +19,7 @@ bool exportPDF(const std::vector<std::vector<std::wstring>>& table) {
     // }
     // tempFile.close();
 
-    std::wstring command = L"exportPDF.exe ../DATA/chairbooked.csv";
+    std::wstring command = L"exportPDF.exe ../DATA/payments.csv";
     return std::system(std::string(command.begin(), command.end()).c_str());
 }
 

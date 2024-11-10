@@ -101,7 +101,7 @@ int main() {
     }
 
     BookedList bookedList;
-    // bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+    // bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
     
     ListOfEmployee employeeList;
     CustomerList customerList;

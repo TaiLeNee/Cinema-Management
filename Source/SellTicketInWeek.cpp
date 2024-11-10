@@ -4,7 +4,7 @@
 
 void SellTicketInWeek(MovieList &movieList) {   
     BookedList bookedList;
-    bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+    bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
 
     wstring GREEN = L"\033[92m";
     wstring YELLOW = L"\033[93m";

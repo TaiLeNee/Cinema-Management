@@ -14,11 +14,11 @@ Booked::Booked(int idBooked, int ticketID, int showtimeID, int employeeID, wstri
 }
 
 void Booked::saveChairbooked(){
-    wofstream file(L"../DATA/chairbooked.csv", ios::app);
+    wofstream file(L"../DATA/payments.csv", ios::app);
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
 
     if (!file.is_open()) {
-        wcerr << L"Không thể mở file chairbooked.csv!" << endl;
+        wcerr << L"Không thể mở file payments.csv!" << endl;
         return;
     }
 

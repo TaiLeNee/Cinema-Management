@@ -127,7 +127,7 @@ void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &booke
 
    
 
-    bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+    bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
     drawTable({{L"       THỐNG KÊ SỐ LƯỢNG VÉ        "},
             {L"1. Thống kê 1 tháng theo phim"},
             {L"2. Thống kê 1 tháng theo phòng chiếu"},
