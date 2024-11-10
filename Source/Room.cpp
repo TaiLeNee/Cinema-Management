@@ -73,3 +73,11 @@ void Room::deleteShowtime(int showtimeID) {
         showtimes.erase(it);
     }
 }
+
+int Room::getNumRows() {
+    return numRows;
+}
+
+int Room::getNumChairsPerRow() {
+    return numChairsPerRow;
+}

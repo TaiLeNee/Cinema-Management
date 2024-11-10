@@ -32,6 +32,9 @@ class Room {
         vector<vector<Chair>> getChairs();
         void loadShowtimes(const string& filename);
         void deleteShowtime(int showtimeID);
+
+        int getNumRows();
+        int getNumChairsPerRow();
 };  
 
 #endif // ROOM_H

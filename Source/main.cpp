@@ -1,6 +1,7 @@
 #include "../Header/Menu.h"
 #include "../Header/RoomList.h"
 #include "../Header/MovieList.h"
+#include "../Header/globals.h"
 #include <fcntl.h>
 #include <io.h>
 
@@ -8,6 +9,7 @@
 
 
 using namespace std;
+
 
 
 void loading(int duration) {
@@ -22,10 +24,11 @@ void loading(int duration) {
         Sleep(500);
     }
     green(L"\rLoading complete!\n" );
+    Sleep(500);
 }
 
 
-void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList, RoomList &roomList){
+void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList){
     vector<vector<wstring>> table;
     wstring userName, passWord;
     Employee *loggedInUser = nullptr;
@@ -41,7 +44,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         wcin >> userName;
         gotoXY(13, 5);
         wcin >> passWord;
-        loggedInUser = employeeList.signIn(userName, passWord);
+        loggedInUser = employeeList.signIn(userName, passWord); 
         if (!loggedInUser) {
             wcout << L"\n\033[92mĐăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập...\033[0m" << endl;
             Sleep(2000);
@@ -50,6 +53,7 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
         }
         else{
             system("cls");
+            loading(4);
             wcout << L"\n\033[92m[Đăng nhập thành công!]\033[0m" << endl;
             
         }
@@ -58,21 +62,23 @@ void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList
     wstring name;
     name = loggedInUser->getName();
     if (loggedInUser->getLevel() == 0) {
-        wcout << L"\033[92m[Xin chào OWNER "<< name <<"]\033[0m"<< endl;
-        loading(5);
-        mainMenu(employeeList, movieList, customerList, roomList, 0);
+        employeeIDLogin = loggedInUser->getId();
+        wcout << L"\033[92m[Xin chào Owner "<< name <<"]\033[0m"<< endl;
+        Sleep(1000);
+        mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedInUser);
     }
     else if (loggedInUser->getLevel() == 1) {
-        wcout << L"\033[92m[Xin chào ADMIN " << name <<"]\033[0m"<< endl;
-        loading(5);
-        mainMenu(employeeList, movieList, customerList, roomList, 1);
+        employeeIDLogin = loggedInUser->getId();
+        wcout << L"\033[92m[Xin chào Admin " << name <<"]\033[0m"<< endl;
+        Sleep(1000);
+        mainMenu(employeeList, movieList, customerList, roomList,bookedList , loggedInUser);
 
     } 
     else {
-        wcout << L"\033[92m[Xin chào Nhân Viên " << name <<"]\033[0m"<< endl;
-        loading(5);
-        mainMenu(employeeList, movieList, customerList, roomList, loggedInUser->getLevel());
-
+        employeeIDLogin = loggedInUser->getId();
+        wcout << L"\033[92m[Xin chào nhân viên " << name <<"]\033[0m"<< endl;
+        Sleep(1000);
+        mainMenu(employeeList, movieList, customerList, roomList,  bookedList, loggedInUser);
     }
 }
 
@@ -93,6 +99,9 @@ int main() {
     for(auto room: roomList.getRooms()){
         movieList.loadShowtimesofMovie(room.getShowtimes());
     }
+
+    BookedList bookedList;
+    // bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
     
     ListOfEmployee employeeList;
     CustomerList customerList;
@@ -100,7 +109,7 @@ int main() {
     /*======================================*/
 
 
-    loginMenu(employeeList, movieList, customerList, roomList);
+    loginMenu(employeeList, movieList, customerList, roomList, bookedList);
     
    
     return 0;
