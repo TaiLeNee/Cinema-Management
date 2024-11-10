@@ -441,7 +441,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         switch (choice)
         {
         case 1:
-            SellTicketInWeek(movieList);
+            SellTicketInWeek(movieList, roomList);
             break;
         case 2:
             system("cls");

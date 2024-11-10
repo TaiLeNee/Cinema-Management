@@ -50,3 +50,7 @@ void Cash::checkPaymentStatus(){
         wcout << L"Đang chờ xử lý" << endl;
     }
 }
+
+void Pay::setPaymentAmount(long long paymentAmount) {
+    this->paymentAmount = paymentAmount;
+}
