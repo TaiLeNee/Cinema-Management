@@ -1,27 +1,24 @@
 #include <iostream>
-#include <string>
-#include <locale>
-#include <cwctype>
-#include <fcntl.h>
+#include <windows.h>
 #include <io.h>
-
+#include <fcntl.h>
 using namespace std;
+void countdown(int duration) {
 
-wstring toLower(const wstring& str) {
-    wstring result;
-    for (wchar_t ch : str) {
-        result += std::towlower(ch);
+    for (int i = 1; i <= duration; i++) {
+        wcout << L"\rĐang xác nhận: " << i << L" giây";
+        wcout<<flush;
+        Sleep(1000);
     }
-    return result;
+    Sleep(1000);
 }
 
+
 int main() {
-    // Đặt chế độ đầu ra và đầu vào của terminal thành UTF-16
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
-
-    wstring str = L"Xin ChÀo";
-    wcout << toLower(str) << endl;
-
+    int seconds;
+   
+    countdown(3);
     return 0;
 }

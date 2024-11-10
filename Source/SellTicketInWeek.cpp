@@ -2,6 +2,16 @@
 #include "../Header/checkInput.h"
 #include "../Header/globals.h"
 
+void countdown(int duration) {
+
+    for (int i = 1; i <= duration; i++) {
+       green(L"\rĐang xác nhận: " + to_wstring(i) + L" giây");
+        wcout<<flush;
+        Sleep(1000);
+    }
+    Sleep(1000);
+}
+
 
 void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {   
     BookedList bookedList;
@@ -356,6 +366,8 @@ choicePayment:
         wcin>>confirmPay;
         if(confirmPay == L"Y" || confirmPay == L"y"){
             payment->setPaymentStatus(1);
+            payment->checkPaymentStatus();
+
         }
         else{
             payment->setPaymentStatus(0);
@@ -374,27 +386,14 @@ choicePayment:
         wcin>>confirmPay;
         if(confirmPay == L"Y" || confirmPay == L"y"){
             payment->setPaymentStatus(1);
+            countdown(3);
+            payment->checkPaymentStatus();
         }
         else{
             payment->setPaymentStatus(0);
         }
     }
-    // else if(choicePayment == 3){
-    //     paymentMethodBooking = L"Thẻ";
-    //     payment = new Card();
-    //     payment->setPaymentAmount(totalMoney);
-    //     payment->setPaymentStatus(2);
-
-    //     wstring confirmPay;
-    //     green(L"══[Xác nhận đã thanh toán bằng thẻ (Y/N) ...]==> ");
-    //     wcin>>confirmPay;
-    //     if(confirmPay == L"Y" || confirmPay == L"y"){
-    //         payment->setPaymentStatus(1);
-    //     }
-    //     else{
-    //         payment->setPaymentStatus(0);
-    //     }
-    // }
+    
     else if(choicePayment == 0){
         system("cls");
         showtimeCurrent->bookTickets(ticketID, chairNames, 0);

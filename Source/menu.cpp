@@ -198,7 +198,7 @@ void movieMenu(MovieList &movieList)
             table.push_back({L"4. Kinh dị"});
             table.push_back({L"0. Quay lại"});
             drawTable(table);
-            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAO KHI CHỌN.\n");
+            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN.\n");
             checkInput(L"Lựa chọn của bạn", choice);
             wcin.ignore();
             wcout << "\033[93m";
