@@ -30,6 +30,8 @@ class Booked{
         Booked(int idBooked, int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
         Booked(int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
         
+        int getIdBooked() const;
+
         void saveChairbooked();
 
         int getTicketID() const;

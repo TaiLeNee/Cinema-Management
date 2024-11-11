@@ -1,0 +1,9 @@
+employee
+movie
+age
+date
+room
+chair
+ticket
+amount
+price
