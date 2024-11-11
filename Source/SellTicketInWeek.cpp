@@ -2,6 +2,13 @@
 #include "../Header/checkInput.h"
 #include "../Header/globals.h"
 
+
+bool fileExists3(const string& filename) {
+    struct stat buffer;
+    return (stat(filename.c_str(), &buffer) == 0);
+}
+
+
 void countdown(int duration) {
 
     for (int i = 1; i <= duration; i++) {
@@ -20,7 +27,7 @@ void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {
     wstring GREEN = L"\033[92m";
     wstring YELLOW = L"\033[93m";
     
-    wstring dateBooking, movieNameBooking, showtimeBooking, chairBooking,ticketBooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
+    wstring dateBooking, movieNameBooking, ageBooking, showtimeBooking, chairBooking,ticketBooking, ticketPricebooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
 
     vector<vector<wstring>> table;
     vector<wstring>date;
@@ -85,7 +92,7 @@ Date:
 
     /// Hiện thị danh sách phim trong ngày
 MovieInDay:
-    dateBooking = date[choiceDate-1];
+    // dateBooking = date[choiceDate-1];
 
     drawTable(tableMovie);
     wcout<<L"\033[91mNhập 0: Quay lại\n";
@@ -122,6 +129,7 @@ ShowtimeInDay:
     movie->displayShowtimeInDay(date[choiceDate-1]);
     
     movieNameBooking = movie->getName();
+    ageBooking = to_wstring(movie->getLimitAge());
 
     //Lấy showtimeID
     int showtimeID = -1;
@@ -199,6 +207,7 @@ choiceTicket:
         if(ticket.getTicketID() == ticketID){
             //lấy loại vé
             ticketBooking = ticket.getTypeTicket();
+            ticketPricebooking = to_wstring(ticket.getPrice());
             //Tính tổng tiền vé
             totalMoney = ticket.getPrice() * numChairs;
 
@@ -230,7 +239,7 @@ choiceChair:
             break;
         }
     }
-
+    
     showtimeBooking = showtimeCurrent->getStartTime().getFulltime();
 
     red(L"Nhập 0: quay lại\n");
@@ -296,10 +305,10 @@ choiceChair:
         {L"Nhân viên: ", employeeBooking},
         {L"",L""},
         {L"Tên phim: ", movieNameBooking},
-        {L"Ngày chiếu: ", dateBooking},
         {L"Suất chiếu: ", showtimeBooking},
         {L"Phòng chiếu: ", roomBooking},
         {L"Loại vé: ", ticketBooking},
+        {L"Giá: ", ticketPricebooking},
         {L"Số lượng ghế: ", to_wstring(numChairs)},
         {L"Ghế: ", chairBooking},
         {L"Tổng tiền: ", to_wstring(totalMoney)},
@@ -371,6 +380,8 @@ choicePayment:
         }
         else{
             payment->setPaymentStatus(0);
+            goto choicePayment;
+
         }
 
         
@@ -391,6 +402,7 @@ choicePayment:
         }
         else{
             payment->setPaymentStatus(0);
+            goto choicePayment;
         }
     }
     
@@ -412,8 +424,64 @@ choicePayment:
 
     paymentMethodBooking = payment->processPayment();
 
-    // showtimeCurrent->displayChairs(ticketID);
+    //Lưu thông tin vé vào file
+    //Lấy thời gian thực
+    time_t now2 = time(0);
+    tm *ltm2 = localtime(&now2);
+
+    // Giả sử booked.getIdBooked() trả về một wstring
+   
+    string datetime_file = "../OUTPUT/Booked_ID_" + to_string(booked.getIdBooked()) + "-" + to_string(ltm2->tm_hour) + "" + to_string(ltm2->tm_min) + "" + to_string(ltm2->tm_sec) + "-" + to_string(ltm2->tm_mday) + "" + to_string(1 + ltm2->tm_mon) + "" + to_string(1900 + ltm2->tm_year) +  ".txt";
+
+    wofstream fileExport(datetime_file);
+    fileExport.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
+    
+    if(fileExport.is_open()){
+        fileExport<<booked.getIdBooked()<<endl;
+        fileExport<<employeeBooking<<endl;
+        fileExport<<movieNameBooking<<endl;
+        fileExport<<ageBooking<<endl;
+        fileExport<<showtimeBooking<<endl;
+        fileExport<<roomBooking<<endl;
+        fileExport<<chairBooking<<endl;
+        fileExport<<ticketBooking<<endl;
+        fileExport<<totalMoney<<endl;
+        fileExport<<ticketPricebooking<<endl;
+        fileExport<<paymentMethodBooking<<endl;
+        fileExport<<datetime<<endl;
+        // fileExport<<L"ID vé: "<<booked.getIdBooked()<<endl;
+        // fileExport<<L"Nhân viên: "<<employeeBooking<<endl;
+        // fileExport<<L"Tên phim: "<<movieNameBooking<<endl;
+        // fileExport<<L"Tuổi: "<<ageBooking<<endl;
+        // fileExport<<L"Suất chiếu: "<<showtimeBooking<<endl;
+        // fileExport<<L"Phòng chiếu: "<<roomBooking<<endl;
+        // fileExport<<L"Ghế: "<<chairBooking<<endl;
+        // fileExport<<L"Loại vé: "<<ticketBooking<<endl;
+        // fileExport<<L"Tổng tiền: "<<totalMoney<<endl;
+        // fileExport<<L"Giá: "<<ticketPricebooking<<endl;
+        // fileExport<<L"Phương thức thanh toán: "<<paymentMethodBooking<<endl;
+        // fileExport<<L"Thời gian đặt vé: "<<datetime<<endl;
+        
+        fileExport.close();
+    }
+
+    //Export vé ra file pdf
+    string command = "ExportTicket.exe " + string(datetime_file.begin(), datetime_file.end());
+
     green(L"══════[Đặt vé thành công]══════\n");
+    green(L"══════[... Đang xuất vé ... ]══════\n");
+    if(fileExists3("ExportTicket.exe")){
+        if(system(string(command.begin(), command.end()).c_str())){
+            green(L"Xuất vé thành công\n");
+        }
+        else
+            red(L"Không thể xuất vé\n");
+    }
+    else{
+        red(L"Không tìm thấy file ExportTicket.exe\n");
+    }
+    // showtimeCurrent->displayChairs(ticketID);
+    
     wcout<<GREEN<<L"══════[Nhấn Enter để tiếp tục ... ]";
     wcin.ignore();
     wcin.get();

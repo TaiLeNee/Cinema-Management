@@ -5,12 +5,16 @@ int Booked::curentIDBooked = 0;
 
 Booked::Booked() {}
 
- Booked::Booked(int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames): ticketID(ticketID), showtimeID(showtimeID), employeeID(employeeID), datetime(datetime), totalMoney(totalMoney), chairNames(chairNames) {
-    ++curentIDBooked;
+ Booked::Booked(int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames): idBooked(++curentIDBooked), ticketID(ticketID), showtimeID(showtimeID), employeeID(employeeID), datetime(datetime), totalMoney(totalMoney), chairNames(chairNames) {
+   
 }
 
 Booked::Booked(int idBooked, int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames): idBooked(idBooked), ticketID(ticketID), showtimeID(showtimeID), employeeID(employeeID), datetime(datetime), totalMoney(totalMoney), chairNames(chairNames) {
     curentIDBooked = max(curentIDBooked, this->idBooked);
+}
+
+int Booked::getIdBooked() const {
+    return idBooked;
 }
 
 void Booked::saveChairbooked(){
@@ -22,7 +26,7 @@ void Booked::saveChairbooked(){
         return;
     }
 
-    file << curentIDBooked << L"," << ticketID << L"," << this->showtimeID << L","<< this->employeeID << L"," << datetime << L"," << totalMoney << L",\"";
+    file << idBooked << L"," << ticketID << L"," << this->showtimeID << L","<< this->employeeID << L"," << datetime << L"," << totalMoney << L",\"";
 
     for(auto& chairname: chairNames) {
         file << chairname ;
