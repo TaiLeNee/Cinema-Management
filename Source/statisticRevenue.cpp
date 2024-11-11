@@ -90,7 +90,7 @@ menuStatistic:
             break;
         }
 
-        bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+        bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
 
         //Lấy thông tin vé đẫ bán, tên phim, số lượng vé, doanh thu
         vector<vector<wstring>> tableBooked;
@@ -236,7 +236,7 @@ menuStatistic:
         int year = 1900 + ltm->tm_year;
         Datetime date(L"0", month, to_wstring(year));
 
-        bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+        bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
 
         //Lấy thông tin vé đẫ bán, tên phim, số lượng vé, doanh thu
         vector<vector<wstring>> tableBooked;
@@ -384,7 +384,7 @@ menuStatistic:
         int year = 1900 + ltm->tm_year;
         Datetime date(L"0", month, to_wstring(year));
 
-        bookedList.loadChairbookedFromCSV("../DATA/chairbooked.csv");
+        bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
        
         //Lấy thông tin vé đẫ bán, tên phim, số lượng vé, doanh thu
         long long total = 0;

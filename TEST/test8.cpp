@@ -9,7 +9,7 @@
 using namespace std;
 int main() {
     // Đọc tệp với mã hóa UTF-8
-    ifstream file("../DATA/chairbooked.csv", ios::binary);
+    ifstream file("../DATA/payments.csv", ios::binary);
 
     // Mã hóa dữ liệu thành Base64
     string file_content_utf8;
@@ -23,7 +23,7 @@ int main() {
             {
                 {"Name", "File"},
                 {"FileValue", {
-                    {"Name", "chairbooked.csv"},
+                    {"Name", "payments.csv"},
                     {"Data", file_content_base64}
                 }}
             },

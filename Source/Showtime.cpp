@@ -103,7 +103,7 @@ bool Showtime::checkChairExist(int showtimeID, const wstring &chairName)
             return false;
         }
         else{
-            return true;
+            continue;
         }
     }
     return false;
@@ -143,11 +143,11 @@ void Showtime::bookTickets(int ticketID, vector<wstring> chairNames, int statusB
 
 void Showtime::saveChairbooked(int ticketID, vector<wstring> chairNames){
 
-    wofstream file(L"../DATA/chairbooked.csv", ios::app);
+    wofstream file(L"../DATA/payments.csv", ios::app);
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
 
     if (!file.is_open()) {
-        wcerr << L"Không thể mở file chairbooked.csv!" << endl;
+        wcerr << L"Không thể mở file payments.csv!" << endl;
         return;
     }
 

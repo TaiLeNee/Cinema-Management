@@ -217,12 +217,22 @@ void ListOfEmployee::editEmployeeInfo(int id) {
 }
 
 void ListOfEmployee::findEmployee(const wstring &name){
+
+     auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+
     int id;
     vector<vector<wstring>> table1,table2;
     green(L"\nCác nhân viên với tên " + name + L" là: \n");
     table1.push_back({L"ID", L"Tên", L"Tuổi", L"Số Điện Thoại", L"Username", L"Password", L"Cấp Bậc"});
     for(const auto &e : employee_list){
-        if(e.getName().find(name) != wstring::npos){
+        if(toLower(e.getName()).find(toLower(name)) != wstring::npos){
             wstring level;
             if (e.getLevel() == 1) {
                 level = L"Admin";

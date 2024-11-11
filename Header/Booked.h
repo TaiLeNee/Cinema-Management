@@ -2,7 +2,7 @@
 #define BOOKED_H
 #include "Chair.h"
 #include "drawTable.h"
-
+#include "Payment.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -52,6 +52,9 @@ class Booked{
 
         wstring getDate() const;
         wstring getMonth() const;
+
+        void displayInfo() const;
+        void pay(Pay* payment);
 
         
 

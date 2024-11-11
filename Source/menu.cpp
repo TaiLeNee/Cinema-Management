@@ -82,8 +82,8 @@ void employeeMenu(ListOfEmployee &employeeList)
             getline(wcin, name);
             employeeList.findEmployee(name);
             red(L"Nhập 0 để quay lại.\n");
-            wcout<< L"\033[92mNhập ID nhân viên cần tương tác: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
+            // wcin >> id;
             if (id == 0)
             {
                 system("cls");
@@ -104,8 +104,7 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần xóa: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
-            wcout << L"\033[92mNhập ID của nhân viên cần xóa: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
             system("cls");
             employeeList.deleteEmployee(id);
             break;
@@ -115,8 +114,7 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần chỉnh sửa: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
-            wcout << L"\033[92mNhập ID của nhân viên cần chỉnh sửa: \033[0m";
-            wcin >> id;
+            checkInput(L"ID nhân viên cần tương tác:", id);
             wcin.ignore();
             system("cls");
             if (id == 0)
@@ -198,7 +196,7 @@ void movieMenu(MovieList &movieList)
             table.push_back({L"4. Kinh dị"});
             table.push_back({L"0. Quay lại"});
             drawTable(table);
-            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAO KHI CHỌN.\n");
+            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN.\n");
             checkInput(L"Lựa chọn của bạn", choice);
             wcin.ignore();
             wcout << "\033[93m";
@@ -417,13 +415,14 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         
         wcout << L"\n\n";
 
-        wcout << L"\033[92m   ████████╗██╗  ██╗██████╗     ███████╗████████╗ █████╗ ██████╗\n"
-              << L"\033[92m   ╚══██╔══╝██║  ██║██╔══██╗    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗\n"
-              << L"\033[92m      ██║   ███████║██║  ██║    ███████╗   ██║   ███████║██████╔╝\n"
-              << L"\033[92m      ██║   ██╔══██║██║  ██║    ╚════██║   ██║   ██╔══██║██╔══██╗\n"
-              << L"\033[92m      ██║   ██║  ██║██████╔╝    ███████║   ██║   ██║  ██║██║  ██║\n"
-              << L"\033[92m      ╚═╝   ╚═╝  ╚═╝╚═════╝     ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝\n";
-
+        
+        wcout << L"\033[92m    █████╗ ██╗   ██╗ █████╗ ███╗   ██╗ ██████╗███████╗██████╗     ███████╗████████╗ █████╗ ██████╗ \n"
+              << L"\033[92m   ██╔══██╗██║   ██║██╔══██╗████╗  ██║██╔════╝██╔════╝██╔══██╗    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗\n"
+              << L"\033[92m   ███████║██║   ██║███████║██╔██╗ ██║██║     █████╗  ██████╔╝    ███████╗   ██║   ███████║██████╔╝\n"
+              << L"\033[92m   ██╔══██║╚██╗ ██╔╝██╔══██║██║╚██╗██║██║     ██╔══╝  ██╔══██╗    ╚════██║   ██║   ██╔══██║██╔══██╗\n"
+              << L"\033[92m   ██║  ██║ ╚████╔╝ ██║  ██║██║ ╚████║╚██████╗███████╗██║  ██║    ███████║   ██║   ██║  ██║██║  ██║\n"
+              << L"\033[92m   ╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝\n";
+                                                                                        
         wcout << L"\033[m";
 
         vector<vector<wstring>> table;
@@ -441,7 +440,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         switch (choice)
         {
         case 1:
-            SellTicketInWeek(movieList);
+            SellTicketInWeek(movieList, roomList);
             break;
         case 2:
             system("cls");
