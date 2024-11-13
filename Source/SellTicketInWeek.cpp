@@ -29,6 +29,8 @@ void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {
     
     wstring dateBooking, movieNameBooking, ageBooking, showtimeBooking, chairBooking,ticketBooking, ticketPricebooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
 
+    Customer* customer ;
+
     vector<vector<wstring>> table;
     vector<wstring>date;
     // Lấy thời gian hiện tại
@@ -298,8 +300,82 @@ choiceChair:
 
     employeeBooking = loggedin_global->getName();
     
-    //Xử lý yes no
+    green(L"════[Có nhập thông tin khách hàng không? (Y/N) ...]==> ");
+    wchar_t ct;  
+    wcin>>ct;
+    ct = towlower(ct);
+    if(ct == 'y'){
+        system("cls");
+inputCustomer:
+        //Nhập thông tin khách hàng
+        drawTable({{L"     THÔNG TIN KHÁCH HÀNG     "}});
+
+        drawTable({{L"Tên khách hàng: ", L"                                  "},
+                    {L"Số điện thoại: ", L"                                  "}});
+        wstring nameCustomer, phoneCustomer;
+        Position pos2 = getXY();
+        int x2 = pos2.X;
+        int y2 = pos2.Y;
+        wcin.ignore();
+    inputName:
+        gotoXY(21, y2-4);
+        wcout << L"                                 ";
+        gotoXY(21, y2-4);
+        getline(wcin, nameCustomer);
+        //check format tên
+        wregex patternName(L"^[^\\n]([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+)$");
+        if (!regex_match(nameCustomer, patternName)) {
+            gotoXY(x2, y2+1);
+            red(L"Tên không hợp lệ. Vui lòng nhập lại.\n");
+            nameCustomer.clear();
+            //x
+            goto inputName;
+        }
+         gotoXY(x2, y2+1);
+         wcout << L"                                                   ";
+
+    inputPhone:
+        gotoXY(21, y2-2);
+        wcout << L"                                 ";
+        gotoXY(21, y2-2);
+        wcin>>phoneCustomer;
+        //check format số điện thoại
+        wregex phonePattern(L"^(84|0)[0-9]{8,13}$");
+        if (!regex_match(phoneCustomer, phonePattern)) {
+            gotoXY(x2, y2+1);
+            red(L"Số điện thoại không hợp lệ. Vui lòng nhập lại.\n");
+            phoneCustomer.clear();
+            goto inputPhone;
+        }
+        gotoXY(x2, y2+1);
+        wcout << L"                                                   ";
+
+
+        //Kiểm tra sđt khách hàng có tồn tại không
+        customer = customerList_gb->findPhoneNumber(phoneCustomer);
+        if(customer){
+            customerBooking = customer->getName();
+            customer->displayInfo();
+            
+        }
+        else{
+            customerList_gb->addCustomer(nameCustomer, phoneCustomer, 0);
+            customerBooking = nameCustomer;
+        }
+
+    }
+    
+    //nhấn enter để tiếp tục
+    wcout<<GREEN<<L"═══[ Nhấn Enter để chọn ghế hoặc 0 để quay lại ... ]==> ";
+    wcin.get();
+    if(wcin.get() == '0'){
+        system("cls");
+        goto inputCustomer;
+    }
+
+    system("cls");
     wcout<<GREEN<<L"══════[Xác nhận thanh toán]══════\n";   
+    
     drawTable({{L"        THÔNG TIN VÉ         "}});
     drawTable({
         {L"Nhân viên: ", employeeBooking},
@@ -312,6 +388,8 @@ choiceChair:
         {L"Số lượng ghế: ", to_wstring(numChairs)},
         {L"Ghế: ", chairBooking},
         {L"Tổng tiền: ", to_wstring(totalMoney)},
+        {L"Khách hàng: ", customerBooking},
+        {L"Điểm tích lũy: ", to_wstring(0.1*totalMoney)}
     });
 
 
@@ -337,8 +415,7 @@ choiceChair:
     
 
     showtimeCurrent->bookTickets(ticketID, chairNames, 1);
-    // Lưu thông tin vé vào file
-    Booked booked(ticketID, showtimeID, employeeIDLogin , datetime, to_wstring(totalMoney), chairNames);
+    
 
     //Thanh toán
     wcout<<GREEN<<L"══════[Thanh toán]══════\n";
@@ -419,8 +496,16 @@ choicePayment:
         goto choicePayment;
     }
 
+    // Lưu thông tin vé vào file
+    Booked booked(ticketID, showtimeID, employeeIDLogin , customer->getCustomerID(), datetime, to_wstring(totalMoney), chairNames);
+
+    //lưu hóa đơn vào booked
     bookedList.addBooked(booked);
     booked.saveChairbooked();
+
+    //thêm điểm cho khách hàng
+    customer->setPoint(totalMoney);
+    customerList_gb->saveToCSV("../DATA/customer.csv");
 
     paymentMethodBooking = payment->processPayment();
 
@@ -448,20 +533,7 @@ choicePayment:
         fileExport<<totalMoney<<endl;
         fileExport<<ticketPricebooking<<endl;
         fileExport<<paymentMethodBooking<<endl;
-        fileExport<<datetime<<endl;
-        // fileExport<<L"ID vé: "<<booked.getIdBooked()<<endl;
-        // fileExport<<L"Nhân viên: "<<employeeBooking<<endl;
-        // fileExport<<L"Tên phim: "<<movieNameBooking<<endl;
-        // fileExport<<L"Tuổi: "<<ageBooking<<endl;
-        // fileExport<<L"Suất chiếu: "<<showtimeBooking<<endl;
-        // fileExport<<L"Phòng chiếu: "<<roomBooking<<endl;
-        // fileExport<<L"Ghế: "<<chairBooking<<endl;
-        // fileExport<<L"Loại vé: "<<ticketBooking<<endl;
-        // fileExport<<L"Tổng tiền: "<<totalMoney<<endl;
-        // fileExport<<L"Giá: "<<ticketPricebooking<<endl;
-        // fileExport<<L"Phương thức thanh toán: "<<paymentMethodBooking<<endl;
-        // fileExport<<L"Thời gian đặt vé: "<<datetime<<endl;
-        
+        fileExport<<datetime<<endl;        
         fileExport.close();
     }
 

@@ -105,8 +105,10 @@ int main() {
     // bookedList.loadChairbookedFromCSV("../DATA/payments.csv");
     
     ListOfEmployee employeeList;
-    CustomerList customerList;
     employeeList.loadEmployees("../DATA/employee.csv");
+    CustomerList customerList;
+    customerList.loadFromCSV("../DATA/customers.csv");
+    customerList_gb = &customerList; // đặt con trỏ global trỏ đến customerList
     /*======================================*/
 
 

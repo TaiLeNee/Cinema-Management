@@ -38,6 +38,8 @@ public:
     // Đọc danh sách khách hàng từ tệp CSV
     void loadFromCSV(const std::string& filename);
 
+    Customer* findPhoneNumber(wstring phoneNumber);
+
 };
 
 #endif // CUSTOMERLIST_H

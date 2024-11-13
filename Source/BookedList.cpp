@@ -29,11 +29,12 @@ void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/paymen
     {
         wstringstream ss;
         ss.str(line);
-        wstring showtimeID, chairName, isBooked, ticketID, tmpID, employeeID, datetime, totalMoney;
+        wstring showtimeID, chairName, isBooked, ticketID, tmpID, employeeID, customerID, datetime, totalMoney;
         getline(ss, tmpID, L',');
         getline(ss, ticketID, L',');
         getline(ss, showtimeID, L',');
         getline(ss, employeeID, L',');
+        getline(ss, customerID, L',');
         getline(ss, datetime, L',');
         getline(ss, totalMoney, L',');
 
