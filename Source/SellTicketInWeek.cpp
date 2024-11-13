@@ -29,7 +29,7 @@ void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {
     
     wstring dateBooking, movieNameBooking, ageBooking, showtimeBooking, chairBooking,ticketBooking, ticketPricebooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
 
-    Customer* customer ;
+    Customer* customer = NULL ;
 
     vector<vector<wstring>> table;
     vector<wstring>date;
@@ -361,10 +361,18 @@ inputCustomer:
         else{
             customerList_gb->addCustomer(nameCustomer, phoneCustomer, 0);
             customerBooking = nameCustomer;
-        }
+            customer = customerList_gb->findPhoneNumber(phoneCustomer);}
 
     }
     
+    if(customer == NULL){
+        system("cls");
+        red(L"Không thể tạo khách hàng mới. Vui lòng nhập lại thông tin khách hàng.\n");
+        wcin.ignore();
+        wcin.ignore();
+
+        goto inputCustomer;
+    }
     //nhấn enter để tiếp tục
     wcout<<GREEN<<L"═══[ Nhấn Enter để chọn ghế hoặc 0 để quay lại ... ]==> ";
     wcin.get();
@@ -417,6 +425,39 @@ inputCustomer:
     showtimeCurrent->bookTickets(ticketID, chairNames, 1);
     
 
+    // Lưu thông tin vé vào file
+    Booked booked(ticketID, showtimeID, employeeIDLogin , customer->getCustomerID(), datetime, to_wstring(totalMoney), chairNames);
+     //Lấy thời gian thực
+    time_t now2 = time(0);
+    tm *ltm2 = localtime(&now2);
+     // Giả sử booked.getIdBooked() trả về một wstring là ID của vé
+    string datetime_file = "../OUTPUT/Booked_ID_" + to_string(booked.getIdBooked()) + "-" + to_string(ltm2->tm_hour) + "" + to_string(ltm2->tm_min) + "" + to_string(ltm2->tm_sec) + "-" + to_string(ltm2->tm_mday) + "" + to_string(1 + ltm2->tm_mon) + "" + to_string(1900 + ltm2->tm_year) +  ".txt";
+
+     //Lưu thông tin vé vào file
+   
+
+    wofstream fileExport(datetime_file);
+    fileExport.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
+    
+    if(fileExport.is_open()){
+        fileExport<<booked.getIdBooked()<<endl;
+        fileExport<<employeeBooking<<endl;
+        fileExport<<movieNameBooking<<endl;
+        fileExport<<ageBooking<<endl;
+        fileExport<<showtimeBooking<<endl;
+        fileExport<<roomBooking<<endl;
+        fileExport<<chairBooking<<endl;
+        fileExport<<ticketBooking<<endl;
+        fileExport<<totalMoney<<endl;
+        fileExport<<ticketPricebooking<<endl;
+        // fileExport<<paymentMethodBooking<<endl;
+        // fileExport<<datetime<<endl;        
+        // fileExport.close();
+    }
+    else{
+        red(L"Không thể mở file để lưu thông tin vé\n");
+    }
+
     //Thanh toán
     wcout<<GREEN<<L"══════[Thanh toán]══════\n";
 
@@ -441,10 +482,14 @@ choicePayment:
     checkInput(L"Chọn phương thức thanh toán", choicePayment);
     if(choicePayment == 1){
         paymentMethodBooking = L"Tiền mặt";
-        
+
+        //lưu thông tin thanh toán vào file
+        fileExport<<paymentMethodBooking<<endl;
+        fileExport<<datetime<<endl; 
+        fileExport.close();
+
         payment = new Cash();
         payment->setPaymentAmount(totalMoney);
-
         payment->setPaymentStatus(2);
 
         wstring confirmPay;
@@ -453,29 +498,51 @@ choicePayment:
         if(confirmPay == L"Y" || confirmPay == L"y"){
             payment->setPaymentStatus(1);
             payment->checkPaymentStatus();
-
+              
         }
         else{
             payment->setPaymentStatus(0);
+            //xóa file đã lưu
+            remove(string(datetime_file.begin(), datetime_file.end()).c_str());
             goto choicePayment;
-
         }
 
         
     }
     else if(choicePayment == 2){
         paymentMethodBooking = L"Chuyển khoản";
+         //lưu thông tin thanh toán vào file
+        fileExport<<paymentMethodBooking<<endl;
+        fileExport<<datetime<<endl; 
+        fileExport.close();
+        
         payment = new Banking();
         payment->setPaymentAmount(totalMoney);
-        payment->setPaymentStatus(2);
+        payment->setPaymentStatus(-1);
+
+        payment->createOrder(datetime_file);
 
         wstring confirmPay;
         green(L"══[Xác nhận đã chuyển khoản (Y/N) ...]==> ");
         wcin>>confirmPay;
         if(confirmPay == L"Y" || confirmPay == L"y"){
-            payment->setPaymentStatus(1);
+            // payment->setPaymentStatus(1);
             countdown(3);
             payment->checkPaymentStatus();
+            if(payment->getPaymentStatus() == 0){
+                system("cls");
+                showtimeCurrent->bookTickets(ticketID, chairNames, 0);
+                red(L"══════[Thanh toán hủy]══════\n");
+                remove(string(datetime_file.begin(), datetime_file.end()).c_str());
+
+                Sleep(1000);
+                return;
+            }
+            else if(payment->getPaymentStatus() == -1){
+                system("cls");
+                red(L"Chưa nhận được chuyển khoản. Vui lòng chọn lại.\n");
+                goto choicePayment;
+            }
         }
         else{
             payment->setPaymentStatus(0);
@@ -487,6 +554,7 @@ choicePayment:
         system("cls");
         showtimeCurrent->bookTickets(ticketID, chairNames, 0);
         red(L"══════[Thanh toán hủy]══════\n");
+        remove(string(datetime_file.begin(), datetime_file.end()).c_str());
         Sleep(1000);
         return;
     }
@@ -496,8 +564,7 @@ choicePayment:
         goto choicePayment;
     }
 
-    // Lưu thông tin vé vào file
-    Booked booked(ticketID, showtimeID, employeeIDLogin , customer->getCustomerID(), datetime, to_wstring(totalMoney), chairNames);
+    
 
     //lưu hóa đơn vào booked
     bookedList.addBooked(booked);
@@ -505,37 +572,11 @@ choicePayment:
 
     //thêm điểm cho khách hàng
     customer->setPoint(totalMoney);
-    customerList_gb->saveToCSV("../DATA/customer.csv");
+    customerList_gb->saveToCSV("../DATA/customers.csv");
 
     paymentMethodBooking = payment->processPayment();
 
-    //Lưu thông tin vé vào file
-    //Lấy thời gian thực
-    time_t now2 = time(0);
-    tm *ltm2 = localtime(&now2);
-
-    // Giả sử booked.getIdBooked() trả về một wstring
    
-    string datetime_file = "../OUTPUT/Booked_ID_" + to_string(booked.getIdBooked()) + "-" + to_string(ltm2->tm_hour) + "" + to_string(ltm2->tm_min) + "" + to_string(ltm2->tm_sec) + "-" + to_string(ltm2->tm_mday) + "" + to_string(1 + ltm2->tm_mon) + "" + to_string(1900 + ltm2->tm_year) +  ".txt";
-
-    wofstream fileExport(datetime_file);
-    fileExport.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
-    
-    if(fileExport.is_open()){
-        fileExport<<booked.getIdBooked()<<endl;
-        fileExport<<employeeBooking<<endl;
-        fileExport<<movieNameBooking<<endl;
-        fileExport<<ageBooking<<endl;
-        fileExport<<showtimeBooking<<endl;
-        fileExport<<roomBooking<<endl;
-        fileExport<<chairBooking<<endl;
-        fileExport<<ticketBooking<<endl;
-        fileExport<<totalMoney<<endl;
-        fileExport<<ticketPricebooking<<endl;
-        fileExport<<paymentMethodBooking<<endl;
-        fileExport<<datetime<<endl;        
-        fileExport.close();
-    }
 
     //Export vé ra file pdf
     string command = "ExportTicket.exe " + string(datetime_file.begin(), datetime_file.end());

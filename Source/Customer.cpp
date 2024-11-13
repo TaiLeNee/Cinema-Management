@@ -102,7 +102,7 @@ wstring Customer::getPhoneNumber() const {
 }
 
 void Customer::setPoint(int amount) {
-    this->point += amount * 0.01;
+    this->point += amount * 0.1;
 }
 
 int Customer::getPoint() const {

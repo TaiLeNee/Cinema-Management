@@ -101,6 +101,7 @@ void CustomerList::saveToCSV(string filename = "../DATA/customers.csv") const {
                  << Customer.getPoint() << L"," << endl;
         }
         file.close();
+        green(L"Lưu danh sách khách hàng thành công\n");
     } else {
         wcerr << L"Không thể mở tập tin để lưu\n";
     }
