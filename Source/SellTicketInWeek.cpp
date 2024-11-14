@@ -309,7 +309,7 @@ choiceChair:
 inputCustomer:
         //Nhập thông tin khách hàng
         drawTable({{L"     THÔNG TIN KHÁCH HÀNG     "}});
-
+        red(L"Nhập 0: Bỏ qua\n");
         drawTable({{L"Tên khách hàng: ", L"                                  "},
                     {L"Số điện thoại: ", L"                                  "}});
         wstring nameCustomer, phoneCustomer;
@@ -317,61 +317,73 @@ inputCustomer:
         int x2 = pos2.X;
         int y2 = pos2.Y;
         wcin.ignore();
+        
     inputName:
         gotoXY(21, y2-4);
         wcout << L"                                 ";
         gotoXY(21, y2-4);
         getline(wcin, nameCustomer);
-        //check format tên
-        wregex patternName(L"^[^\\n]([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+)$");
-        if (!regex_match(nameCustomer, patternName)) {
+        if(nameCustomer != L"0"){
+            
+            //check format tên
+            wregex patternName(L"^[^\\n]([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+)$");
+            if (!regex_match(nameCustomer, patternName)) {
+                gotoXY(x2, y2+1);
+                red(L"Tên không hợp lệ. Vui lòng nhập lại.\n");
+                nameCustomer.clear();
+                //x
+                goto inputName;
+            }
             gotoXY(x2, y2+1);
-            red(L"Tên không hợp lệ. Vui lòng nhập lại.\n");
-            nameCustomer.clear();
-            //x
-            goto inputName;
+            wcout << L"                                                   ";
+        }else{
+            nameCustomer = L"NULL";
         }
-         gotoXY(x2, y2+1);
-         wcout << L"                                                   ";
 
     inputPhone:
         gotoXY(21, y2-2);
         wcout << L"                                 ";
         gotoXY(21, y2-2);
         wcin>>phoneCustomer;
-        //check format số điện thoại
-        wregex phonePattern(L"^(84|0)[0-9]{8,13}$");
-        if (!regex_match(phoneCustomer, phonePattern)) {
+        if(phoneCustomer != L"0"){
+            //check format số điện thoại
+            wregex phonePattern(L"^(84|0)[0-9]{8,13}$");
+            if (!regex_match(phoneCustomer, phonePattern)) {
+                gotoXY(x2, y2+1);
+                red(L"Số điện thoại không hợp lệ. Vui lòng nhập lại.\n");
+                phoneCustomer.clear();
+                goto inputPhone;
+            }
             gotoXY(x2, y2+1);
-            red(L"Số điện thoại không hợp lệ. Vui lòng nhập lại.\n");
-            phoneCustomer.clear();
-            goto inputPhone;
+            wcout << L"                                                   ";
+
+
+            //Kiểm tra sđt khách hàng có tồn tại không
+            customer = customerList_gb->findPhoneNumber(phoneCustomer);
+            if(customer){
+                customerBooking = customer->getName();
+                customer->displayInfo();
+                
+            }
+            else{
+                customerList_gb->addCustomer(nameCustomer, phoneCustomer, 0);
+                customerBooking = nameCustomer;
+                customer = customerList_gb->findPhoneNumber(phoneCustomer);
+            }
+        }else{
+            phoneCustomer = L"NULL";
         }
-        gotoXY(x2, y2+1);
-        wcout << L"                                                   ";
 
+        if(customer == NULL && nameCustomer != L"NULL" && phoneCustomer != L"NULL"){
+            system("cls");
+            red(L"Không thể tạo khách hàng mới. Vui lòng nhập lại thông tin khách hàng.\n");
+            wcin.ignore();
+            wcin.ignore();
 
-        //Kiểm tra sđt khách hàng có tồn tại không
-        customer = customerList_gb->findPhoneNumber(phoneCustomer);
-        if(customer){
-            customerBooking = customer->getName();
-            customer->displayInfo();
-            
+            goto inputCustomer;
+        }else if(nameCustomer == L"NULL" && phoneCustomer == L"NULL"){
+            customerBooking = L" ";
         }
-        else{
-            customerList_gb->addCustomer(nameCustomer, phoneCustomer, 0);
-            customerBooking = nameCustomer;
-            customer = customerList_gb->findPhoneNumber(phoneCustomer);}
-
-    }
-    
-    if(customer == NULL){
-        system("cls");
-        red(L"Không thể tạo khách hàng mới. Vui lòng nhập lại thông tin khách hàng.\n");
-        wcin.ignore();
-        wcin.ignore();
-
-        goto inputCustomer;
     }
     //nhấn enter để tiếp tục
     wcout<<GREEN<<L"═══[ Nhấn Enter để chọn ghế hoặc 0 để quay lại ... ]==> ";
@@ -397,7 +409,7 @@ inputCustomer:
         {L"Ghế: ", chairBooking},
         {L"Tổng tiền: ", to_wstring(totalMoney)},
         {L"Khách hàng: ", customerBooking},
-        {L"Điểm tích lũy: ", to_wstring(0.1*totalMoney)}
+        {L"Điểm tích lũy: ", (customer) ? to_wstring(0.1*totalMoney) : L"0"}
     });
 
 
@@ -426,7 +438,11 @@ inputCustomer:
     
 
     // Lưu thông tin vé vào file
-    Booked booked(ticketID, showtimeID, employeeIDLogin , customer->getCustomerID(), datetime, to_wstring(totalMoney), chairNames);
+    Booked booked;
+    if(customer)
+        booked = Booked(ticketID, showtimeID, employeeIDLogin , customer->getCustomerID(), datetime, to_wstring(totalMoney), chairNames);
+    else
+        booked = Booked(ticketID, showtimeID, employeeIDLogin , 0, datetime, to_wstring(totalMoney), chairNames);
      //Lấy thời gian thực
     time_t now2 = time(0);
     tm *ltm2 = localtime(&now2);
@@ -512,7 +528,7 @@ choicePayment:
         
     }
     else if(choicePayment == 2){
-        paymentMethodBooking = L"Chuyển khoản";
+        paymentMethodBooking = L"Chuyển khoản - Zalo Pay";
          //lưu thông tin thanh toán vào file
         if(fileExport.is_open()){
             fileExport<<paymentMethodBooking<<endl;
@@ -571,7 +587,8 @@ choicePayment:
     booked.saveChairbooked();
 
     //thêm điểm cho khách hàng
-    customer->setPoint(totalMoney);
+    if(customer != NULL)
+        customer->setPoint(totalMoney);
     customerList_gb->saveToCSV("../DATA/customers.csv");
 
     paymentMethodBooking = payment->processPayment();
