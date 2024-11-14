@@ -38,7 +38,7 @@ int exportToPDF(string filename) {
     }
 
     // Đọc nội dung tệp
-   wstring employee, movie , age, date, room, chair, ticket ,amount ,price, payment, timebook, line;
+   wstring employee, movie , age, date, room, chair, ticket ,point, amount ,price, payment, timebook, line, customer;
 
     getline(file, line);
     
@@ -49,10 +49,13 @@ int exportToPDF(string filename) {
     getline(file, room);
     getline(file, chair);
     getline(file, ticket);
+    getline(file, point);
     getline(file, amount);
     getline(file, price);
     getline(file, payment);
     getline(file, timebook);
+    getline(file, customer);
+
 
     file.close();
 
@@ -65,10 +68,13 @@ int exportToPDF(string filename) {
     string room_utf8 = wstring_to_utf8(room);
     string chair_utf8 = wstring_to_utf8(chair);
     string ticket_utf8 = wstring_to_utf8(ticket);
+    string point_utf8 = wstring_to_utf8(point);
     string amount_utf8 = wstring_to_utf8(amount);
     string price_utf8 = wstring_to_utf8(price);
     string payment_utf8 = wstring_to_utf8(payment);
     string timebook_utf8 = wstring_to_utf8(timebook);
+    string customer_utf8 = wstring_to_utf8(customer);
+
 
     // Tạo JSON
     nlohmann::json data = {
@@ -83,10 +89,12 @@ int exportToPDF(string filename) {
               {"room", room_utf8},
               {"chair", chair_utf8},
               {"ticket", ticket_utf8},
+              {"point", point_utf8},
               {"amount", amount_utf8},
               {"price", price_utf8},
               {"payment", payment_utf8},
-              {"timebook", timebook_utf8}
+              {"timebook", timebook_utf8},
+              {"customer", customer_utf8}
           }}};
 
     cpr::Response r = cpr::Post(cpr::Url{"https://app.documentero.com/api"}, cpr::Body{data.dump()}, cpr::Header{{"Content-Type", "application/json"}});

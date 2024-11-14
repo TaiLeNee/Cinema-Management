@@ -28,6 +28,8 @@ void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {
     wstring YELLOW = L"\033[93m";
     
     wstring dateBooking, movieNameBooking, ageBooking, showtimeBooking, chairBooking,ticketBooking, ticketPricebooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
+    bool checkExistCustomer;
+    int pointCustomer = 0;
 
     Customer* customer = NULL ;
 
@@ -229,7 +231,6 @@ choiceTicket:
     }
 
 
-
     //Chọn ghế
 choiceChair:
     Showtime *showtimeCurrent;
@@ -357,18 +358,23 @@ inputCustomer:
             gotoXY(x2, y2+1);
             wcout << L"                                                   ";
 
-
+            wcout<<endl;
             //Kiểm tra sđt khách hàng có tồn tại không
+            green(L"══[Xác nhận thông tin khách hàng]══\n");
             customer = customerList_gb->findPhoneNumber(phoneCustomer);
             if(customer){
                 customerBooking = customer->getName();
                 customer->displayInfo();
+                checkExistCustomer = true;
+                pointCustomer = customer->getPoint();
                 
             }
             else{
                 customerList_gb->addCustomer(nameCustomer, phoneCustomer, 0);
+                green(L"══[Khách hàng mới đã được thêm vào hệ thống]══\n");
                 customerBooking = nameCustomer;
                 customer = customerList_gb->findPhoneNumber(phoneCustomer);
+                customer->displayInfo();
             }
         }else{
             phoneCustomer = L"NULL";
@@ -397,20 +403,44 @@ inputCustomer:
     wcout<<GREEN<<L"══════[Xác nhận thanh toán]══════\n";   
     
     drawTable({{L"        THÔNG TIN VÉ         "}});
-    drawTable({
-        {L"Nhân viên: ", employeeBooking},
-        {L"",L""},
-        {L"Tên phim: ", movieNameBooking},
-        {L"Suất chiếu: ", showtimeBooking},
-        {L"Phòng chiếu: ", roomBooking},
-        {L"Loại vé: ", ticketBooking},
-        {L"Giá: ", ticketPricebooking},
-        {L"Số lượng ghế: ", to_wstring(numChairs)},
-        {L"Ghế: ", chairBooking},
-        {L"Tổng tiền: ", to_wstring(totalMoney)},
-        {L"Khách hàng: ", customerBooking},
-        {L"Điểm tích lũy: ", (customer) ? to_wstring(0.1*totalMoney) : L"0"}
-    });
+    int total  = totalMoney;
+    if(checkExistCustomer && pointCustomer >= totalMoney/2){
+        
+        totalMoney -= pointCustomer;
+        drawTable({
+            {L"Nhân viên: ", employeeBooking},
+            {L"",L""},
+            {L"Tên phim: ", movieNameBooking},
+            {L"Suất chiếu: ", showtimeBooking},
+            {L"Phòng chiếu: ", roomBooking},
+            {L"Loại vé: ", ticketBooking},
+            {L"Giá: ", ticketPricebooking},
+            {L"Số lượng ghế: ", to_wstring(numChairs)},
+            {L"Ghế: ", chairBooking},
+            {L"Tổng tiền: ", to_wstring(total)},
+            {L"Dùng điểm tích lũy: ", L"-" + to_wstring(pointCustomer)},
+            {L"Phải thanh toán: ", to_wstring(totalMoney)},
+            {L"",L""},
+            {L"Khách hàng: ", customerBooking},
+            {L"Điểm tích lũy: ", L"+"+to_wstring(0.1*totalMoney)}
+        });
+    }else{
+        drawTable({
+            {L"Nhân viên: ", employeeBooking},
+            {L"",L""},
+            {L"Tên phim: ", movieNameBooking},
+            {L"Suất chiếu: ", showtimeBooking},
+            {L"Phòng chiếu: ", roomBooking},
+            {L"Loại vé: ", ticketBooking},
+            {L"Giá: ", ticketPricebooking},
+            {L"Số lượng ghế: ", to_wstring(numChairs)},
+            {L"Ghế: ", chairBooking},
+            {L"Tổng tiền: ", to_wstring(total)},
+            {L"Phải thanh toán: ", to_wstring(totalMoney)},
+            {L"Khách hàng: ", customerBooking},
+            {L"Điểm tích lũy: ", (customer) ? L"+"+to_wstring(0.1*totalMoney) : L"0"}
+        });
+    }
 
 
     wcout<<GREEN<<L"══════[Nhập Yes hoặc No để tiếp tục ... Y/N (y/n)]==> ";
@@ -464,6 +494,7 @@ inputCustomer:
         fileExport<<roomBooking<<endl;
         fileExport<<chairBooking<<endl;
         fileExport<<ticketBooking<<endl;
+        fileExport<<pointCustomer<<endl;
         fileExport<<totalMoney<<endl;
         fileExport<<ticketPricebooking<<endl;
         // fileExport<<paymentMethodBooking<<endl;
@@ -503,6 +534,7 @@ choicePayment:
         if(fileExport.is_open()){
             fileExport<<paymentMethodBooking<<endl;
             fileExport<<datetime<<endl; 
+            fileExport << customerBooking << endl;
             fileExport.close();
         }
 
@@ -533,6 +565,7 @@ choicePayment:
         if(fileExport.is_open()){
             fileExport<<paymentMethodBooking<<endl;
             fileExport<<datetime<<endl; 
+            fileExport << customerBooking << endl;
             fileExport.close();
         }
         
