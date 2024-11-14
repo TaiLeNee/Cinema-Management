@@ -472,7 +472,7 @@ choicePayment:
     drawTable({
         {L"PHƯƠNG THỨC THANH TOÁN"},
         {L"[1]. Tiền mặt"},
-        {L"[2]. Chuyển khoản"},
+        {L"[2]. Chuyển khoản - Zalo Pay"},
         // {L"[3]. Thẻ"},
         {L"[0]. Hủy thanh toán"}
     });
@@ -484,9 +484,11 @@ choicePayment:
         paymentMethodBooking = L"Tiền mặt";
 
         //lưu thông tin thanh toán vào file
-        fileExport<<paymentMethodBooking<<endl;
-        fileExport<<datetime<<endl; 
-        fileExport.close();
+        if(fileExport.is_open()){
+            fileExport<<paymentMethodBooking<<endl;
+            fileExport<<datetime<<endl; 
+            fileExport.close();
+        }
 
         payment = new Cash();
         payment->setPaymentAmount(totalMoney);
@@ -512,49 +514,47 @@ choicePayment:
     else if(choicePayment == 2){
         paymentMethodBooking = L"Chuyển khoản";
          //lưu thông tin thanh toán vào file
-        fileExport<<paymentMethodBooking<<endl;
-        fileExport<<datetime<<endl; 
-        fileExport.close();
+        if(fileExport.is_open()){
+            fileExport<<paymentMethodBooking<<endl;
+            fileExport<<datetime<<endl; 
+            fileExport.close();
+        }
         
         payment = new Banking();
         payment->setPaymentAmount(totalMoney);
         payment->setPaymentStatus(-1);
 
+        red(L"\nĐể hủy chuyển khoản, vui lòng nhấn giữ phim ESC 3 giây\n");
         payment->createOrder(datetime_file);
 
         wstring confirmPay;
-        green(L"══[Xác nhận đã chuyển khoản (Y/N) ...]==> ");
-        wcin>>confirmPay;
-        if(confirmPay == L"Y" || confirmPay == L"y"){
+        green(L"\n══[...Đang xác nhận đã chuyển khoản...]══\n ");
             // payment->setPaymentStatus(1);
-            countdown(3);
-            payment->checkPaymentStatus();
-            if(payment->getPaymentStatus() == 0){
-                system("cls");
-                showtimeCurrent->bookTickets(ticketID, chairNames, 0);
-                red(L"══════[Thanh toán hủy]══════\n");
-                remove(string(datetime_file.begin(), datetime_file.end()).c_str());
+        countdown(3);
+        payment->checkPaymentStatus();
+        if(payment->getPaymentStatus() == 0){
+            system("cls");
+            // showtimeCurrent->bookTickets(ticketID, chairNames, 0);
+            red(L"\n══════[Hủy thanh toán bằng Chuyển khoản]══════\n");
 
-                Sleep(1000);
-                return;
-            }
-            else if(payment->getPaymentStatus() == -1){
-                system("cls");
-                red(L"Chưa nhận được chuyển khoản. Vui lòng chọn lại.\n");
-                goto choicePayment;
-            }
-        }
-        else{
-            payment->setPaymentStatus(0);
+            Sleep(1000);
             goto choicePayment;
         }
+        else if(payment->getPaymentStatus() == -1){
+            system("cls");
+            red(L"Chưa nhận được chuyển khoản. Vui lòng chọn lại.\n");
+            goto choicePayment;
+        }
+        
     }
     
     else if(choicePayment == 0){
         system("cls");
         showtimeCurrent->bookTickets(ticketID, chairNames, 0);
-        red(L"══════[Thanh toán hủy]══════\n");
-        remove(string(datetime_file.begin(), datetime_file.end()).c_str());
+        red(L"══════[ HỦY THANH TOÁN ]══════\n");
+        fileExport.close();
+        remove(datetime_file.c_str());
+
         Sleep(1000);
         return;
     }
