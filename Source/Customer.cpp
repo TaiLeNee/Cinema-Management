@@ -105,6 +105,10 @@ void Customer::setPoint(int amount) {
     this->point += amount * 0.1;
 }
 
+void Customer::resetPoint() {
+    this->point = 0;
+}
+
 int Customer::getPoint() const {
     return point;
 }

@@ -39,6 +39,9 @@ public:
     void loadFromCSV(const std::string& filename);
 
     Customer* findPhoneNumber(wstring phoneNumber);
+    Customer* findCustomerID(int id);
+    Customer* findCustomerName(wstring name);
+    Customer* findCustomerAll(wstring search);
 
 };
 
