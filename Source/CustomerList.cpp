@@ -25,7 +25,7 @@ void CustomerList::deleteCustomer(int id) {
         drawTable({{L"           THÔNG TIN KHÁCH HÀNG           "}});
         it->displayInfo();
         wchar_t ct;
-        wcout << L"Xác nhận xóa khách hàng? (y/n): ";
+        green(L"Xác nhận xóa khách hàng? (y/n): ");
         wcin >> ct;
         ct = towlower(ct);  
         if(ct == 'y'){  
@@ -33,6 +33,7 @@ void CustomerList::deleteCustomer(int id) {
             customers.erase(it);
             green(L"═════[Xóa khách hàng thành công.]═════\n");
             saveToCSV("../DATA/customers.csv");
+            Sleep(1000);
         }else{
             red(L"[Đã hủy xóa khách hàng.]\n");
         }

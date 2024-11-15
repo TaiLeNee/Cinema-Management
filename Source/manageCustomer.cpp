@@ -26,7 +26,7 @@ editMenu:
         case 2:
             system("cls");
             customerList.deleteCustomer(customer->getCustomerID());
-            break;
+            return;
         case 0:
             return;
         default:
