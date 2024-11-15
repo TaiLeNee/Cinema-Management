@@ -28,7 +28,7 @@ void SellTicketInWeek(MovieList &movieList, RoomList &roomList) {
     wstring YELLOW = L"\033[93m";
     
     wstring dateBooking, movieNameBooking, ageBooking, showtimeBooking, chairBooking,ticketBooking, ticketPricebooking, roomBooking, totalMoneyBooking, paymentMethodBooking, employeeBooking, customerBooking;
-    bool checkExistCustomer;
+    bool checkExistCustomer, checkUsePoint;
     int pointCustomer = 0;
 
     Customer* customer = NULL ;
@@ -405,7 +405,7 @@ inputCustomer:
     drawTable({{L"        THÔNG TIN VÉ         "}});
     int total  = totalMoney;
     if(checkExistCustomer && pointCustomer >= totalMoney/2){
-        
+        checkUsePoint = true;
         totalMoney -= pointCustomer;
         drawTable({
             {L"Nhân viên: ", employeeBooking},
@@ -620,8 +620,13 @@ choicePayment:
     booked.saveChairbooked();
 
     //thêm điểm cho khách hàng
+    if(checkUsePoint){
+        customer->resetPoint();
+    }
+
     if(customer != NULL)
         customer->setPoint(totalMoney);
+    //lưu thông tin khách hàng vào file
     customerList_gb->saveToCSV("../DATA/customers.csv");
 
     paymentMethodBooking = payment->processPayment();

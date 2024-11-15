@@ -27,6 +27,7 @@ public:
 
     void setPoint(int amount);
     int getPoint() const;
+    void resetPoint();
 
     void setPhoneNumber(const wstring& phoneNumber);
     wstring getPhoneNumber() const;
