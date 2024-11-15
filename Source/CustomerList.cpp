@@ -271,13 +271,14 @@ Customer *CustomerList::findCustomerName(wstring name)
 }
 
 
-Customer *CustomerList::findCustomerAll(wstring search)
+Customer *CustomerList::findCustomerAll(wstring search, int &start)
 {
-    auto it = find_if(customers.begin(), customers.end(), [search](const Customer &customer) {
+    auto it = find_if(customers.begin() + start, customers.end(), [search](const Customer &customer) {
         return customer.getName() == search || customer.getPhoneNumber() == search || to_wstring(customer.getCustomerID()) == search;
     });
     if (it != customers.end())
-    {
+    {   
+        start = distance(customers.begin(), it); // Cập nhật vị trí của it vào start
         return &(*it);
     }
     return nullptr;

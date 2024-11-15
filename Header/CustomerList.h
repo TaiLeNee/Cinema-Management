@@ -41,7 +41,7 @@ public:
     Customer* findPhoneNumber(wstring phoneNumber);
     Customer* findCustomerID(int id);
     Customer* findCustomerName(wstring name);
-    Customer* findCustomerAll(wstring search);
+    Customer* findCustomerAll(wstring search, int &start);
 
 };
 

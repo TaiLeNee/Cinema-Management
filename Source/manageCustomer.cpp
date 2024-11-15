@@ -89,7 +89,7 @@ void customerMenu(CustomerList &customerList)
         }
         case 2:{
             wstring searchCustomer;
-            wcin.ignore();
+            // wcin.ignore();
             system("cls");
             red(L"Nhập 0: quay lại.\n"); 
             drawTable({{L"Nhập ID/Tên/SĐT khách hàng cần tìm: ", L"                                                     "}});
@@ -106,15 +106,72 @@ void customerMenu(CustomerList &customerList)
                 break;
             }
 
-            Customer* customer = customerList.findCustomerAll(searchCustomer);
-            if(customer){
+            vector<Customer*> customers;
+            vector<vector<wstring>> tableCustomer;
+
+            tableCustomer.push_back({L"ID", L"Họ tên", L"Số điện thoại", L"Điểm"}); 
+            int start = 0;
+            while(true){
+                Customer* customer = customerList.findCustomerAll(searchCustomer, start);
+                start++;
+                if(customer){
+                    customers.push_back(customer);
+                    tableCustomer.push_back({to_wstring(customer->getCustomerID()), customer->getName(), customer->getPhoneNumber(), to_wstring(customer->getPoint())});
+                }else{
+                    break;
+                }
+            }
+            
+            if(customers.size() == 1){
+                system("cls");
+                drawTable({{L"           THÔNG TIN KHÁCH HÀNG           "}});
+                customers[0]->displayInfo();
+                SubMenuEdit(customerList, customers[0]);
+            }
+            else if(customers.size() > 1){
 
                 system("cls");
                 drawTable({{L"           THÔNG TIN KHÁCH HÀNG           "}});
-                customer->displayInfo();
-                SubMenuEdit(customerList, customer);
+                // customer->displayInfo();
+                drawTable(tableCustomer);
+                int choiceCustomer;
+                red(L"Nhập 0: quay lại.\n");
+
+                Position pos = getXY();
+                int x = pos.X;
+                int y = pos.Y;
+            inputID2:
+                gotoXY(0, y);
+                checkInput(L"Nhập ID khách hàng cần tương tác", choiceCustomer);
+                wcout<<L"\033[0J";
+
+                if(choiceCustomer == 0){
+                    system("cls");
+                    break;
+                }
+
+                // check ID in table
+                auto checkIDinTable = find_if(tableCustomer.begin()+1, tableCustomer.end(), [choiceCustomer](const vector<wstring>& customer){
+                    return stoi(customer[0]) == choiceCustomer;
+                });
+
+                Customer* customer = customerList.findCustomerID(choiceCustomer);
+                
+                if(customer && checkIDinTable != tableCustomer.end()){
+                    system("cls");
+                    drawTable({{L"           THÔNG TIN KHÁCH HÀNG           "}});
+                    customer->displayInfo();
+                    SubMenuEdit(customerList, customer);
+                // SubMenuEdit(customerList, customer);
+                }else{
+                    red(L"Không tìm thấy khách hàng có ID = " + to_wstring(choiceCustomer) + L"\n");
+                    gotoXY(39, y);
+                    wcout << L"                                 ";
+                    
+                    goto inputID2;
+                }
             }else{
-                red(L"Không tìm thấy khách hàng có thông tin: " + searchCustomer + L"\n");
+                red(L"\nKhông tìm thấy khách hàng có thông tin: " + searchCustomer + L"\n");
                 goto inputSearch;
             }
             break;
