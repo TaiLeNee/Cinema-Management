@@ -106,7 +106,7 @@ bool Showtime::checkChairExist(int showtimeID, const wstring &chairName)
             continue;
         }
     }
-    return false;
+    return true;
 }
 
 void Showtime::changeStatusChair(int chairId, int isBooked) {

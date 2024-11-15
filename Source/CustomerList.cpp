@@ -4,7 +4,7 @@
 using namespace std;
 
 CustomerList::CustomerList() {
-    loadFromCSV("../DATA/customers.csv");
+    // loadFromCSV("../DATA/customers.csv");
 }
 
 vector<Customer>& CustomerList::getCustomers(){
@@ -25,38 +25,51 @@ void CustomerList::editCustomer(int id) {
     auto it = find_if(customers.begin(), customers.end(), [id](const Customer& customer) {
         return customer.getCustomerID() == id;
     });
-    drawTable({
-        {L"   THAY ĐỔI THÔNG TIN KHÁCH HÀNG    "},
-        {L"1. Họ tên.                          "},
-        {L"2. Số điện thoại.                   "},
-        {L"0. Quay lại.                        "}
-    });
-    wcout << L"\033[92m[Lựa chọn của bạn]  ";
+   vector<vector<wstring>> table;
+    wstring newName,newPhoneNumber;
+    int newPoint;
+    table.push_back({L"SỬA THÔNG TIN"});
+    table.push_back({L"1. Họ tên."});
+    table.push_back({L"2. Số điện thoại."});
+    table.push_back({L"0. Quay lại."});
+
+    edit:
+    drawTable(table);
     int choice;
-    wcin >> choice;
-    wcout << L"\033[0m";
-    wcin.ignore();
-    system("cls");
-    switch (choice) {
-        case 1: {
-            wstring name;
-            wcout << L"Nhập tên mới: ";
-            getline(wcin, name);
-            it->setName(name);
-            break;
+    checkInput(L"Chọn thông tin cần sửa", choice);
+    if(!choice) {
+        return;
+    }
+    switch(choice) {
+         case 1: {
+            wcout << L"Nhập họ và tên mới: ";
+            wcin.ignore();
+            getline(wcin, newName);
+            wregex pattern(L"^[\\p{L}\\s]+$");
+            if (regex_match(newName, pattern)) {
+               it->setName(newName);
+            } else {
+                red(L"Tên không hợp lệ. Vui lòng nhập lại.\n");
+            }
+            goto edit;
         }
         case 2: {
-            wstring phoneNumber;
             wcout << L"Nhập số điện thoại mới: ";
-            wcin >> phoneNumber;
-            it->setPhoneNumber(phoneNumber);
-            break;
+            wcin.ignore();
+            getline(wcin, newPhoneNumber);
+            wregex phonePattern(L"^(84|0)[0-9]{8,13}$");
+            if (regex_match(newPhoneNumber, phonePattern)) {
+                it->setPhoneNumber(newPhoneNumber);
+            } else {
+                red(L"Số điện thoại không hợp lệ. Vui lòng nhập lại.\n");
+            }
+            goto edit;
         }
-        case 0:
-            break;
         default:
-            wcout << L"Lựa chọn không hợp lệ, vui lòng thử lại." << endl;
+            red(L"Chọn không hợp lệ. Vui lòng chọn lại.\n");
+            goto edit;
     }
+
 }
 
 void CustomerList::displayCustomers() const {
@@ -88,6 +101,7 @@ void CustomerList::saveToCSV(string filename = "../DATA/customers.csv") const {
                  << Customer.getPoint() << L"," << endl;
         }
         file.close();
+        green(L"Lưu danh sách khách hàng thành công\n");
     } else {
         wcerr << L"Không thể mở tập tin để lưu\n";
     }
@@ -113,6 +127,16 @@ void CustomerList::loadFromCSV(const string& filename) {
         customers.push_back(Customer(stoi(id), name, phoneNumber, stoi(point)));
     }
     file.close();
+}
+
+Customer* CustomerList::findPhoneNumber(wstring phoneNumber) {
+    auto it = find_if(customers.begin(), customers.end(), [phoneNumber](const Customer& customer) {
+        return customer.getPhoneNumber() == phoneNumber;
+    });
+    if (it != customers.end()) {
+        return &(*it);
+    }
+    return nullptr;
 }
 
 CustomerList::~CustomerList() {

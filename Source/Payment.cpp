@@ -1,5 +1,6 @@
 #include "../Header/Payment.h"
-
+#include "../Header/Color.h"
+#include <sys/stat.h>
 using namespace std;
 
 Pay::Pay() {}
@@ -32,12 +33,32 @@ wstring Cash::processPayment() {
 
 void Banking::checkPaymentStatus(){
     if(getPaymentStatus() == 1)
-        wcout << L"Thanh toán qua ngâng hàng thành công" << endl;
+        green(L"\n════[Đã nhận chuyển khoản]══════\n");
     else if(getPaymentStatus() == 0){
-        wcout << L"Thanh toán qua ngân hàng thất bại" << endl;
+        wcout << L"Hủy chuyển khoản" << endl;
+    }else{
+        wcout << L"Đang chờ xử lý" << endl;
+    }
+    
+}
+
+void Banking::createOrder(string filename) {
+    //viết hàm lamda
+    auto fileExists = [](const string& filename) {
+        struct stat buffer;
+        return (stat(filename.c_str(), &buffer) == 0);
+    };
+
+    if(fileExists("zalopay.exe")){
+        string command = "zalopay.exe " + string(filename.begin(), filename.end());
+        
+        int status = system(string(command).c_str());
+        setPaymentStatus(status);
     }
     else{
-        wcout << L"Thanh toán qua ngân hàng đang chờ xử lý" << endl;
+        red(L"[Không tìm thấy zalopay.exe]");
+        setPaymentStatus(0);
+        // wcout << L"Không thể tạo đơn hàng" << endl;
     }
 }
 
@@ -49,6 +70,11 @@ void Cash::checkPaymentStatus(){
     }else{
         wcout << L"Đang chờ xử lý" << endl;
     }
+}
+
+
+void Cash::createOrder(string filename) {
+   
 }
 
 void Pay::setPaymentAmount(long long paymentAmount) {

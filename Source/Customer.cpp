@@ -37,29 +37,42 @@ void Customer::editCustomer() {
     table.push_back({L"SỬA THÔNG TIN"});
     table.push_back({L"1. Họ tên."});
     table.push_back({L"2. Số điện thoại."});
+    table.push_back({L"0. Quay lại."});
 
     edit:
     drawTable(table);
     int choice;
-    green(L"=====>Nhập lựa chọn: ");
-    wcin >> choice;
+    checkInput(L"Chọn thông tin cần sửa", choice);
     if(!choice) {
         return;
     }
     switch(choice) {
-        case 1: 
+         case 1: {
             wcout << L"Nhập họ và tên mới: ";
             wcin.ignore();
             getline(wcin, newName);
-            name = newName;
-            break;
-        case 2: 
+            wregex pattern(L"^[\\p{L}\\s]+$");
+            if (regex_match(newName, pattern)) {
+                name = newName;
+            } else {
+                red(L"Tên không hợp lệ. Vui lòng nhập lại.\n");
+            }
+            goto edit;
+        }
+        case 2: {
             wcout << L"Nhập số điện thoại mới: ";
             wcin.ignore();
             getline(wcin, newPhoneNumber);
-            phoneNumber = newPhoneNumber;
-            break;
+            wregex phonePattern(L"^(84|0)[0-9]{8,13}$");
+            if (regex_match(newPhoneNumber, phonePattern)) {
+                phoneNumber = newPhoneNumber;
+            } else {
+                red(L"Số điện thoại không hợp lệ. Vui lòng nhập lại.\n");
+            }
+            goto edit;
+        }
         default:
+            red(L"Chọn không hợp lệ. Vui lòng chọn lại.\n");
             goto edit;
     }
 }
@@ -89,7 +102,7 @@ wstring Customer::getPhoneNumber() const {
 }
 
 void Customer::setPoint(int amount) {
-    this->point = amount * 0.01;
+    this->point += amount * 0.1;
 }
 
 int Customer::getPoint() const {
@@ -97,6 +110,6 @@ int Customer::getPoint() const {
 }
 
 void loadCustomerfromCSV(const string& filename) {
-
+    
 }
 

@@ -19,6 +19,7 @@ class Booked{
         int showtimeID;
         int ticketID;
         int employeeID;
+        int customerID;
         wstring datetime;
         wstring totalMoney;
         vector<wstring> chairNames;
@@ -27,8 +28,8 @@ class Booked{
     public:
         static int curentIDBooked; // ID của vé đã đặt
         Booked();
-        Booked(int idBooked, int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
-        Booked(int ticketID, int showtimeID, int employeeID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
+        Booked(int idBooked, int ticketID, int showtimeID, int employeeID, int customerID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
+        Booked(int ticketID, int showtimeID, int employeeID, int customerID, wstring datetime, wstring totalMoney, vector<wstring> chairNames);
         
         int getIdBooked() const;
 

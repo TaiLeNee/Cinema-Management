@@ -9,6 +9,8 @@
 #include <codecvt>
 #include "drawTable.h"
 #include "Ticket.h"
+#include "checkInput.h"
+#include <regex>
 
 using namespace std;    
 class Customer {

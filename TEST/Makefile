@@ -1,3 +1,3 @@
 test88:
-	g++ -std=c++17 -o test8 test8.cpp -lcpr
-	./test8
+	g++ -std=c++17 -o zalopay zalopay.cpp -lcpr -lRpcrt4 -lssl -lcrypto
+	./zalopay
