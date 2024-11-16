@@ -35,9 +35,9 @@ void Banking::checkPaymentStatus(){
     if(getPaymentStatus() == 1)
         green(L"\n════[Đã nhận chuyển khoản]══════\n");
     else if(getPaymentStatus() == 0){
-        wcout << L"Hủy chuyển khoản" << endl;
+        red(L"Hủy chuyển khoản\n");
     }else{
-        wcout << L"Đang chờ xử lý" << endl;
+        green(L"\nĐang chờ xử lý\n");
     }
     
 }
@@ -53,6 +53,7 @@ void Banking::createOrder(string filename) {
         string command = "zalopay.exe " + string(filename.begin(), filename.end());
         
         int status = system(string(command).c_str());
+        // wcout << L"Status: " << status << endl;
         setPaymentStatus(status);
     }
     else{
@@ -64,11 +65,11 @@ void Banking::createOrder(string filename) {
 
 void Cash::checkPaymentStatus(){
     if(getPaymentStatus() == 1)
-        wcout << L"Đã nhận tiền mặt" << endl;
+        green(L"\n════[Đã nhận tiền mặt]══════\n");
     else if(getPaymentStatus() == 0){
-        wcout << L"Hủy thanh toán bằng tiền mặt" << endl;
+        red(L"Hủy thanh toán tiền mặt\n");
     }else{
-        wcout << L"Đang chờ xử lý" << endl;
+        green(L"\nĐang chờ xử lý\n");
     }
 }
 

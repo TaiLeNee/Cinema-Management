@@ -33,7 +33,7 @@ int exportToPDF(string filename) {
     wifstream file(filename);
     file.imbue(locale(locale(), new codecvt_utf8<wchar_t>));
     if (!file.is_open()) {
-        cerr << "Không thể mở tệp " << filename << endl;
+        cerr << "Can't open file " << filename << endl;
         return 0;
     }
 
