@@ -2,6 +2,7 @@
 #include "../Header/Showtime.h"
 #include "../Header/Chair.h"
 #include "loadShowtimeFromCSV.cpp"
+// #include "Room.h"
 
 
 using namespace std;
@@ -13,8 +14,7 @@ using namespace std;
 // Room class implementation
 Room::Room() : id(0), name(L"") {}
 
-Room::Room(int id, const wstring& name, int numRows, int numChairsPerRow)
-    : id(id), name(name), numRows(numRows), numChairsPerRow(numChairsPerRow) {
+Room::Room(int id, const wstring& name, int numRows, int numChairsPerRow, wstring screen, int status) : id(id), name(name), numRows(numRows), numChairsPerRow(numChairsPerRow), screen(screen), status(status) {
 
     char rowLabel = 'A';
     int chairId = 1;
@@ -80,4 +80,45 @@ int Room::getNumRows() {
 
 int Room::getNumChairsPerRow() {
     return numChairsPerRow;
+}
+
+wstring Room::getScreen() {
+    return screen;
+}
+
+int Room::getStatus() {
+    return status;
+}
+
+void Room::setName(const wstring &name)
+{
+    this->name = name;
+}
+
+void Room::setNumRows(int numRows)
+{
+    this->numRows = numRows;
+}
+
+void Room::setNumChairsPerRow(int numChairsPerRow)
+{
+    this->numChairsPerRow = numChairsPerRow;
+}
+
+void Room::setScreen(const wstring &screen)
+{
+    this->screen = screen;
+}
+
+void Room::setStatus(int status)
+{
+    this->status = status;
+}
+
+void Room::displayInfo(){
+    drawTable({{L"          THÔNG TIN PHÒNG CHIẾU          "}});
+    drawTable({{L"ID", L"Tên phòng", L"Số ghế", L"Màn hình", L"Trạng thái"},
+                {to_wstring(id), name, to_wstring(numRows * numChairsPerRow), screen, status == 1 ? L"Đang hoạt động" : L"Không hoạt động"}});
+                
+
 }

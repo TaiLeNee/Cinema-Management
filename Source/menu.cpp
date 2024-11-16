@@ -25,7 +25,7 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
         switch (choice)
         {
         case 1:
-            // roomMenu();
+            roomMenu(roomList);
             break;
         case 2:
             movieMenu(movieList);

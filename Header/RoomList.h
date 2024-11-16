@@ -2,6 +2,9 @@
 #define ROOMLIST_H
 #include "Room.h"
 #include "drawTable.h"
+#include "Color.h"
+#include "checkInput.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -15,7 +18,9 @@ class RoomList{
         vector<Room>& getRooms();
         void resetShowtimesofRoom();
         void displayRooms();
-
+        void addRoom();
+        void editRoom();
+        void deleteRoom();
 };
 
 #endif // ROOMLIST_H
