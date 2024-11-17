@@ -83,7 +83,6 @@ void employeeMenu(ListOfEmployee &employeeList)
             employeeList.findEmployee(name);
             red(L"Nhập 0 để quay lại.\n");
             checkInput(L"ID nhân viên cần tương tác:", id);
-            // wcin >> id;
             if (id == 0)
             {
                 system("cls");
@@ -95,8 +94,6 @@ void employeeMenu(ListOfEmployee &employeeList)
         case 3:
         {
             employeeList.addEmployee();
-            system("cls");
-            wcout << L"\033[92m[Đã thêm nhân viên mới.] \033[0m" << endl;
             break;
         }
         case 4:
@@ -104,8 +101,12 @@ void employeeMenu(ListOfEmployee &employeeList)
             wcout << L"\033[92mNhập tên nhân viên cần xóa: \033[0m";
             getline(wcin, name);
             employeeList.findEmployee(name);
+            red(L"Nhập 0: Quay lại \n");
             checkInput(L"ID nhân viên cần tương tác:", id);
-            system("cls");
+            if (id == 0){
+                system("cls");
+                break;
+            }
             employeeList.deleteEmployee(id);
             break;
         }

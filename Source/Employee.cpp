@@ -83,3 +83,24 @@ bool Employee::isSignIn(const wstring &inputUserName, const wstring &inputPasswo
 {
     return (userName == inputUserName && passWord == inputPassword);
 }   
+
+void Employee::displayInfo() const {
+    vector<vector<wstring>> table;
+    table.push_back({L"          Thông Tin Nhân Viên         "});
+    table.push_back({L"ID: " + to_wstring(id)});
+    table.push_back({L"Tên: " + name});
+    table.push_back({L"Tuổi: " + to_wstring(age)});
+    table.push_back({L"Số Điện Thoại: " + phoneNumber});
+    table.push_back({L"Username: " + userName});
+    table.push_back({L"Password: " + passWord});
+    if (level == 1) {
+        table.push_back({L"Cấp bậc: Admin"});
+    } 
+    else if (level == 2) {
+        table.push_back({L"Cấp Bậc: Nhân viên"});
+    }
+    else if (level == 0) {
+        table.push_back({L"Cấp Bậc: OWNER"});
+    }
+    drawTable(table);
+}
