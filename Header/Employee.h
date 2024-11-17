@@ -1,7 +1,7 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 #include <string>
-
+#include "../Header/drawTable.h"
 using namespace std;
 
 class Employee{
@@ -32,6 +32,7 @@ class Employee{
         void setLevel(int newLevel);
         void setUserName(const wstring &newUserName);
         void setPassWord(const wstring &newPassWord);
+        void displayInfo() const;
 };
 
 #endif

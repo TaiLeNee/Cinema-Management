@@ -27,6 +27,8 @@ void movieMenu(MovieList &movieList);
 
 void customerMenu(CustomerList &customerList);
 
+void roomMenu(RoomList &roomList);
+
 void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList);
 
 // void manageMenu(RoomList &roomList, MovieList &movieList);

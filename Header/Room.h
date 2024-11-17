@@ -17,10 +17,12 @@ class Room {
         vector<vector<Chair>> chairs; // Danh sách ghế trong phòng
         int numRows; // Số hàng ghế
         int numChairsPerRow; // Số ghế trong mỗi hàng
+        wstring screen;
+        int status;
 
     public:
         Room();
-        Room(int id, const wstring& name, int numRows, int numChairsPerRow); // Constructor
+        Room(int id, const wstring& name, int numRows, int numChairsPerRow, wstring screen, int status); // Constructor
 
         // Getters and setters
         int getId() const;
@@ -35,6 +37,18 @@ class Room {
 
         int getNumRows();
         int getNumChairsPerRow();
+
+        wstring getScreen();
+        int getStatus();
+
+        void setName(const wstring& name);
+        void setNumRows(int numRows);
+        void setNumChairsPerRow(int numChairsPerRow);
+        void setScreen(const wstring& screen);
+        void setStatus(int status);
+
+        void displayInfo();
+
 };  
 
 #endif // ROOM_H

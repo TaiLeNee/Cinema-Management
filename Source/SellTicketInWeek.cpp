@@ -494,7 +494,10 @@ inputCustomer:
         fileExport<<roomBooking<<endl;
         fileExport<<chairBooking<<endl;
         fileExport<<ticketBooking<<endl;
-        fileExport<<pointCustomer<<endl;
+        if(checkUsePoint)
+            fileExport<<pointCustomer<<endl;
+        else
+            fileExport<<0<<endl;
         fileExport<<totalMoney<<endl;
         fileExport<<ticketPricebooking<<endl;
         // fileExport<<paymentMethodBooking<<endl;
@@ -514,7 +517,7 @@ inputCustomer:
     int yPayment = posPayment.Y;
 
 choicePayment:
-    gotoXY(xPayment, yPayment);
+    gotoXY(xPayment, yPayment-1);
 
     drawTable({
         {L"PHƯƠNG THỨC THANH TOÁN"},
@@ -552,8 +555,7 @@ choicePayment:
         }
         else{
             payment->setPaymentStatus(0);
-            //xóa file đã lưu
-            remove(string(datetime_file.begin(), datetime_file.end()).c_str());
+        
             goto choicePayment;
         }
 
@@ -603,7 +605,7 @@ choicePayment:
         red(L"══════[ HỦY THANH TOÁN ]══════\n");
         fileExport.close();
         remove(datetime_file.c_str());
-
+        
         Sleep(1000);
         return;
     }
