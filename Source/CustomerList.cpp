@@ -273,9 +273,18 @@ Customer *CustomerList::findCustomerName(wstring name)
 
 
 Customer *CustomerList::findCustomerAll(wstring search, int &start)
-{
-    auto it = find_if(customers.begin() + start, customers.end(), [search](const Customer &customer) {
-        return customer.getName() == search || customer.getPhoneNumber() == search || to_wstring(customer.getCustomerID()) == search;
+{   
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+    
+    auto it = find_if(customers.begin() + start, customers.end(), [search, toLower](const Customer &customer) {
+        return toLower(customer.getName()) == toLower(search) || customer.getPhoneNumber() == search || to_wstring(customer.getCustomerID()) == search;
     });
     if (it != customers.end())
     {   

@@ -13,15 +13,16 @@ LoveMovie::LoveMovie(const Movie& movie): Movie(movie.getId(), movie.getName(), 
 
 void LoveMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
-    wcout << L"Nhập loại tình cảm: ";
+    yellow(L"Nhập thể loại tình cảm: ");
     wcin.ignore();
     getline(wcin, romantic);
 }
 
-void LoveMovie::displayInfo() const {
-    Movie::displayInfo();
+void LoveMovie::displayInfo() {
+    //Movie::displayInfo();
     drawTable({
-        {L"Thể loại tình cảm: ", romantic }
+        {L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia", L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"},
+        {to_wstring(getId()), getName(), to_wstring(getDuration()), getSubTitle(), getCountry(), to_wstring(getLimitAge()), romantic, getDescription()}
     });
 }
 

@@ -30,6 +30,7 @@ public:
     // Movie* createMovie(int id, const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
     // Thêm một bộ phim vào danh sách
     void addMovie( const wstring& name, const wstring& typeMovie, int duration, const wstring& subtitle, const wstring& country, int limitAge, const wstring& description, const wstring& genre);
+    void addMovie();
 
     // Sửa thông tin một bộ phim trong danh sách
     void updateMovie(int id);
@@ -41,7 +42,14 @@ public:
     void displayMovieInfo(int id) const;
 
     // Hiển thị tất cả các bộ phim trong danh sách
-    void displayMovies() const;
+    // void displayMovies() const;
+    vector<vector<wstring>> displayMovies() const;
+
+    vector<vector<wstring>> displayMoviesByGenre() const;
+
+    vector<vector<wstring>> displayMoviesByCountry() const;
+
+    vector<vector<wstring>> displayMoviesByLimitAge() const;
 
     //Tìm kiếm phim theo tên
     void searchMovie(const wstring& name);
@@ -62,6 +70,7 @@ public:
 
     Movie* findMovieByName(const wstring& name);
     Movie* findMovieByID(int id);
+    Movie* findMovieAll(const wstring& search, int &start);
 };
 
 #endif // MOVIELIST_H

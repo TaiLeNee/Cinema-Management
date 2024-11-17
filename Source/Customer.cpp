@@ -16,7 +16,7 @@ Customer::Customer(int customerID,const wstring& name,const wstring& phoneNumber
 Customer::Customer(const wstring& name,const wstring& phoneNumber, int point)
     : customerID(++currentID),  name(name), phoneNumber(phoneNumber), point(point) {}
 
-void Customer::displayInfo() const {
+void  Customer::displayInfo() const {
     drawTable({
         {L"ID", L"Họ và tên", L"Số điện thoại", L"Điểm tích luỹ" },
         {to_wstring(customerID),name,phoneNumber,to_wstring(point)}

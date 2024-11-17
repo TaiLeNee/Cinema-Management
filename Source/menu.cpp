@@ -28,7 +28,7 @@ void managementMenu(ListOfEmployee &employeeList, MovieList &movieList, Customer
             roomMenu(roomList);
             break;
         case 2:
-            movieMenu(movieList);
+            manageMovie(movieList);
             break;
         case 3:
             manageShowtimes(roomList, movieList);
@@ -141,159 +141,9 @@ void employeeMenu(ListOfEmployee &employeeList)
     } while (choice != 0);
 }
 
-void movieMenu(MovieList &movieList)
-{
-    int choice, id;
-    wstring name;
-    auto &movies = movieList.getMovies();
-    do
-    {
-        vector<vector<wstring>> table;
-        wcout << L"\033[0m";
-        table.push_back({L"    Menu Quản lý Phim "});
-        table.push_back({L"1. Hiện danh sách phim"});
-        table.push_back({L"2. Tìm kiếm phim"});
-        table.push_back({L"3. Thêm phim"});
-        table.push_back({L"4. Đổi thông tin phim"});
-        table.push_back({L"5. Xóa phim"});
-        table.push_back({L"6. Lưu danh sách vào hệ thống"});
-        table.push_back({L"0. Quay lại"});
-        drawTable(table);
-        checkInput(L"Lựa chọn của bạn", choice);
-        wcin.ignore();
-        system("cls");
-        switch (choice)
-        {
-        case 1:
-            system("cls");
-            movieList.displayMovies();
-            break;
-        case 2:
-        {
-            wcout << L"\033[92mNhập tên phim cần tìm: \033[0m";
-            getline(wcin, name);
-            movieList.searchMovie(name);
-            red(L"Nhập 0 để quay lại.\n");
-            wcout << L"\033[92mNhập ID phim cần tương tác: \033[0m";
-            wcin >> id;
-            if (id == 0)
-            {
-                system("cls");
-                break;
-            }
-            movieList.interactWithMovie(id);
-
-            break;
-        }
-        case 3:
-        {
-            int duration, limitAge;
-            wstring name, typeMovie, subtitle, country, description, genre;
-            vector<vector<wstring>> table;
-            table.push_back({L"  Chọn Thể Loại Phim"});
-            table.push_back({L"1. Tình cảm"});
-            table.push_back({L"2. Hoạt hình"});
-            table.push_back({L"3. Hành động"});
-            table.push_back({L"4. Kinh dị"});
-            table.push_back({L"0. Quay lại"});
-            drawTable(table);
-            red(L"LƯU Ý: KHÔNG THỂ THAY ĐỔI SAU KHI CHỌN.\n");
-            checkInput(L"Lựa chọn của bạn", choice);
-            wcin.ignore();
-            wcout << "\033[93m";
-            switch (choice)
-            {
-            case 1:
-            {
-                typeMovie = L"Tình cảm";
-                Movie *lmovie = new LoveMovie();
-                lmovie->inputMovieInfo();
-                movies.push_back(lmovie);
-                break;
-            }
-            case 2:
-            {
-                typeMovie = L"Hoạt hình";
-                Movie *amovie = new AnimatedMovie();
-                amovie->inputMovieInfo();
-                movies.push_back(amovie);
-                break;
-            }
-            case 3:
-            {
-                typeMovie = L"Hành động";
-                Movie *amovie = new ActionMovie();
-                amovie->inputMovieInfo();
-                movies.push_back(amovie);
-                break;
-            }
-            case 4:
-            {
-                typeMovie = L"Kinh dị";
-                Movie *hmovie = new HorrorMovie();
-                hmovie->inputMovieInfo();
-                movies.push_back(hmovie);
-                break;
-            }
-            case 0:
-                system("cls");
-                break;
-            default:
-                red(L"[Lựa chọn không hợp lệ. Vui lòng chọn lại.]\n");
-                break;
-            }
-            wcout << "\033[0m";
-            system("cls");
-            green(L"Thêm phim thành công.\n");
-            break;
-        }
-        case 4:
-        {
-            green(L"Nhập tên phim cần sửa: ");
-            getline(wcin, name);
-            movieList.searchMovie(name);
-            green(L"Nhập ID của phim cần sửa: ");
-            wcin >> id;
-            system("cls");
-            movieList.updateMovie(id);
-            break;
-        }
-        case 5:
-        {
-            green(L"Nhập tên phim cần xóa: ");
-            getline(wcin, name);
-            movieList.searchMovie(name);
-            green(L"Nhập ID của phim cần xóa: ");
-            wcin >> id;
-            system("cls");
-            movieList.deleteMovie(id);
-            green(L"Xóa phim thành công.\n");
-            break;
-        }
-        case 6:
-            movieList.saveToCSV("../DATA/movies.csv");
-            wcout << L"\033[92m[Đã lưu danh sách phim vào hệ thống.] \033[0m" << endl;
-            break;
-        case 0:
-            break;
-        default:
-            red(L"Lựa chọn không hợp lệ, vui lòng thử lại.");
-            wcout << endl;
-        }
-    } while (choice != 0);
-}
 
 
-void manageMovie(MovieList &movieList)
-{
-    system("cls");
-    vector<vector<wstring>> table;
-    table.push_back({L"        QUẢN LÝ PHIM            "});
-    table.push_back({L"        1. Danh sách tất cả các phim hiện tại            "});
-    table.push_back({L"        2. Danh sách phim theo thể loại            "});
-    table.push_back({L"        3. Danh sách phim theo quốc gia            "});
-    table.push_back({L"        4. Danh sách phim theo độ tuổi            "});
-}
+
 
 void statisticMenu(MovieList &movieList, RoomList &roomList, CustomerList &customerList, ListOfEmployee &employeeList, BookedList &bookedList)
 {
