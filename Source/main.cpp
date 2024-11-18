@@ -36,8 +36,8 @@ void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList 
     wcout << "\033[0m";
 
     table.push_back({L"           Đăng nhập "});
-    table.push_back({L"Username:                      "});
-    table.push_back({L"Password:                      "});
+    table.push_back({L"   Username:                      "});
+    table.push_back({L"   Password:                      "});
 
 login:
     wcout << "\033[?25l";
@@ -52,24 +52,21 @@ login:
 
         gotoXY(11, 3);
         if (currentField == 0){
-            gotoXY(12, 3);
-            wcout << L" » ";
+            gotoXY(1, 3);
+            yellow(L" » ");
         }
-        else
-            wcout << L"  "; 
+        gotoXY(16,3);
         wcout << userName;
 
         gotoXY(11, 5);
         if (currentField == 1){
-            gotoXY(12,5);
-            wcout << L" » ";
+            gotoXY(1,5);
+            yellow(L" » ");
         }
-        else
-            wcout << L"  "; 
 
+        gotoXY(16,5);
         for (size_t i = 0; i < passWord.size(); ++i)
             wcout << L'*';
-        gotoXY(200,7);
 
         temp = _getch();
 
