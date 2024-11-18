@@ -230,28 +230,35 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             else
             {
                 vector<vector<wstring>> table2;
+                bool check = false;
                 table2.push_back({L" ĐỔI MẬT KHẨU "});
                 table2.push_back({L" Username: " + loggedin->getUserName()});
                 table2.push_back({L" Nhập mật khẩu cũ: "});
                 table2.push_back({L" Nhập mật khẩu mới:               "});
                 table2.push_back({L" Nhập lại mật khẩu mới:"});
                 drawTable(table2);
+                red(L"[Nhập toàn bộ là 0 để thoát]");
+                
                 wstring newPass, oldPass, rePass;
                 do
                 {
                     oldPass = L"";
                     newPass = L"";
-                    gotoXY(21, 3);
+                    rePass = L"";
+
+                    gotoXY(21, 5);
                     wcin >> oldPass;
-                    gotoXY(22, 5);
+                    gotoXY(22, 7);
                     wcin >> newPass;
-                    gotoXY(26, 7);
+                    gotoXY(26, 9);
                     wcin >> rePass;
-                    if (oldPass != loggedin->getPassWord())
+                    if ((oldPass == L"0") && (newPass == L"0") && (rePass == L"0")){
+                        check = true;
+                        break;
+                    }
+                    else if (oldPass != loggedin->getPassWord())
                     {
                         red(L"\n[Mật khẩu cũ không đúng. Vui lòng nhập lại.]");
-                        wcout << L"\nold :" << oldPass << endl;
-                        wcout << L"\npass :" << loggedin->getPassWord() << endl;
                         Sleep(2000);
                         system("cls");
                         drawTable(table2);
@@ -264,11 +271,13 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
                         drawTable(table2);
                     }
                 } while (oldPass != loggedin->getPassWord() || newPass != rePass);
-
-                loggedin->setPassWord(newPass);
-                employeeList.saveEmployee("../DATA/employee.csv");
-                wcout << L"\033[92m\n[Đã đổi mật khẩu thành công.]\033[0m" << endl;
-                Sleep(2000);
+                
+                if (check == false){
+                    loggedin->setPassWord(newPass);
+                    employeeList.saveEmployee("../DATA/employee.csv");
+                    wcout << L"\033[92m\n\n[Đã đổi mật khẩu thành công.]\033[0m" << endl;
+                    Sleep(2000);
+                }
             }
             break;
         case 0:
