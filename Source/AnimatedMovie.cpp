@@ -14,14 +14,17 @@ AnimatedMovie::AnimatedMovie(const Movie& movie)
 
 void AnimatedMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
-    wcout << L"Nhập loại hoạt hình: ";
+    yellow(L"Nhập thể loại hoạt hình: ");
     wcin.ignore();
     getline(wcin, animation);
 }
 
-void AnimatedMovie::displayInfo() const {
-    Movie::displayInfo();
-    wcout << L"Loại hoạt hình: " << animation << endl;
+void AnimatedMovie::displayInfo() {
+    //Movie::displayInfo();
+    drawTable({
+        {L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia", L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"},
+        {to_wstring(getId()), getName(), to_wstring(getDuration()), getSubTitle(), getCountry(), to_wstring(getLimitAge()), animation, getDescription()}
+    });
 }
 
 void AnimatedMovie::deleteInfo() {

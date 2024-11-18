@@ -19,7 +19,7 @@ class AnimatedMovie : public Movie {
         
         //Hàm ảo từ lớp cha
         void inputMovieInfo();
-        void displayInfo() const;
+        void displayInfo();
         void deleteInfo();
         void editAnimatedInfo();    
 
