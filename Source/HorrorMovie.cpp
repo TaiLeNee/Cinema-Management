@@ -32,6 +32,10 @@ void HorrorMovie::setHorrorLevel(const wstring& horrorLevel) {
 
 void HorrorMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
+     //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
     yellow(L"Nhập mức độ kinh dị (1-4): ");
     wcin.ignore();
     getline(wcin, horrorLevel);

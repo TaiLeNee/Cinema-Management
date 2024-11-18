@@ -82,6 +82,10 @@ void MovieList::addMovie(){
             typeMovie = L"Tình cảm";
             LoveMovie* lmovie = new LoveMovie();
             lmovie->inputMovieInfo();
+             //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
             system("cls");
             lmovie->displayInfo();
             green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
@@ -99,6 +103,10 @@ void MovieList::addMovie(){
             typeMovie = L"Hoạt hình";
             AnimatedMovie* amovie = new AnimatedMovie();
             amovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
             system("cls");
             amovie->displayInfo();
             green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
@@ -115,6 +123,10 @@ void MovieList::addMovie(){
             typeMovie = L"Hành động";
             ActionMovie* amovie = new ActionMovie();
             amovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
             system("cls");
             amovie->displayInfo();
             green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
@@ -131,6 +143,10 @@ void MovieList::addMovie(){
             typeMovie = L"Kinh dị";
             HorrorMovie* hmovie = new HorrorMovie();
             hmovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
             system("cls");
             hmovie->displayInfo();
             green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");

@@ -14,6 +14,10 @@ AnimatedMovie::AnimatedMovie(const Movie& movie)
 
 void AnimatedMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
+     //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
     yellow(L"Nhập thể loại hoạt hình: ");
     wcin.ignore();
     getline(wcin, animation);
