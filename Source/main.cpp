@@ -27,79 +27,6 @@ void loading(int duration)
     Sleep(500);
 }
 
-// void loginMenu(ListOfEmployee &employeeList , MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList){
-//     vector<vector<wstring>> table;
-//     wstring userName, passWord;
-//     char temp;
-//     Employee *loggedInUser = nullptr;
-//     wcout << "\033[0m";
-//     table.push_back({L"         Đăng nhập "});
-//     table.push_back({L"Username:                  "});
-//     table.push_back({L"Password:                  "});
-
-//     login:
-//         drawTable(table);
-
-//         gotoXY(13, 3);
-//         wcin >> userName;
-//         gotoXY(13, 5);
-//         passWord.clear();
-//         while (true){
-//             temp = _getch();
-
-//             if (temp == '\r'){
-//                 wcout << endl;
-//                 break;
-//             }
-//             else if (temp == '\b'){
-//                 if (!passWord.empty()){
-//                     passWord.pop_back();
-//                     wcout << L"\b \b";
-//                 }
-//             }
-//             else {
-//                 passWord += temp;
-//                 wcout << '*';
-//             }
-//         }
-//         loggedInUser = employeeList.signIn(userName, passWord);
-//         if (!loggedInUser) {
-//             wcout << L"\n\033[92mĐăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập...\033[0m" << endl;
-//             Sleep(2000);
-//             system("cls");
-//             goto login;
-//         }
-//         else{
-//             system("cls");
-//             loading(4);
-//             wcout << L"\n\033[92m[Đăng nhập thành công!]\033[0m" << endl;
-
-//         }
-
-//     wstring name;
-//     name = loggedInUser->getName();
-//     loggedin_global = loggedInUser;
-//     if (loggedInUser->getLevel() == 0) {
-//         employeeIDLogin = loggedInUser->getId();
-//         wcout << L"\033[92m[Xin chào Owner "<< name <<"]\033[0m"<< endl;
-//         Sleep(1000);
-//         mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedInUser);
-//     }
-//     else if (loggedInUser->getLevel() == 1) {
-//         employeeIDLogin = loggedInUser->getId();
-//         wcout << L"\033[92m[Xin chào Admin " << name <<"]\033[0m"<< endl;
-//         Sleep(1000);
-//         mainMenu(employeeList, movieList, customerList, roomList,bookedList , loggedInUser);
-
-//     }
-//     else {
-//         employeeIDLogin = loggedInUser->getId();
-//         wcout << L"\033[92m[Xin chào nhân viên " << name <<"]\033[0m"<< endl;
-//         Sleep(1000);
-//         mainMenu(employeeList, movieList, customerList, roomList,  bookedList, loggedInUser);
-//     }
-// }
-
 void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &customerList, RoomList &roomList, BookedList &bookedList)
 {
     vector<vector<wstring>> table;
@@ -187,7 +114,7 @@ login:
             }
         }
     }
-
+    wcout << "\033[?25h";
     loggedInUser = employeeList.signIn(userName, passWord);
     if (!loggedInUser)
     {
@@ -227,7 +154,6 @@ login:
         Sleep(1000);
         mainMenu(employeeList, movieList, customerList, roomList, bookedList, loggedInUser);
     }
-    wcout << "\033[?25h";
 }
 
 int main()

@@ -52,7 +52,10 @@ void ListOfEmployee::addEmployee() {
                 goto inputName;
             }
         }
-        else return;
+        else {
+            system("cls");
+            return;
+        }
     inputAge:
         gotoXY(28,5);
         wcout << L"                   ";
@@ -283,7 +286,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                             it->setName(name);
                             green(L"═════[Lưu thông tin thành công.]═════\n");  
 
-                            ListOfEmployee::saveEmployee("../Data/employee/csv");
+                            saveEmployee("../Data/employee/csv");
                         }
                         else{
                             red(L"[Đã hủy thay đổi.]\n");
@@ -328,7 +331,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                             it->setAge(age);
                             green(L"═════[Lưu thông tin thành công.]═════\n");  
 
-                            ListOfEmployee::saveEmployee("../Data/employee/csv");
+                            saveEmployee("../Data/employee/csv");
                         }
                         else{
                             red(L"[Đã hủy thay đổi.]\n");
@@ -373,7 +376,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                             it->setPhoneNumber(phoneNumber);
                             green(L"═════[Lưu thông tin thành công.]═════\n");  
 
-                            ListOfEmployee::saveEmployee("../Data/employee/csv");
+                            saveEmployee("../Data/employee/csv");
                         }
                         else{
                             red(L"[Đã hủy thay đổi.]\n");
@@ -415,7 +418,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                         it->setUserName(userName);
                         green(L"═════[Lưu thông tin thành công.]═════\n");  
 
-                        ListOfEmployee::saveEmployee("../Data/employee/csv");
+                        saveEmployee("../Data/employee/csv");
                     }
                     else{
                         red(L"[Đã hủy thay đổi.]\n");
@@ -450,7 +453,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                         it->setPassWord(passWord);
                         green(L"═════[Lưu thông tin thành công.]═════\n");  
 
-                        ListOfEmployee::saveEmployee("../Data/employee/csv");
+                        saveEmployee("../Data/employee/csv");
                     }
                     else{
                         red(L"[Đã hủy thay đổi.]\n");
@@ -501,7 +504,7 @@ void ListOfEmployee::editEmployeeInfo(int id) {
                         it->setUserName(userName);
                         it->setPassWord(passWord);
                         green(L"═════[Lưu thông tin thành công.]═════\n");
-                        ListOfEmployee::saveEmployee("../Data/employee/csv");
+                        saveEmployee("../Data/employee/csv");
                     }
                     else{
                         red(L"[Đã hủy thay đổi.]\n");
