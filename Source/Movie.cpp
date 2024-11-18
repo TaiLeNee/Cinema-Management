@@ -103,6 +103,7 @@ void Movie::inputMovieInfo() {
 
     while (true) {
         system("cls");
+        red(L"Nhấn ESC để thoát.\n");
 
         // Tạo bảng với các nhãn và giá trị hiện tại
         vector<vector<wstring>> table;
@@ -139,6 +140,8 @@ void Movie::inputMovieInfo() {
             movieInfo[currentField] += temp;
         } else if (temp >= 128) { // Unicode characters
             movieInfo[currentField] += temp;
+        } else if (temp == 27) { // ESC key
+            return;
         }
     }
 

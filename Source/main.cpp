@@ -160,6 +160,9 @@ int main()
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
 
+    // ios::sync_with_stdio(false);
+    wcin.tie(nullptr);
+
     // Khởi tạo
     RoomList roomList;
     MovieList movieList;

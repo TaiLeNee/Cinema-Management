@@ -32,6 +32,10 @@ void ActionMovie::setActionLevel(const wstring& actionLevel) {
 
 void ActionMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
+     //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
     yellow(L"Nhập mức độ hành động (1-4): ");
     wcin.ignore();
     getline(wcin, actionLevel);

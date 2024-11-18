@@ -13,8 +13,12 @@ LoveMovie::LoveMovie(const Movie& movie): Movie(movie.getId(), movie.getName(), 
 
 void LoveMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
+    //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
     yellow(L"Nhập thể loại tình cảm: ");
-    wcin.ignore();
+    wcin.ignore(); 
     getline(wcin, romantic);
 }
 
