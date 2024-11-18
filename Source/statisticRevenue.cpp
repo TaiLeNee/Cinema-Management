@@ -449,16 +449,16 @@ menuStatistic:
         }
 
         if(checkSearchEmp){
-            int employeeID = employeeSearch->getId();
-            wcout << employeeID <<endl;
+            int employeeIDSearch = employeeSearch->getId();
+            // wcout << employeeID <<endl; 
             wstring month = date.getMonth();
 
-            if (bookingDataMap.find(employeeID) != bookingDataMap.end() &&
-                bookingDataMap[employeeID].find(month) != bookingDataMap[employeeID].end()) {
+            if (bookingDataMap.find(employeeIDSearch) != bookingDataMap.end() &&
+                bookingDataMap[employeeIDSearch].find(month) != bookingDataMap[employeeIDSearch].end()) {
                 
-                BookingData &data = bookingDataMap[employeeID][month];
+                BookingData &data = bookingDataMap[employeeIDSearch][month];
                 tableBooked.push_back({ 
-                    to_wstring(employeeID),
+                    to_wstring(employeeIDSearch),
                     employeeSearch->getName(),
                     to_wstring(data.totalChairBooked),
                     to_wstring(data.totalRevenue)
@@ -469,16 +469,16 @@ menuStatistic:
         else{
             // Duyệt qua các nhân viên và sử dụng các bản đồ để lấy dữ liệu đặt vé
             for (auto &employee : employeeList.getEmployees()) {
-                int employeeID = employee.getId();
+                int employeeID2 = employee.getId();
 
                 wstring month = date.getMonth();
 
-                if (bookingDataMap.find(employeeID) != bookingDataMap.end() &&
-                    bookingDataMap[employeeID].find(month) != bookingDataMap[employeeID].end()) {
+                if (bookingDataMap.find(employeeID2) != bookingDataMap.end() &&
+                    bookingDataMap[employeeID2].find(month) != bookingDataMap[employeeID2].end()) {
                     
-                    BookingData &data = bookingDataMap[employeeID][month];
+                    BookingData &data = bookingDataMap[employeeID2][month];
                     tableBooked.push_back({ 
-                        to_wstring(employeeID),
+                        to_wstring(employeeID2),
                         employee.getName(),
                         to_wstring(data.totalChairBooked),
                         to_wstring(data.totalRevenue)
