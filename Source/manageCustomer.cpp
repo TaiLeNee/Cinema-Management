@@ -46,7 +46,6 @@ void customerMenu(CustomerList &customerList)
         table.push_back({L"    Menu Quản lý Khách hàng "});
         table.push_back({L"1. Hiện thị danh sách khách hàng"});
         table.push_back({L"2. Tìm kiếm khách hàng"});
-        table.push_back({L"3. Thêm khách hàng"});
         table.push_back({L"0. Quay lại"});
 
         drawTable(table);
