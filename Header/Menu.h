@@ -24,6 +24,7 @@ void loginMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList 
 void employeeMenu(ListOfEmployee &employeeList);
 
 void movieMenu(MovieList &movieList);
+void manageMovie(MovieList &movieList);
 
 void customerMenu(CustomerList &customerList);
 

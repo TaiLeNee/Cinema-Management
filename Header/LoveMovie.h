@@ -15,7 +15,7 @@ class LoveMovie : public Movie {
         LoveMovie(const Movie& movie);
         //Hàm ảo từ lớp cha
         void inputMovieInfo();
-        void displayInfo() const;
+        void displayInfo();
         void deleteInfo();
         void editLoveInfo();    
 

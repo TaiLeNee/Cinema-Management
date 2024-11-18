@@ -1,5 +1,6 @@
 #include "../Header/MovieList.h"
 
+
 using namespace std;
 
 
@@ -59,10 +60,136 @@ void MovieList::addMovie(const wstring& name, const wstring& typeMovie, int dura
     movies.push_back(movie);
 }
 
+
+void MovieList::addMovie(){
+    wstring name, typeMovie, subtitle, country, description, genre;
+    int duration, limitAge;
+    vector<vector<wstring>> table;
+    table.push_back({L"  Chọn Thể Loại Phim"});
+    table.push_back({L"1. Tình cảm"});
+    table.push_back({L"2. Hoạt hình"});
+    table.push_back({L"3. Hành động"});
+    table.push_back({L"4. Kinh dị"});
+    table.push_back({L"0. Quay lại"});
+    drawTable(table);
+    wcout << L"\033[92m[Lựa chọn của bạn]  ";
+    int choice;
+    checkInput(L"Nhập lựa chọn", choice);
+    wcin.ignore();
+
+    switch (choice) {
+        case 1: {
+            typeMovie = L"Tình cảm";
+            LoveMovie* lmovie = new LoveMovie();
+            lmovie->inputMovieInfo();
+             //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
+            system("cls");
+            lmovie->displayInfo();
+            green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
+            wchar_t c;
+            wcin >> c;
+            c = towlower(c);
+            if (c == 'y') {
+                movies.push_back(lmovie);
+            }
+            break;
+            // movies.push_back(lmovie);
+            break;
+        }
+        case 2: {
+            typeMovie = L"Hoạt hình";
+            AnimatedMovie* amovie = new AnimatedMovie();
+            amovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
+            system("cls");
+            amovie->displayInfo();
+            green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
+            wchar_t c;
+            wcin >> c;
+            c = towlower(c);
+            if (c == 'y') {
+                movies.push_back(amovie);
+            }
+            break;
+        }
+
+        case 3: {
+            typeMovie = L"Hành động";
+            ActionMovie* amovie = new ActionMovie();
+            amovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
+            system("cls");
+            amovie->displayInfo();
+            green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
+            wchar_t c;
+            wcin >> c;
+            c = towlower(c);
+            if (c == 'y') {
+                movies.push_back(amovie);
+            }
+            break;
+        }
+
+        case 4: {
+            typeMovie = L"Kinh dị";
+            HorrorMovie* hmovie = new HorrorMovie();
+            hmovie->inputMovieInfo();
+            //nhấn esc để thoát
+            if(GetAsyncKeyState(VK_ESCAPE)){
+                break;
+            }
+            system("cls");
+            hmovie->displayInfo();
+            green(L"══[Xác nhận thêm phim (Y/N) / (y/n)?]==> ");
+            wchar_t c;
+            wcin >> c;
+            c = towlower(c);
+            if (c == 'y') {
+                movies.push_back(hmovie);
+            }
+            break;
+        }
+
+
+        case 0:
+            system("cls"); 
+            break;
+        default:
+            red(L"Lựa chọn không hợp lệ. Vui lòng thử lại.");
+            break;
+    }
+}
+
 void MovieList::deleteMovie(int id) {
+
+    green(L"═════[Xác nhận xóa phim? (Y/N) hoặc (y/n)]==> ");    
+    wchar_t c;
+    wcin >> c;
+    c = towlower(c);
+    if (c != 'y') {
+        wcout << L"\033[92m[Đã hủy xóa phim]\033[0m" << endl;
+        Sleep(1000);
+        return;
+    }
+
+    
+    wcout << L"\033[92m[Đang xóa phim...]\033[0m" << endl;
+
     movies.erase(remove_if(movies.begin(), movies.end(), [id](Movie* movie) {
         return movie->getId() == id;
     }), movies.end());
+
+    green(L"══[Đã xóa phim thành công]══.\n");
+    Sleep(1000);
 }
 
 
@@ -88,7 +215,7 @@ void MovieList::displayMovieInfo(int id) const {
     drawTable(table);
 }
 
-void MovieList::displayMovies() const {
+vector<vector<wstring>> MovieList::displayMovies() const {
     vector<vector<wstring>> table;
     drawTable({
         {L"                                   DANH SÁCH PHIM                                "}
@@ -122,6 +249,213 @@ void MovieList::displayMovies() const {
     }
     wcout << L"\n\n";
     drawTable(table);
+
+    return table;
+}
+
+vector<vector<wstring>> MovieList::displayMoviesByGenre() const
+{
+    drawTable({
+        {L"  THỂ LOẠI PHIM  "},
+        {L"1. Tình cảm"},
+        {L"2. Hoạt hình"},
+        {L"3. Hành động"},
+        {L"4. Kinh dị"},
+        {L"0. Quay lại"}
+    });
+
+    int choice;
+
+    checkInput(L"Nhập lựa chọn", choice);
+    if(choice == 0){
+        system("cls");
+        return {};
+    }
+    vector<vector<wstring>> table;
+    drawTable({
+        {L"                                   DANH SÁCH PHIM                                "}
+    });
+
+    table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
+
+    
+    
+    for (const auto& movie : movies) {
+
+        if (choice == 1 && dynamic_cast<LoveMovie*>(movie)) {
+            vector<wstring> row;    
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+            row.push_back(dynamic_cast<LoveMovie*>(movie)->getRomantic());
+            row.push_back(movie->getDescription());
+            table.push_back(row);
+        } else if (choice == 2 && dynamic_cast<AnimatedMovie*>(movie)) {
+            vector<wstring> row;    
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+            row.push_back(dynamic_cast<AnimatedMovie*>(movie)->getAnimation());
+                row.push_back(movie->getDescription());
+            table.push_back(row);
+        } else if (choice == 3 && dynamic_cast<ActionMovie*>(movie)) {
+            vector<wstring> row;    
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+            row.push_back(dynamic_cast<ActionMovie*>(movie)->getActionLevel());
+                row.push_back(movie->getDescription());
+            table.push_back(row);
+        } else if (choice == 4 && dynamic_cast<HorrorMovie*>(movie)) {
+            vector<wstring> row;    
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+            row.push_back(dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel());
+            row.push_back(movie->getDescription());
+            table.push_back(row);
+        }
+
+    }
+
+    wcout << L"\n\n";
+    drawTable(table);
+
+    return table;
+}
+
+vector<vector<wstring>> MovieList::displayMoviesByCountry() const
+{   
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+
+    wcin.ignore();
+    wstring country;
+    // checkInput(L"Nhập quốc gia", country);
+    red(L"Nhập 0: để quay lại\n");
+
+inputCountry:
+    wcout << L"\033[92mNhập quốc gia: \033[0m";
+
+    getline(wcin, country);
+
+    if(country == L"0"){
+        system("cls");
+        return {};
+    }
+
+    else if(country == L"\n"){
+        goto inputCountry;
+    }
+
+    
+
+
+    vector<vector<wstring>> table;
+     drawTable({
+        {L"                                   DANH SÁCH PHIM                                "}
+    });
+    table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
+
+    for (const auto& movie : movies) {
+        if (toLower(movie->getCountry()) == toLower(country)) {
+            vector<wstring> row;
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+
+            if (dynamic_cast<LoveMovie*>(movie)) {
+                row.push_back(dynamic_cast<LoveMovie*>(movie)->getRomantic());
+            } else if (dynamic_cast<AnimatedMovie*>(movie)) {
+                row.push_back(dynamic_cast<AnimatedMovie*>(movie)->getAnimation());
+            } else if (dynamic_cast<ActionMovie*>(movie)) {
+                row.push_back(dynamic_cast<ActionMovie*>(movie)->getActionLevel());
+            } else if (dynamic_cast<HorrorMovie*>(movie)) {
+                row.push_back(dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel());
+            } else {
+                row.push_back(L"");
+            }
+
+            row.push_back(movie->getDescription());
+            table.push_back(row);
+        }
+    }
+
+    wcout << L"\n\n";
+    drawTable(table);
+
+    return table;
+}
+
+vector<vector<wstring>> MovieList::displayMoviesByLimitAge() const
+{
+    int age;
+    red(L"Nhập 0: để quay lại\n");
+    checkInput(L"Nhập độ tuổi bắt đầu", age);
+
+    if(age == 0){
+        system("cls");
+        return {};
+    }
+
+    vector<vector<wstring>> table;
+     drawTable({
+        {L"                                   DANH SÁCH PHIM                                "}
+    });
+    table.push_back({L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia",L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"});
+
+    for (const auto& movie : movies) {
+        if (movie->getLimitAge() >= age) {
+            vector<wstring> row;
+            row.push_back(to_wstring(movie->getId()));
+            row.push_back(movie->getName());
+            row.push_back(to_wstring(movie->getDuration()));
+            row.push_back(movie->getSubTitle());
+            row.push_back(movie->getCountry());
+            row.push_back(to_wstring(movie->getLimitAge()));
+
+            if (dynamic_cast<LoveMovie*>(movie)) {
+                row.push_back(dynamic_cast<LoveMovie*>(movie)->getRomantic());
+            } else if (dynamic_cast<AnimatedMovie*>(movie)) {
+                row.push_back(dynamic_cast<AnimatedMovie*>(movie)->getAnimation());
+            } else if (dynamic_cast<ActionMovie*>(movie)) {
+                row.push_back(dynamic_cast<ActionMovie*>(movie)->getActionLevel());
+            } else if (dynamic_cast<HorrorMovie*>(movie)) {
+                row.push_back(dynamic_cast<HorrorMovie*>(movie)->getHorrorLevel());
+            } else {
+                row.push_back(L"");
+            }
+
+            row.push_back(movie->getDescription());
+            table.push_back(row);
+        }
+    }
+
+    wcout << L"\n\n";
+    drawTable(table);
+
+    return table;
 }
 
 void MovieList::searchMovie(const wstring& name) {
@@ -202,6 +536,27 @@ Movie* MovieList::findMovieByID(int id){
     return nullptr;
 }
 
+Movie *MovieList::findMovieAll(const wstring &search, int &start)
+{       
+    auto toLower = [](const wstring &str) -> wstring {
+        wstring result;
+        for (wchar_t ch : str) {
+            result += std::towlower(ch);
+        }
+        return result;
+    };
+
+    auto it = find_if(movies.begin() + start, movies.end(), [search, toLower](Movie *movie) {
+        return toLower(movie->getName()).find(toLower(search)) != wstring::npos || to_wstring(movie->getId()) == search;
+    });
+    if (it != movies.end())
+    {   
+        start = distance(movies.begin(), it);
+        return *it;
+    }
+
+    return nullptr;
+}
 void MovieList::searchMovieByID(int id) {
     auto it = find_if(movies.begin(), movies.end(), [id](Movie* movie) {
         return movie->getId() == id;

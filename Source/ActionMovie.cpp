@@ -32,15 +32,22 @@ void ActionMovie::setActionLevel(const wstring& actionLevel) {
 
 void ActionMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
-    wcout << L"Nhập mức độ hành động (1-4): ";
+     //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
+    yellow(L"Nhập mức độ hành động (1-4): ");
     wcin.ignore();
     getline(wcin, actionLevel);
     actionLevel =L"Hành Động " + actionLevel;
 }
 
 void ActionMovie::displayInfo() {
-    Movie::displayInfo();
-    wcout << L"Mức độ hành động: " << actionLevel <<endl;
+    //Movie::displayInfo();
+    drawTable({
+        {L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia", L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"},
+        {to_wstring(getId()), getName(), to_wstring(getDuration()), getSubTitle(), getCountry(), to_wstring(getLimitAge()), actionLevel, getDescription()}
+    });
 }
 
 

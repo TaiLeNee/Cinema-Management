@@ -25,7 +25,7 @@ public:
 
     virtual void inputMovieInfo();
 
-    virtual void displayInfo() const;  // hiển thị thông tin phim
+    virtual void displayInfo();  // hiển thị thông tin phim
 
     void displayShowtimeInDay(const wstring& date) const;
     void deleteShowtime(int showtimeID);

@@ -32,16 +32,21 @@ void HorrorMovie::setHorrorLevel(const wstring& horrorLevel) {
 
 void HorrorMovie::inputMovieInfo() {
     Movie::inputMovieInfo();
-    wcout << L"Nhập mức độ kinh dị (1-4): ";
+     //nhấn esc để thoát
+    if(GetAsyncKeyState(VK_ESCAPE)){
+        return;
+    }
+    yellow(L"Nhập mức độ kinh dị (1-4): ");
     wcin.ignore();
     getline(wcin, horrorLevel);
     horrorLevel = L"Kinh Dị " + horrorLevel; 
 }
 
 void HorrorMovie::displayInfo(){
-    Movie::displayInfo();
+    //Movie::displayInfo();
     drawTable({
-        {L"Mức độ kinh dị: ",horrorLevel}
+        {L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia", L"Độ tuổi", L"Đặc điểm riêng", L"Mô tả"},
+        {to_wstring(getId()), getName(), to_wstring(getDuration()), getSubTitle(), getCountry(), to_wstring(getLimitAge()), horrorLevel, getDescription()}
     });
     // wcout << L"Mức độ kinh dị: " << horrorLevel <<endl;
 }

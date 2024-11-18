@@ -5,6 +5,8 @@
 #include "../Header/HorrorMovie.h"
 #include <algorithm>
 #include "../Header/checkInput.h"
+#include <conio.h>
+
 using namespace std;
 
 
@@ -86,39 +88,87 @@ vector<Showtime>& Movie::getShowtimes()
 }
 
 void Movie::inputMovieInfo() {
-    this->id = ++currentID;
-    wcout << L"Nhập tên phim: ";
-    getline(wcin, name);
+    vector<wstring> movieInfo(6);
+    vector<wstring> labels = {
+        L"Tên phim: ",
+        L"Thời lượng (phút): ",
+        L"Phụ đề: ",
+        L"Quốc gia: ",
+        L"Độ tuổi: ",
+        L"Mô tả: "
+    };
 
-    wcout << L"Nhập thời lượng phim (phút): ";
-    wcin >> duration;
+    int currentField = 0;
+    wchar_t temp;
 
-    wcin.ignore();
-    wcout << L"Nhập mô tả phim: ";
-    getline(wcin, description);
+    while (true) {
+        system("cls");
+        red(L"Nhấn ESC để thoát.\n");
 
-    wcout << L"Nhập quốc gia sản xuất: ";
-    getline(wcin, country);
+        // Tạo bảng với các nhãn và giá trị hiện tại
+        vector<vector<wstring>> table;
+        drawTable({{L"Nhập thông tin phim"}});
 
-    wcout << L"Nhập phụ đề: ";
-    getline(wcin, subTitle);
+        for (int i = 0; i < labels.size(); ++i) {
+            if (i == currentField) {
+                table.push_back({L"» " + labels[i], movieInfo[i]});
+            } else {
+                table.push_back({L"  " + labels[i], movieInfo[i]});
+            }
+        }
 
-    wcout << L"Nhập giới hạn tuổi: ";
-    wcin >> limitAge;
+        // Vẽ bảng
+        drawTable(table);
+
+        temp = _getwch();
+
+        if (temp == '\r') { // Enter key
+            if (currentField == 5) break; // Finish input if on the last field
+            currentField++;
+        } else if (temp == 224 || temp == 0) { // Arrow keys
+            temp = _getwch();
+            if (temp == 72) { // Up arrow
+                currentField = (currentField == 0) ? 5 : currentField - 1;
+            } else if (temp == 80) { // Down arrow
+                currentField = (currentField == 5) ? 0 : currentField + 1;
+            }
+        } else if (temp == '\b') { // Backspace key
+            if (!movieInfo[currentField].empty()) {
+                movieInfo[currentField].pop_back();
+            }
+        } else if (temp >= 32 && temp <= 126) { // Printable characters
+            movieInfo[currentField] += temp;
+        } else if (temp >= 128) { // Unicode characters
+            movieInfo[currentField] += temp;
+        } else if (temp == 27) { // ESC key
+            return;
+        }
+    }
+
+    // Assign the collected information to the movie object
+    try{
+        this->id = ++currentID;
+        this->name = movieInfo[0];
+        this->duration = stoi(movieInfo[1]);
+        this->subTitle = movieInfo[2];
+        this->country = movieInfo[3];
+        this->limitAge = stoi(movieInfo[4]);
+        this->description = movieInfo[5];}
+    catch(exception& e){
+        red(L"[Lỗi nhập dữ liệu. Vui lòng kiểm tra lại.]\n");
+        --currentID;
+        system("pause");
+        inputMovieInfo();
+    }
 }
 
 
-void Movie::displayInfo() const {
-    vector<vector<wstring>> table;
-    table.push_back({L"Thông tin phim"});
-    table.push_back({L"ID: " + to_wstring(id)});
-    table.push_back({L"Tên phim: " + name});
-    table.push_back({L"Thời lượng: " + to_wstring(duration) + L" phút"});
-    table.push_back({L"Mô tả: " + description});
-    table.push_back({L"Quốc gia: " + country});
-    table.push_back({L"Phụ đề: " + subTitle});
-    table.push_back({L"Độ tuổi: " + to_wstring(limitAge)});
-    drawTable(table);
+void Movie::displayInfo() {
+    // drawTable({
+    //     {L"ID", L"Tên phim", L"Thời lượng", L"Phụ đề", L"Quốc gia", L"Độ tuổi", L"Mô tả"},
+    //     {to_wstring(getId()), getName(), to_wstring(getDuration()), getSubTitle(), getCountry(), to_wstring(getLimitAge()), actionLevel, getDescription()}
+    // });
+    // wcout<<L"test\n";
 }
 
 void Movie::deleteInfo() {
@@ -139,6 +189,7 @@ void Movie::editInfo() {
     int newDuration;
 
     do {
+        system("cls");
         // Hiển thị thông tin phim trước khi chỉnh sửa
         displayInfo();
 
@@ -156,58 +207,186 @@ void Movie::editInfo() {
         checkInput(L"Nhập lựa chọn:", choice);
 
         switch (choice) {
-            case 1:
+            case 1:{
+            inputName:
                 yellow(L"Nhập tên mới: ");
                 wcin.ignore();
                 getline(wcin, newName);
-                name = newName;
+
+                if(newName == L"" || newName == L"\n"){
+                    red(L"[Tên phim không được để trống.]\n");
+                    newName.clear();    
+                    goto inputName;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật tên phim thành công.]\n");
+                tmp->setName(newName);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    name = newName;
+                    system("cls");
+                    green(L"[Đã cập nhật tên phim thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
-            case 2:
+            }
+            case 2:{
+                inputDuration:
                 yellow(L"Nhập thời lượng mới: ");
                 wcin >> newDuration;
-                duration = newDuration;
+
+                if(newDuration <= 0){
+                    red(L"[Thời lượng phim không hợp lệ.]\n");
+                    goto inputDuration;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật thời lượng phim thành công.]\n");
+                tmp->setDuration(newDuration);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    duration = newDuration;
+                    system("cls");
+                    green(L"[Đã cập nhật thời lượng phim thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
-            case 3:
+            }
+
+            case 3:{
+                inputDescription:
                 yellow(L"Nhập mô tả mới: ");
                 wcin.ignore();
                 getline(wcin, newDescription);
-                description = newDescription;
+
+                if(newDescription == L"" || newDescription == L"\n"){
+                    red(L"[Mô tả phim không được để trống.]\n");
+                    newDescription.clear();
+                    goto inputDescription;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật mô tả phim thành công.]\n");
+                tmp->setDescription(newDescription);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    description = newDescription;
+                    system("cls");
+                    green(L"[Đã cập nhật mô tả phim thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
-            case 4:
-                yellow(L"Nhập quốc gia mới: ");
+            }
+
+            case 4:{
+                inputCountry:
+                wstring newCountry;
+                yellow(L"Nhập quốc gia sản xuất mới: ");
                 wcin.ignore();
-                getline(wcin, newGenre);
-                country = newGenre;
+                getline(wcin, newCountry);
+
+                if(newCountry == L"" || newCountry == L"\n"){
+                    red(L"[Quốc gia sản xuất không được để trống.]\n");
+                    newCountry.clear();
+                    goto inputCountry;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật quốc gia sản xuất thành công.]\n");
+                tmp->setCountry(newCountry);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    country = newCountry;
+                    system("cls");
+                    green(L"[Đã cập nhật quốc gia sản xuất thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
-            case 5:
+            }
+
+            case 5:{
+
+                inputSubTitle:
+                wstring newSubTitle;
                 yellow(L"Nhập phụ đề mới: ");
                 wcin.ignore();
-                getline(wcin, newGenre);
-                subTitle = newGenre;
+                getline(wcin, newSubTitle);
+
+                if(newSubTitle == L"" || newSubTitle == L"\n"){
+                    red(L"[Phụ đề không được để trống.]\n");
+                    goto inputSubTitle;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật phụ đề phim thành công.]\n");
+                tmp->setSubTitle(newSubTitle);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    subTitle = newSubTitle;
+                    system("cls");
+                    green(L"[Đã cập nhật phụ đề thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
-            case 6:
+            }
+
+            case 6:{
+                inputLimitAge:
+                int newLimitAge;
                 yellow(L"Nhập giới hạn tuổi mới: ");
-                wcin >> limitAge;
+                wcin >> newLimitAge;
+
+                if(newLimitAge <= 0){
+                    red(L"[Giới hạn tuổi không hợp lệ.]\n");
+                    goto inputLimitAge;
+                }
+
+                Movie* tmp = this;
                 system("cls");
-                green(L"[Đã cập nhật giới hạn tuổi phim thành công.]\n");
+                tmp->setLimitAge(newLimitAge);
+                tmp->displayInfo();
+                wchar_t c;
+                green(L"════[ Xác nhận lưu chỉnh sửa (y/n): ]==> ");
+                wcin >> c;
+                c = towlower(c);
+                if(c == 'y'){
+                    limitAge = newLimitAge;
+                    system("cls");
+                    green(L"[Đã cập nhật giới hạn tuổi thành công.]\n");
+                    this->displayInfo();
+                }
+
                 break;
+            }   
+
             case 0:
-                system("cls");
-                return;
-            default:
-                system("cls");
-                red(L"Lựa chọn không hợp lệ. Vui lòng chọn lại.\n");
-                break;
+                break;  
         }
     } while (choice != 0);
 }
