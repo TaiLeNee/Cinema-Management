@@ -184,8 +184,12 @@ int main()
     customerList.loadFromCSV("../DATA/customers.csv");
     customerList_gb = &customerList; // đặt con trỏ global trỏ đến customerList
     /*======================================*/
-
-    loginMenu(employeeList, movieList, customerList, roomList, bookedList);
+    try{
+        loginMenu(employeeList, movieList, customerList, roomList, bookedList);
+    }catch(const exception &e){
+       red(L"Đã xảy ra lỗi: ");
+        wcout << e.what() << endl;
+    }
 
     return 0;
 }

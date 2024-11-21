@@ -28,6 +28,10 @@ Datetime getDatetime(int type){
 
     gotoXY(17, y-2);
     wstring month; wcin>>month;
+    if(!isdigit(month[0])){
+        system("cls");
+        goto getTime;
+    }
     int monthINT = stoi(month);
     //Kiểm tra tháng
     if(!monthINT){
@@ -54,6 +58,11 @@ Datetime getDatetime(int type){
      x = pos.X;
     gotoXY(10, y-2);
     wcin>>hour;
+
+    if(!isdigit(hour[0])){
+        red(L"══[Giờ không hợp lệ, Vui lòng nhập lại]══\n");
+        goto inputTime;
+    }
     
     int hourINT = stoi(hour);
 
@@ -638,7 +647,9 @@ void displayListShowtimeOfDate(RoomList &roomList, MovieList &movieList){
     getTime:
     system("cls");
     green(L"══════════[Chọn ngày cần xem lịch chiếu]══════════\n");
+
     red(L"Nhập 0: quay lại\n");
+
     drawTable({{L"Nhập tháng: ", L"          "}});
     pos = getXY();
      y = pos.Y;
@@ -646,6 +657,11 @@ void displayListShowtimeOfDate(RoomList &roomList, MovieList &movieList){
 
     gotoXY(17, y-2);
     wstring month; wcin>>month;
+   
+    if(!isdigit(month[0])){
+        system("cls");
+        goto getTime;
+    }
     int monthINT = stoi(month);
     //Kiểm tra tháng
     if(!monthINT){

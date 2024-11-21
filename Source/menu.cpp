@@ -207,7 +207,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
         table.push_back({L"HỆ THỐNG QUẢN LÝ RẠP CHIẾU PHIM            "});
         table.push_back({L"1. Bán vé            "});
 
-        if (loggedin->getId() <= 1)
+        if (loggedin->getLevel() <= 1)
             table.push_back({L"2. Quản lý hệ thống       "});
         else
             table.push_back({L"2. Đổi mật khẩu       "});
@@ -222,7 +222,7 @@ void mainMenu(ListOfEmployee &employeeList, MovieList &movieList, CustomerList &
             break;
         case 2:
             system("cls");
-            if (loggedin->getId() <= 1)
+            if (loggedin->getLevel() <= 1)
             {
                 system("cls");
                 managementMenu(employeeList, movieList, customerList, roomList, bookedList);

@@ -54,7 +54,7 @@ void BookedList::loadChairbookedFromCSV(const string& filename = "../DATA/paymen
             chairNames.push_back(chairName);
         }
 
-        addBooked(Booked(stoi(tmpID), stoi(ticketID), stoi(showtimeID), stoi(employeeID), datetime, totalMoney, chairNames));
+        addBooked(Booked(stoi(tmpID), stoi(ticketID), stoi(showtimeID), stoi(employeeID), stoi(customerID), datetime, totalMoney, chairNames));
     }
     file.close();
 }

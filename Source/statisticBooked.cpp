@@ -157,6 +157,10 @@ void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &booke
 
             gotoXY(17, y-2);
             wstring month; wcin>>month;
+            if(!isdigit(month[0])){
+                system("cls");
+                goto getMonth;
+            }
             int monthINT = stoi(month);
             //Kiểm tra tháng
             if(!monthINT){
@@ -257,6 +261,10 @@ void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &booke
 
             gotoXY(17, y-2);
             wstring month; wcin>>month;
+            if(!isdigit(month[0])){
+                system("cls");
+                goto getMonth2;
+            }
             int monthINT = stoi(month);
             //Kiểm tra tháng
             if(!monthINT){
@@ -356,6 +364,11 @@ void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &booke
 
             gotoXY(17, y-2);
             wstring month; wcin>>month;
+
+            if(!isdigit(month[0])){
+                system("cls");
+                goto  getMonth3;
+            }
             int monthINT = stoi(month);
             //Kiểm tra tháng
             if(!monthINT){
@@ -462,6 +475,11 @@ void statisticBooked(MovieList &movieList, RoomList &roomList, BookedList &booke
 
             gotoXY(17, y-2);
             wstring month; wcin>>month;
+            if(!isdigit(month[0])){
+                system("cls");
+                goto getMonth4;
+            }
+
             int monthINT = stoi(month);
             //Kiểm tra tháng
             if(!monthINT){

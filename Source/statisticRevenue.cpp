@@ -221,6 +221,10 @@ menuStatistic:
 
         gotoXY(17, y-2);
         wstring month; wcin>>month;
+        if(!isdigit(month[0])){
+            system("cls");
+            goto getMonth;
+        }
         int monthINT = stoi(month);
         //Kiểm tra tháng
         if(!monthINT){
@@ -369,6 +373,10 @@ menuStatistic:
 
         gotoXY(17, y-2);
         wstring month; wcin>>month;
+        if(!isdigit(month[0])){
+            system("cls");
+            goto getMonth2;
+        }
         int monthINT = stoi(month);
         //Kiểm tra tháng
         if(!monthINT){
