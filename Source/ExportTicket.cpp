@@ -78,8 +78,8 @@ int exportToPDF(string filename) {
 
     // Tạo JSON
     nlohmann::json data = {
-        {"document", "XWyOPdAFKogwFCkc4YBV"},
-          {"apiKey", "2HNAM3Y-QIMELPA-TY6A2KY-AU6P6AQ"},
+        {"document", "MU3EbsRkiKWJDs1Zse8Z"},
+          {"apiKey", "VXXWB3A-5JVUSLI-QKB6H3Y-CXJIKTQ"},
           {"format", "pdf"},
           {"data", {
               {"date", date_utf8},
@@ -99,11 +99,6 @@ int exportToPDF(string filename) {
 
     cpr::Response r = cpr::Post(cpr::Url{"https://app.documentero.com/api"}, cpr::Body{data.dump()}, cpr::Header{{"Content-Type", "application/json"}});
 
-    // cout << r.text << endl;
-    /*
-    reponse:
-    {"status":200,"message":"Document Generated Succesfully","data":"https://storage.googleapis.com/doc-generated/beige_and_brown_minimalist_movie_ticket_m3d70exd.pdf?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=documentero-65e4d%40appspot.gserviceaccount.com%2F20241111%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241111T154318Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&response-content-disposition=attachment&X-Goog-Signature=958c2ebd023511b13dba2a3a3e30649948062e12939b9c1f33b225a420fda7035a75f3e20d3c19b53f0603b1668d9170c2efa475add9600b2324a309d6b1b9ee059e8c9a30006c7fb45a26abc3ae134bb3ced4fa836438960362158668fa43410fda42875b3e3d32f1050bf27058b2b4ca5396e2e018e8105c683d5abc2f41e32954c7248ab024ea4e3c2d004bc267047e95f6f804904944a12c0783a93991932f2638a50c0215ebcdc74e12747f7fcbc5ee988c23c7004f0d697c66f0a49f8c0fb5787e25c71818c116e3127b324d671c6243e9b62b45e3f99de62f459031e5feba777459d39efe11ee9ff044554864e597941697df37555311acb55776a7c4"}
-    */
     nlohmann::json j = nlohmann::json::parse(r.text);
     if(j.find("status") != j.end()){
         if(j["status"] != 200){
